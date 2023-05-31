@@ -1,0 +1,4 @@
+Step 1: Study concept.
+Step 2: External resources ---> Documentation, Articles.
+Step 3: See it in action.
+Step 4: Try it. Test it. Implement it.

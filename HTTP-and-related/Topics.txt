@@ -1,0 +1,24 @@
+1. URLs & Resource Identifiers || Identifiers in HTTP
+2. HTTP messages: Parts of Message
+3. Basic Transaction Stuff(Me):
+  - Intro to Methods, Headers, Status codes
+  - Non-concept-specific M-H-Sc are discussed.
+3. Connection Management
+4. Proxies
+5. Caching
+6. Gateways, Tunnels, and Relays
+7. Routing HTTP Messages
+8. Authentication || HTTP Authentication
+9. Entities and Encodings || Representation Data and Metadata
+10. Message Context
+11. Internationalization
+12. Content Negotiation and Transcoding || Content Negotiation
+13. Conditional Requests
+14. Range Requests
+15. Secure HTTP || Security Considerations
+
+Sources: HTTP Definitive Guide | HTTP Semantics @HTTP specs.
+
+Strategy: Discuss the "Methods", "Headers" and "Status codes" in the context of each concept/topic.
+
+Advice: Only stress on things you're in control of as a backend engineer.

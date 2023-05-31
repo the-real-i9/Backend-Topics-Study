@@ -1,0 +1,27 @@
+* HTMl
+- Form
+Tags that reference server resources(href, srcx):
+- anchor
+- iframe
+- image
+- audio
+- video
+- link
+- script
+- embed
+
+
+* Web APIs
+- Fetch API
+- Credential Management API
+- Web Crypto API: SubtleCrypto
+- Web Locks API {For process synchronization}
+- Media
+- Media Session
+- Media Streams
+- Payments
+- Server-Sent Events
+- Service Workers
+- URL
+- Web Sockets
+- Web RTC
