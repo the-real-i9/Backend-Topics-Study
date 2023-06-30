@@ -26,7 +26,7 @@ ORDER BY column_1, column_2
 
 # Filtering
 
-## Limit & Offset (non-standard)
+## Limit & Offset (Pagination: non-standard)
 > LIMIT
 ```sql
 SELECT ... FROM ... ORDER BY ...
@@ -50,7 +50,7 @@ LIMIT 5
 -- This'll do the trick!
 ```
 
-## Fetch & Offset (standard)
+## Fetch & Offset (Pagination: standard)
 ```
 OFFSET offset_count {ROW | ROWS}
 FETCH {FIRST | NEXT} [row_count] {ROW | ROWS} ONLY
@@ -164,3 +164,107 @@ Check the documentation if you'll need it.
 ---
 
 ## Data types
+> ### JSON
+When you a column is JSON-data type,
+You can query it in two ways,
+```sql
+-- as json (->)
+SELECT column_name -> 'objVal' AS alias FROM table_name
+-- if you query as json, you can chain the access to go further down the hierarchy
+
+-- as text (->>)
+SELECT column_name ->> 'textVal' AS alias FROM table_name
+-- if you query as text, or the last prop in the access chain is text, you cant go further, even though the text may look-like json.
+
+-- chain the access
+SELECT column_name -> 'obhVal' -> 'innerDictVal' ->> 'textVal' AS alias FROM table_name
+
+-- you can have multiple columns
+SELECT column_name -> 'objVal' AS alias_1, column_name ->> 'textVal' AS alias_2 FROM table_name
+```
+
+You can use it in a `WHERE` clause
+```sql
+WHERE colunm_name -> 'objVal' ->> 'textVal' = 'someText'
+```
+
+Basically, you can use it anywhere you can have an attribute.
+
+There are **JSON functions**, you can call on your json data. The arguments can be the whole json data (`jsonColumn`) or an inner value accessed with `column -> objVal` or `column ->> textVal`
+```sql
+-- expand the outer-most object referenced into key-value pairs
+json_each(jsonColumn), json_each_text(jsonColumn -> 'objVal')
+
+-- get the keys of the object referenced
+json_object_keys(column -> 'objVal')
+
+-- get the type of value
+json_typeof(column ->> 'val')
+
+/* There many other functions too */
+```
+
+> ### HSTORE
+Say, you need a column with with a data that contains key:value pairs, like, `{key: value, key: value, ...}`. **As you can see this ain't a JSON data.**
+
+To use this, you first install the extension
+```sql
+CREATE EXTENSION hstore
+```
+or install the `pg-hstore` library for Sequelize.
+
+Now when you create your table, specify the `hstore` as data-type or use `DataTypes.HSTORE` in case of sequelize.
+
+Here's how the value looks like
+```sql
+'"key1" => "value1", "key2" => "value2"'
+```
+and here's how you access it.
+```sql
+SELECT column -> 'key1', column -> 'key2' from table_name
+```
+
+Just like JSON, you can use it anywhere you need an attribute value.
+
+***Check the documentation if you need more.*** You can do a lot more, like 
+- *updating, adding, removing* a key:value pair.
+- *checking for the **existence of a key, multiple keys, or a key:value pair*** as a **condition**.
+- getting the keys or values of all rows in an hstore column.
+
+
+> ### ARRAY
+Check the documentation to learn more. It's simple.
+
+---
+---
+
+# Transactions
+A transaction is a single unit of work, consisting of one or more database operations.
+
+***It is a must for any real application.***
+
+>I see this from two perspectives,
+>- *from the perspective of the application developer*, a single unit of work is the real-life task to execute which will consist of one-or-more SQL statements.
+>- *from the perspective of the DBMS software*, a single unit of work is *one SQL statement*, which will consist of one or more operations including, database and non-database operations.
+
+## How it works
+```sql
+-- To begin a transaction
+
+BEGIN;
+-- execute statement 1
+-- execute statement 2
+-- execute more statements
+
+-- after executing the statements involved in your transaction, you commit the changes.
+COMMIT;
+
+-- when an error occurs "before you commit", in an error-handling block, you should rollback changes. The DBMS software is not aware of an errors in your programming language.
+ROLLBACK;
+
+-- you can't rollback changes that have been commited
+```
+
+> At DBMS software level, a transaction (one SQL statement) has this internally implemented.\
+>To the DBMS software, that is the definition of a single unit of work.
+

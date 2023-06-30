@@ -6,7 +6,7 @@ This is characterized by the things that have to do with the basic and usual req
 Also the general idea of METHODS, STATUS CODES and HEADERS are dicussed here.
 
 > SHOULD - in the specification means that, according to the semantics, this is what an implementation should follow, but its not strict.\
-MUST - in the specification means that, an implementation has to follow this rule strictly.\
+MUST - in the specification means that, an implementation has to follow this rule strictly.
 
 > The implementation of these really depends on the backend engineer, the semantics are just what they are originally intended for. Feel free to harmlessly break the rules in your favor.
 
@@ -52,12 +52,3 @@ A client SHOULD NOT automatically retry a failed automatic retry.
 For a cache to store and use a response, *the associated method needs to explicitly allow caching and to detail under what conditions a reponse can be used to satisfy subsequent requests;* a method definition that does not do so cannot be cached.
 
 Majority of cache implementations only support GET and HEAD. But, the specification defines caching semantics to include POST.
-
-
----
-# STATUS CODES
-
-
----
-# HEADERS
-
