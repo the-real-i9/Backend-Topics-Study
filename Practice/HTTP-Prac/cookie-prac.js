@@ -14,11 +14,7 @@ app.use(session({
 }))
 
 app.get('/', (req, res) => {
-  if (req.session.views) {
-    req.session.views++;
-  } else {
-    req.session.views = 1
-  }
+  req.session.views = req.session.views ? req.session.views + 1 : 1;
 
   res.send(`This page has been viewed ${req.session.views} times`)
 });
