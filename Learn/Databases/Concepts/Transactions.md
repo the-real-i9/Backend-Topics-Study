@@ -7,7 +7,6 @@ A transaction is a single unit of work, consisting of one or more database opera
 >- *from the perspective of the application developer*, a single unit of work is the real-life task to execute which will consist of one-or-more SQL statements.
 >- *from the perspective of the DBMS software*, a single unit of work is *one SQL statement*, which will consist of one or more operations including, database and non-database operations.
 
----
 
 # How it works
 ```sql
@@ -30,3 +29,5 @@ ROLLBACK;
 > At DBMS software level, a transaction (one SQL statement) has this internally implemented.\
 >To the DBMS software, that is the definition of a single unit of work.
 
+
+# ACID: The properties of a DB transaction.
