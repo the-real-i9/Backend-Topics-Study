@@ -1,8 +1,9 @@
 # Subjects
 - **HTTP:** Cookies & Authentication, Content Negotiation, Entities & Encoding, Messages, Transaction, Web sockets, Server-sent events, Web servers, Proxies, NodeJs.
-  - **APIs:** REST, GraphQL, gRPC, Express, Apollo, NextJS, Serverless.
-  - Search Engines
-  - Message Brokers/Queues.
+  - **API dev:** REST, GraphQL, gRPC, Express, Apollo, NextJS, Serverless.
+    - Search Engines
+    - Message Brokers/Queues.
+    - Versioning, Rate Limiting.
 - **Databases:** SQL, NoSQL, ORMs, Concepts: ACID, Transaction, Normalization, Database Indexes, Sharding, Data Replication.
 - **Caching:** Concepts, Client-side, Server-side, CDN, Redis.
 - **Web Security:** HTTPS, Encryption, CORS, CSP, SSL/TLS, API Security Best Practices.
