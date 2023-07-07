@@ -43,4 +43,4 @@ The server encrypts the user's credentials (with some additional information) in
 
 The client then uses the token to authorize the user on subsequent requests to a protected resource.
 
-The server can decrypt this token on its end, and checks the user's information. Some of the additional information can be the max-age of the token, so the client isn't logged in forever, and will have to re-authenticate itself.
+The server can decrypt this token on its end, and checks the user's information. Some of the additional information can include the `max-age` of the token that the server will check, so the client isn't logged in forever, and will have to re-authenticate itself.
