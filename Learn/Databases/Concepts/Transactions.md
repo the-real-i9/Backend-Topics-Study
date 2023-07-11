@@ -1,4 +1,4 @@
-# Introdction
+# Introduction
 A transaction is a single unit of work, consisting of one or more database operations.
 
 ***It is a must for any real application.***
