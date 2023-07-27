@@ -36,7 +36,6 @@ const PrivateOwner = dbClient.define(
     },
   },
   {
-    schema: "learn",
     timestamps: false,
   }
 );

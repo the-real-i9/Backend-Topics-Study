@@ -37,7 +37,6 @@ const Staff = dbClient.define(
     },
   },
   {
-    schema: "learn",
     timestamps: false,
   }
 );

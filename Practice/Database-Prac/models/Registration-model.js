@@ -14,7 +14,6 @@ const Registration = dbClient.define(
     },
   },
   {
-    schema: "learn",
     timestamps: false,
   }
 );

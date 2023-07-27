@@ -24,7 +24,6 @@ const Branch = dbClient.define(
     },
   },
   {
-    schema: "learn",
     timestamps: false,
   }
 );

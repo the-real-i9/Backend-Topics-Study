@@ -36,7 +36,6 @@ const Client = dbClient.define(
     },
   },
   {
-    schema: "learn",
     timestamps: false,
   }
 );

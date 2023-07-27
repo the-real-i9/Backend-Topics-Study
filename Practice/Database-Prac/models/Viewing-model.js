@@ -14,7 +14,6 @@ const Viewing = dbClient.define(
     comment: DataTypes.TEXT,
   },
   {
-    schema: "learn",
     timestamps: false,
   }
 );

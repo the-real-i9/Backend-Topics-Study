@@ -39,7 +39,6 @@ const PropertyForRent = dbClient.define(
     },
   },
   {
-    schema: "learn",
     timestamps: false,
   }
 );
