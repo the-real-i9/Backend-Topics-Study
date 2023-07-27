@@ -1,7 +1,7 @@
 const express = require("express");
 
 const dbClient = require("./lib/db-conn");
-const { Branch, Staff } = require("./models/db-models");
+const { User, Post, Branch } = require("./models/db-models");
 
 const app = express();
 
@@ -10,35 +10,24 @@ app.use(require("cors")());
 app.use(express.json());
 app.use(express.text());
 
-app.get("/", (req, res) => {
-  res.send("App Working!");
-});
-
-app.post("/new_branch", async (req, res) => {
+app.get("/", async (req, res) => {
   try {
-    const { body } = req;
-    const branch = await Branch.create(body);
-    res.status(201).json(branch);
-  } catch (e) {
-    console.log(e);
-  }
-});
-
-app.post("/new_staff", async (req, res) => {
-  try {
-    const { body } = req;
-    const staff = await Staff.create(body);
-    // const readable = fs.createReadStream();
-    res.status(201).json(staff);
-  } catch (e) {
-    console.log(e);
+    const user = await User.findOne({ where: { id: 1 } });
+    /* Sequelize special method due to associations */
+    // await user.createPost({ content: "This is another post created by Kehinde Ogunrinola", userId: user.id })
+    res.json(await user.getPosts());
+  } catch (error) {
+    console.error(error)
+    res.end()
   }
 });
 
 (async () => {
   try {
-    await dbClient.sync();
+    await dbClient.sync(/* { force: true } */);
+    // await Promise.all([Post.sync(), User.sync()])
     console.log("DB synced.");
+    // await User.create({ name: "Kehinde Ogunrinola" })
     app.listen(5000, () => {
       console.log("Server started at http://localhost:5000");
     });

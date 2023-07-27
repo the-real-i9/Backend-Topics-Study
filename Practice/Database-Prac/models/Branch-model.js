@@ -28,4 +28,5 @@ const Branch = dbClient.define(
   }
 );
 
+
 module.exports = Branch;

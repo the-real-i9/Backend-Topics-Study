@@ -5,6 +5,8 @@ const Client = require("./Client-model");
 const PrivateOwner = require("./PrivateOwner-model");
 const Viewing = require("./Viewing-model");
 const Registration = require("./Registration-model");
+const Post = require("./PostModel")
+const User = require("./UserModel")
 
 module.exports = {
   Branch,
@@ -14,4 +16,6 @@ module.exports = {
   PrivateOwner,
   Viewing,
   Registration,
+  Post,
+  User,
 };
