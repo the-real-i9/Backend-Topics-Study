@@ -5,7 +5,7 @@
 - **Client or User-agent:** Any tool that acts on behalf of the user. Web browser, Robots, Command line interfaces, Script etc.
 - **Web Server:** It serves the document as requested by the client. A server appears as only a single machine virtually; *but it may actually be a collection of servers sharing the load (load balancing),* or *a complex piece of software interrogating other computers (like cache, a DB server, or e-commerce servers), totally or partially generating content on demand.*
   - A server is not necessarily a single machine, but several server software instances can be hosted on the same machine.
-- **Proxies:** **Between the Web browser and the server, numerous computers and machines relay the HTTP messages.** There are ones that operate at the network, link and physical layers, but as we get to the application layer they become transparent. **Those operating at the application layers are generally called *proxies*.** They may(transparent) or may not(non-transparent) alter the HTTP message before passing it along to the client of server.\
+- **Proxies:** **Between the Web browser and the server, numerous computers and machines relay the HTTP messages.** There are ones that operate at the network, link and physical layers, but as we get to the application layer they become transparent. **Those operating at the application layers are generally called *proxies*.** They may (transparent) or may not (non-transparent) alter the HTTP message before passing it along to the client of server.
   - **Proxies may perform numerous functions:**
     - Caching: The cache can be public or private
     - Filtering: Like an antivirus scan or parental controls
@@ -22,7 +22,7 @@
 ---
 ## What can be controlled by HTTP
 - Caching: How documents are cached.
-- Relaxing the *same-origin* constraint: The server can control the origin that can access it via HTTP headers.
+- Relaxing the *same-origin* constraint: The server can control the origin that can access it via HTTP headers. (`Access-Control-Allow-Origin`)
 - Authentication: Authorization, HTTP Cookies.
 - Proxy and tunneling.
 - Sessions

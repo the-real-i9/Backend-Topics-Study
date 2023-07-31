@@ -96,6 +96,5 @@ Even though there are multiple colums in the index list, the chance of leveragin
 ---
 
 # Best practices
-- Create indexes on *unique single-colums* or *uniqu
-e multiple-columns*
+- Create indexes on *unique single-colums* or *unique multiple-columns*
 - Integer colums are scanned the fastest. They're the best column choice to creating indexes on.
