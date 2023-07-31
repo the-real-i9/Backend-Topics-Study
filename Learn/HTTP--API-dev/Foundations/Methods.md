@@ -12,7 +12,7 @@ The response to a GET request is cacheable; a cache may use it to satisfy subseq
 
 Don't use the GET request method if a sensitive user information is involved in constructing a target URI. Either filter the info, transorm it (hashing) or use the POST request method instead.
 
-### HEAD
+## HEAD
 HEAD is used to obtain metadata about the selected representation without transferring its representation data, **often for the sake of testing hypertext links or finding recent modifications**.
 
 ## POST

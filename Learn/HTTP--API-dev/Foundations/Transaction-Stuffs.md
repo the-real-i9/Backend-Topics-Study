@@ -24,7 +24,7 @@ The *set of methods allowed by a target resource* can be listed in an `Allow` he
 An origin server that recieves a request method that is unrecognized or not implemented should respond with the 501 (Not Implemented) status code. An origin server that receives a request method that is recognized and implemented, but not allowed for the target resource, should respond with the 405 (Method Not Allowed) status code.
 
 ## Safe Methods
-Request methods are considered "safe" if their defined semantics are essentially read-only. The method will not cause any state change on the origin server when applied to a target resource.
+Request methods are considered "safe" if their defined semantics are essentially read-only. ***The method will not cause any state change on the origin server when applied to a target resource***.
 
 The definition of safe methods does not prevent an implementation(server-side program) from including behaviour that breaks this semantic law. What is important, however, is that the client did not request that additional behaviour and cannot be held accountable for it. For example, a safe request initiated by selecting an ad. on the web will often have the side effect of charging an advertising account.
 
@@ -39,9 +39,9 @@ Safe methods, PUT and DELETE fall into this category.
 
 A server is free to log each request separately, retain a revision control history, or implement other non-idempotent side effects for each idempotent request.
 
-Idempotent methods are distinguished because the request can be repeated automatically if a communication failure occurs before the client is able to rad the server's response. This is fine as reapeating the request will have the same intended effect.
+Idempotent methods are distinguished because the request can be repeated automatically if a communication failure occurs before the client is able to read the server's response. This is fine as ***reapeating the request will have the same intended effect***.
 
-A client should not automatically retry a request with non-idempotent method unless it has some means to know that the request semantics are actually idempotent, regardless of the method, or some means to detect that the original request was never applied.
+*A client should not automatically retry a request with non-idempotent method* unless it has some means to know that the request semantics are actually idempotent, regardless of the method, or some means to detect that the original request was never applied.
   - For example, a user agent can repeat a POST request automatically if it knows (through design or configuration) that the request is safe for that resource.
   - Some clients take a riskier approach and attempt to guess when an automatic retry is possible. For example, if the connection was closed before any part of a response is received.
 
