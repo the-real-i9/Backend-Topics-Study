@@ -5,7 +5,7 @@ Each time a user runs a program, the OS creates a new process and runs this prog
 
 Each process have **an independent logical control flow** (_independent program counters_) that provides the illusion that its program has exclusive use of the processor.
 
-> Logical flow
+## Logical flow
 
 If we were to step through the execution of our program, we would observe a series of program counter values that corresponded exclusively to instructions contained in our program's executale object file or in shared objects linked into our program dynamically at run time. This sequence of PC values is known as the *logical control flow*.
 - It'd seem as if the program counter has only been addressing this process instructions, whereas it done for other processes instructions too.
@@ -13,6 +13,7 @@ If we were to step through the execution of our program, we would observe a seri
 - When one process suspends the, current values of its program counter is saved into its state (along with other values) before another process takes its turn, when this process resumes, the current value of its program counter is restored into the program counter in the processor, and execution continues.
 
 ## Concurrent Flows
+
 The general phenomenon of multiple flows executing concurrently is known as _concurrency_. The notion of a process taking turns with other processes is also known as _multitasking_. Each time period that a process executes a portion of its flow is called a _time slice_. Thus, multitasking is also referred to as _time slicing_.
 
 If two flows overlap in time, then they are concurrent, even if they are running on the same processor.
@@ -23,7 +24,7 @@ If two flows are _running concurrently on different processor cores_ or computer
 
 Each process also have **a private address space** that provides the illusion that its program has exclusive use of the main memory.
 
-> Private Address Space
+## Private Address Space
 
 A process provides each program with its own *private address space*. Not to be addressed by any other process.
 
@@ -38,6 +39,7 @@ Each address space has the same general organization.
   ![Process address space](./imgs/process-address-space.png)
 
 ## User and kernel modes
+
 A mechanism that restricts the instructions that a program can execute, as well as the portions of the address space that it can access.
 
 A process running in kernel mode can execute any instruction in the instruction set and access any memory location in the system.
@@ -51,6 +53,7 @@ The only way for a process to change from user mode to kernel mode is to trigger
 Note: Modes are associated with processes, not with the CPU.
 
 ## !Context Switches!
+
 The *OS kernel implements multitasking* using a form of exceptional control flow known as a _context switch_.
 
 The kernel maintains a <u>*context*</u> for each process.
@@ -81,7 +84,46 @@ A context switch can occur while the kernel is executing a system call on behalf
 - This also happens if a process delibrately suspends itself.
 - Even if a system call does not block, the kernel can decide to perform a context switch rather than return control to the calling process.
 
-Interrupt handlers are executed in kernel mode by the device controller that triggers the interrupt. The device controller is like a processor specific to a device that executes the driver code. At this point the CPU can stay idle or the OS schedules another process, pass control to it and it continues execution by the CPU.
+Trap handlers are executed in kernel mode of the process, the code in the handler communicates with device driver to perform I/O operation which will take some time to return. The device controller is like a processor specific to a device that executes the driver code. While this happens, the kernel schedules another process, passes control to it and it continues execution by the CPU, rather than the CPU waiting on I/O completion.
 
 A context switch can also occur as a result of an interrupt. For example, when a timer interrupt occurs, the kernel can decide that the current process has run long enough and switch to a new process.
+
+# Process Control/Management
+> Obtaining Process IDs
+
+The function call is different accross implementations.
+
+> Creating and Terminating processes
+
+Processes are terminated with `exit(0)` system call.
+
+A parent process creates a new child process by calling the `fork` function.
+- This child process get an identical but separate copy of the parent's virtual address space, privately to itself.
+- The child also gets identical copies of any of the parent's open file descriptors, i.e. it can read/write files or I/O that were opened in its parent. 
+  - For example, the first `init` process opens file descriptors to needed input and output devices, hence all other processes that stems from it can access those input and output devices.
+- The only differce is that, the child process gets a different process id (`pid`).
+- The child process executes independently of its parent process just like a normal process.
+
+
+> Reaping child processes
+
+When a process terminates, the kernel does not remove it from the system immediately. Its parent is required to _reap_ it. A terminated process yet to be reaped is known as a *zombie process*.
+
+A process waits for its children to terminate or stop by calling the `waitpid` function.
+
+> Loading and Running programs
+
+The `execve` function loads and runs a new program in the context of the current process. 
+
+The program currently running in the context of that process is replaced by this new program. That is, the contents of its address space is replaced by that of this new program.
+
+# Signals
+They allow processes and the kernel to interrupt other processes.
+
+A signal is a small message that **notifies a process that an event of some type has occured in the system**.
+- Each signal type corresponds to some kind of system event. 
+
+Hardware exceptions are processed by exception handlers and would not normally be visible to user processes. Signals provide a mechanism for exposing the occurence of such exceptions to user processes.
+
+Software exceptions also have corresponding signals. Whether they're caused by the kernel or a user process.
 
