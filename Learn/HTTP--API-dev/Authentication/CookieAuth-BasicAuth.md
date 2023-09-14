@@ -10,8 +10,8 @@ Cookies are a mechanism whereby a client and server agrees to attach user identi
 - The server gets the identity information from the `Cookie` header and checks it through the ones it has in memory to confirm that it knows about it.
 - If the server finds a matching identity, it knows that the user has previously visited. This will not be possible without cookies.
 
-The identity information the server attaches and stores in memory should not be one's that exposes sensitive user information, therefore, it is usually an ID token (containing gibberish).
-- In the server memory, which is believed safe and secure, the server then associates every possible user information with this ID token.
+The identity information the server attaches and stores in memory should not be ones that expose sensitive user information, therefore, it is usually an ID token (containing gibberish).
+- In the server memory, which is believed safe and secure, the server then associates the user's information with this ID token.
 - When a matching ID token is found, the server then gets the user information attached to it, and may use it for things like: Authorization, Visits tracking, Reffered websites etc.
 
 ---
