@@ -59,15 +59,20 @@ The operating system keeps multiple processes at separate sections in memory. Th
 ## Resource Management
 > Process Management
 
-Operations involved in process management.
+Activities involved in process management.
 - Creating and terminating both user and system processes
 - Scheduling processes and threads on the CPUs
 - Suspending and resuming processes
 - Providing mechanisms for process synchronization
-- Providing mechanisms for process communication
+- Providing mechanisms for inter-process communication
 
 > Memory Management
 
 To utilize computer resources, computers must keep several processes in memory, this creates a need for memory management.
 
+A major activity involed is **Allocating and deallocating memory space**. Dynamic memory allocation.
+
+
 > I/O System Management
+- Handling I/O exceptions or Interrupts
+- Kernel I/O Subsystem
