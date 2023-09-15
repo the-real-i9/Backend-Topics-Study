@@ -140,6 +140,12 @@ Other signals corespond to higher-level software events in the kernel or in othe
 
 The kernel sends a signal to a destination process by updating some state in the context of the destination process. (A signal can send a signal to itself).
 
+A Signal can be sent to a process, 
+- by a process (itself or another)
+- or by the kernel immediately it receives an event/exception. 
+  - Either by Hardware, e.g. I/O input event/exception.
+  - or Software. e.g. A process can invoke a system call that causes the kernel to send a signal to it or another process.
+
 > Receiving a signal
 
 A destination process receives a signal when it is forced by the kernel to react in some way to the delivery of the signal.
@@ -170,8 +176,13 @@ sighandler_t signal(int signum, sighandler_t handler);
 The modification can be in one of three ways:
 - If `handler` is `SIG_IGN`, then signals of type `signum` are ignored.
 - Else: If `handler` is `SIG_DFL`, then signals of type `signum` reverts to the default action.
-- Else: `handler` is *the address of a user-defined function*, called a <u>signal handler</u>, that will be called whenever the process receives a signal of type `signum`.
+- Else: `handler` is *the address of a **user-defined function***, called a <u>signal handler</u>, that will be called whenever the process receives a signal of type `signum`.
   - Changing the default action by this way is known as *installing the handler*.
   - The invocation of the handler is called *catching the signal*.
   - The execution of the handler is called *handling the signal*.
   - When the handler executes its return statement, control usually passes back to the instruction in the control flow where the process was interrupted by the receipt of the signal.
+
+
+So, exceptions are handled by the kernel in their corresponding exception handlers. Those exceptions can be responded to by processes via signals (sent to them by the kernel) and user-defined signal handlers(function).
+- Take NodeJS for example, data arriving at the network adapter is handled by the kernel's networking I/O subsytem, network drivers, and DMA at the system level. Whereas, at the application/process level, we have <u>a NodeJS `data` event and event handler</u>. In NodeJS this is implemented by <u>a signal connected to `data` event and a signal handler connected to `event handler`</u>.
+
