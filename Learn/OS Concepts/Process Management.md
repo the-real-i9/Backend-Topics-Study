@@ -71,6 +71,10 @@ The kernel maintains a <u>*context*</u> for each process.
   - a process table that contains information about the current process, and 
   - a file table that containis information about the files that the process has opened.
 
+- The *stateful component parts that a process uses run* is referred to as its *context*. Stateful in the sense that, they can take different values at different times.
+  - Saving a context's state therefore means, saving the current values each component has before context switching. More like, pinning the values down, pausing them from changing.
+  - And, resuming the context is like, pressing play on the paused state.
+
 At certain points during the execution of a process, the *kernel can decide to preempt the current process and restart a previously preempted process*. This decision is known as **process scheduling**, and is handled by code in the kernel, called the **scheduler**.
 - When the kernel selects a new process to run, we say that the kernel has **scheduled** that process.
 - After this, it preempts the current process and transfers control to the new process using a mechanism called a **context switch**, 
@@ -123,7 +127,15 @@ They allow processes and the kernel to interrupt other processes.
 A signal is a small message that **notifies a process that an event of some type has occured in the system**.
 - Each signal type corresponds to some kind of system event. 
 
-Hardware exceptions are processed by exception handlers and would not normally be visible to user processes. Signals provide a mechanism for exposing the occurence of such exceptions to user processes.
+*Hardware exceptions* are processed by kernel's exception handlers and would not normally be visible to user processes. **Signals provide a mechanism for exposing the occurence of such exceptions to user processes.**
 
-Software exceptions also have corresponding signals. Whether they're caused by the kernel or a user process.
+Other signals corespond to higher-level software events in the kernel or in other user processes.
+- When you give input event via an input device to a process, although this is an I/O interrupt handled by the kernel, the kernel communicates this input event by sending a signal to the process including its children (process group).
+- A process can forcibly terminate another process by sending it a `SIGKILL` signal. Like terminating an application via a CMD or task manager.
 
+
+## Signal Terminology
+
+> Sending a signal
+
+The kernel sends a signal to a destination process by updating some state in the context of the destination process. 

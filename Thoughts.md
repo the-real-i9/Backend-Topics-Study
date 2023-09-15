@@ -22,3 +22,16 @@ You can create mini-projects to demostrate concepts as you go, ones you can use 
 - Be less academic.
 - Explain very cleary and practically, in the way you've understood the topic, with the scenarios and expamples you've painted. **You get the idea.**
 - Be known for this writing style.
+
+
+# Next things in revision
+- Virtual Memory: Virtual Address space
+- Threads and Concurrency
+- Process synchronization
+- I/O system
+- Networking/Internet
+- HTTP
+- Databases
+- API dev
+- Containerization
+- 
