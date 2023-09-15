@@ -138,4 +138,40 @@ Other signals corespond to higher-level software events in the kernel or in othe
 
 > Sending a signal
 
-The kernel sends a signal to a destination process by updating some state in the context of the destination process. 
+The kernel sends a signal to a destination process by updating some state in the context of the destination process. (A signal can send a signal to itself).
+
+> Receiving a signal
+
+A destination process receives a signal when it is forced by the kernel to react in some way to the delivery of the signal.
+- The process can either ignore the signal, terminate, or **catch the signal by executing a user-level function, called a _signal handler_**.
+
+A signal that has been sent but not yet received is called a _pending signal_. 
+- At any point in time, <u>there can only be at most one pending signal of a particular type</u>. If a process has a pending signal of type `k`, then any subsequent signals of type `k` sent to that process are not queued, they are rather discarded.
+- A process can selectively block the receipt of certain signals. When a signal is blocked, it can be delivered, but the resulting pending singnal will not be received until the process unblocks the signal.
+
+
+## Receiving Signals
+When the kernel switches a process from kernel mode to user mode (e.g. returning from a system call or completing a context switch),
+- it _checks the set of_ **unblocked pending signals** for that process. 
+- If this set is empty, then the kernel passes control to the next instruction.
+- If the set is nonempty, the the kernel chooses some signal in the set and forces the process to receive that signal.
+- The receipt of the signal triggers some <u>action</u> by the process. Once the process completes the action, then control passes back to the next instruction (`I`<sub>`next`</sub>) in the logical control flow of the process.
+
+*Each signal type has a predefined default action*. We won't talk about the default actions. Our concern is that...\
+<u>A process can modify the default action associated with a signal</u> by using the `signal` function. (Except `SIGSTOP` and `SIGKILL`).
+
+```c
+#include <signal.h>
+typedef void (*sighandler_t)(int);
+
+sighandler_t signal(int signum, sighandler_t handler);
+```
+
+The modification can be in one of three ways:
+- If `handler` is `SIG_IGN`, then signals of type `signum` are ignored.
+- Else: If `handler` is `SIG_DFL`, then signals of type `signum` reverts to the default action.
+- Else: `handler` is *the address of a user-defined function*, called a <u>signal handler</u>, that will be called whenever the process receives a signal of type `signum`.
+  - Changing the default action by this way is known as *installing the handler*.
+  - The invocation of the handler is called *catching the signal*.
+  - The execution of the handler is called *handling the signal*.
+  - When the handler executes its return statement, control usually passes back to the instruction in the control flow where the process was interrupted by the receipt of the signal.
