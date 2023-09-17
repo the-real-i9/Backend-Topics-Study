@@ -36,3 +36,36 @@ Programming languages provide APIs to directly use TCP socket APIs, not restrict
 ---
 
 # TCP Performance Considerations
+> HTTP Transaction Delays
+
+Some networking delays occur in the course of an HTTP request. All these steps are involved before an HTTP message finally gets to the server.
+- URL parsing, DNS resolution, Connection establishment for every HTTP request, Message travel.
+
+## Performance Focus Areas
+> TCP Connection Handshake Delays
+
+When we set up a new TCP connection, even before you send any data, *the TCP software exchanges a series of IP packets (SYN, ACK) to negotiate the terms of the connection*. <u>These exchanges can significantly degrade HTTP performance if the connections are used for small data transfers</u>.
+
+*We'll discuss how HTTP allows reuse of existing connections to eliminate the impact of this TCP setup delay.
+
+> Delayed Acknowledgments
+
+TCP implements an acknowledgement scheme to guarantee successfull data delivery.
+- When TCP segments are sent, the receiver of each segment returns small acknowledgement packets back to the sender when segments have been received intact.
+- If a sender does not receive an acknowledgement within a specified window of time, the sender concludes the packet was destroyed or corrupted and resends the data.
+- Because acknowledgements are small, TCP allows them to "pile up" so that they could be sent together with outgoing data packets heading in the same direction, thereby making more efficient use of the network.
+- To increase the chances that an acknowledgment will find a data packet headed in the same direction, many TCP stacks implement a "delayed acknowledgement" algorithm.
+- Delayed acknowledgements hold outgoing acknowledgements in a buffer for a certain window of time, looking for an outgoing data packet on which to attach themselves. If no outgoing packet arrives in that time, the acknowledgment is sent in its own packet.
+- But unfortunately, there just aren't many packets heading in the reverse direction when you want them. <u>This introduces significant delays</u>.
+
+> TCP Slow Start
+
+The perfomance of TCP data transfer also depends on the age of the TCP connection. TCP connections "tune" themselves over time, initially limiting the maximum speed of the connection and increasing the speed over time as data is transmitted successfully (i.e. as acknoledgements are received).
+- This tuning is called <u>TCP slow start</u>, and its is *used to prevent sudden overloading and congestion of the Internet*. 
+- The overtime increase in speed is called, *<u>opening the congestion window</u>*. The more the speed increases, the more packets are sent.
+- Due to this congestion-control feature, new (cold) connections are slower than "tuned" (hot) connections that already have exchaned a modest amount of data.
+
+Because tuned (hot) connections are faster, HTTP includes facilities that let you reuse existing connections. *<u>Persistent connections.</u>*
+- A feature to control the timeout in a connection closes itself after it was opened, if no data is transfered through it.
+- Imagine an online text editor, that has to send update to the server for each charater it enters. Following charactes than makes use of the initial connection established by the first character as the user types. If the user holds for sometime, the connection then closes.
+
