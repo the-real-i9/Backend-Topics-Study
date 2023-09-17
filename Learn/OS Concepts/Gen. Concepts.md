@@ -49,14 +49,18 @@ The Operating System is a system software that manages and control computer hard
 
 > Concepts fundamental to Operating Systems
 
-## Multitasking
+## Multiprogramming and Multitasking
 Whenever the user starts a program, the OS creates a process (an instance of a program in execution), and loads this program in the context of that process.
 
-The operating system keeps multiple processes at separate sections in memory. The operating system achieves multitasking by switching control among these processes.
-- A process executes for a certain amount of time enough and the OS quickly swithes control to one or more other process, even before the user notices the one program has been suspended, control has been returned back to it to continue running.
-- Control also transfers to another process if the current process needs to wait for data from an I/O event. e.g. waiting for data to arrive on the network card. Instead of the CPU staying idle it transfers control to another process.
+The operating system keeps multiple processes at separate sections in memory.
 
-## Resource Management
+The OS achieves *multiprogramming* by making sure the CPU is running some process at all times. When the current running process needs to wait for data from an I/O event. e.g. waiting for data to arrive on the network card. Instead of the CPU staying idle, the Operating System transfers control to another process to either start it (if new) or resume it (if previously preempted).
+The operating system achieves *multitasking* by switching control among processes after a certain amount of time. This is known as time-slicing.
+
+---
+---
+
+## Resource Management: Summary
 > Process Management
 
 Activities involved in process management.

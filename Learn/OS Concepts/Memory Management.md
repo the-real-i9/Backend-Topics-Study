@@ -10,6 +10,7 @@ For a program to be executed, it must be mapped to absolute address and loaded i
 This is how programs and operating systems, control the allocation and deallocation of memory space for efficient memory use.
 
 Your main focus is to 
+- know about the *process address space*
 - know about how your programming language handles memory management, 
 - how to write memory efficient programs in the language, 
 - know about the automatic memory management technique it uses.

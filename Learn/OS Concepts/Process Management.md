@@ -1,4 +1,5 @@
-# Intro: Process
+# ----- Study One -----
+# Processes
 A process is an instance of a program in execution located in memory. It makes the program feel it has exclusive use of the systems resources.
 
 Each time a user runs a program, the OS creates a new process and runs this program in the context of that process.
@@ -37,6 +38,7 @@ Each address space has the same general organization.
   - User stack created at runtime, used by function calls.
   
   ![Process address space](./imgs/process-address-space.png)
+  <u>*The memory layout of a process.*</u>
 
 ## User and kernel modes
 
@@ -74,6 +76,8 @@ The kernel maintains a <u>*context*</u> for each process.
 - The *stateful component parts that a process uses run* is referred to as its *context*. Stateful in the sense that, they can take different values at different times.
   - Saving a context's state therefore means, saving the current values each component has before context switching. More like, pinning the values down, pausing them from changing.
   - And, resuming the context is like, pressing play on the paused state.
+
+- The context is also known as *Process Control Block* (PCB).
 
 At certain points during the execution of a process, the *kernel can decide to preempt the current process and restart a previously preempted process*. This decision is known as **process scheduling**, and is handled by code in the kernel, called the **scheduler**.
 - When the kernel selects a new process to run, we say that the kernel has **scheduled** that process.
@@ -186,3 +190,41 @@ The modification can be in one of three ways:
 So, exceptions are handled by the kernel in their corresponding exception handlers. Those exceptions can be responded to by processes via signals (sent to them by the kernel) and user-defined signal handlers(function).
 - Take NodeJS for example, data arriving at the network adapter is handled by the kernel's networking I/O subsytem, network drivers, and DMA at the system level. Whereas, at the application/process level, we have <u>a NodeJS `data` event and event handler</u>. In NodeJS this is implemented by <u>a signal connected to `data` event and a signal handler connected to `event handler`</u>.
 
+----
+----
+
+# ----- Study Two -----
+# The Process Concept
+- The memory layout of a process is its own private address space.
+
+## The Process State
+
+As a process executes, it changes state. The state of the process is defined _in part_ by the current activity of that process.
+
+New, Running, Waiting, Ready, Terminated.
+
+![Process State](./imgs/process-state.png)
+
+Note: Only one process can be running on any processor core at any instant.
+
+## Process Control Block
+
+Each process is represented in the Operating System by a process control block (PCB). This is also known as a <u>processes context</u>.
+
+**Its contents:**\
+Process state, Program counter, CPU registers, CPU-schedling information, Memory-management information, Accounting information, I/O status information.
+
+As in study one, it contains all the state information the kernel needs to resume the execution of a previously preempted process.
+
+The PCB serves as <u>the repository for all the data needed to start or restart, a process,</u> along with some accounting data.
+
+## Threads
+A feature specific processes that allows them to multitask on their own.
+
+This feature is especially beneficial on multicore systems, where multiple threads can run in parallel.
+- When a process creates a thread the OS distributes it among CPU cores in a round-robin fashion.
+
+The Process Control Board (PCB) is expanded to include information for each thread, on systems that support it.
+
+# Process Scheduling
+The objective of *multiprogramming* is *to have some process running at all times* so as to maximize CPU utilization. The objective of *time sharing* or *multitasking* is to switch a CPU core among processes so frequently that users can interact with each program while it is running.
