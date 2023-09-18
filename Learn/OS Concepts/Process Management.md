@@ -110,6 +110,7 @@ A parent process creates a new child process by calling the `fork` function.
 - The child also gets identical copies of any of the parent's open file descriptors, i.e. it can read/write files or I/O that were opened in its parent. 
   - For example, the first `init` process opens file descriptors to needed input and output devices, hence all other processes that stems from it can access those input and output devices.
 - The only differce is that, the child process gets a different process id (`pid`).
+
 - The child process executes independently of its parent process just like a normal process.
 
 
@@ -165,6 +166,7 @@ When the kernel switches a process from kernel mode to user mode (e.g. returning
 - it _checks the set of_ **unblocked pending signals** for that process. 
 - If this set is empty, then the kernel passes control to the next instruction.
 - If the set is nonempty, the the kernel chooses some signal in the set and forces the process to receive that signal.
+
 - The receipt of the signal triggers some <u>action</u> by the process. Once the process completes the action, then control passes back to the next instruction (`I`<sub>`next`</sub>) in the logical control flow of the process.
 
 *Each signal type has a predefined default action*. We won't talk about the default actions. Our concern is that...\
@@ -228,3 +230,26 @@ The Process Control Board (PCB) is expanded to include information for each thre
 
 # Process Scheduling
 The objective of *multiprogramming* is *to have some process running at all times* so as to maximize CPU utilization. The objective of *time sharing* or *multitasking* is to switch a CPU core among processes so frequently that users can interact with each program while it is running.
+
+## Scheduling Queues
+As processes enter the system, they are placed into a **ready queue**, where they are ready and waiting to execute on a CPU's core.
+
+Processes that are waiting for a certain event to occur, such as I/O completion, are placed in a **wait queue**.
+
+A common representation of process scheduling is a **queueing diagram**. In it we have, the ready queue and a set of wait queues. The circles represent the resources that serve the queues, and the arrows indicate the flow of processes in the system.
+- A new process is placed in the ready queue.
+- It gets selected for execution
+- It goes into its executes an instruction that causes it to wait for an event to occur, goes into wait state and place on the wait queue.
+- In contrast, it can go into ready state and placed on the ready queue, if its time-slice expires.
+
+
+  ![Queueing diagram for process scheduling](./imgs/queueing-diagram-proces-scheduling.png)
+
+
+# Context Switching
+
+# Interprocess Communication
+
+# IPC in shared memory systems
+
+# IPC in message passing systems
