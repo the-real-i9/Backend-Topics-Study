@@ -1,6 +1,6 @@
 # Learning
 > Implementations
-- **HTTP:** Cookies & Authentication, Content Negotiation, Entities & Encoding, Messages, Transaction, Web sockets, Server-sent events, Web servers, Proxies, NodeJs.
+- **HTTP:** Cookies & Authentication, Messages, Transaction, Web sockets, Server-sent events, Web servers, Proxies, NodeJs.
   - **API dev:** REST, GraphQL, gRPC, Express, Apollo, NextJS, Versioning, Rate Limiting, Acrhitectural Diagrams, Design Documents.
 - **Databases:** Data modelling, Database design, SQL, NoSQL, ORMs, Concepts: ACID, Transaction, Normalization, Database Indexes, Sharding, Data Replication.
 - **Caching:** Concepts, Client-side, Server-side, CDN, Redis.
