@@ -69,6 +69,8 @@ HTTP allows a cache to send a "conditinal `GET`" to the origin server, asking th
 
 Conditional `GET`s are initiated by adding special conditional headers to `GET` request messages. Among the five HTTP defines, the two that are most useful for cache revalidation are `If-Modified-Since` and `If-None-Match`.
 
+> This technique is in no way specific to caches, itis just a way of conditionally `GET`ing a resource. It serves a useful purpose for caches to revalidate content. You can use it on the client side too directly with the origin server if you like.
+
 ## `If-Modified-Since`: Date Revalidation
 - If the document was modified since the specified date, the `If-Modified-Since` condition is true, and the GET succeeds normally. The new document is retured to the cache, along with new headers, including a new expiration date.
 - If the document was not modified since the specified date, the condition is false, and a small `304 Not Modified` response message is returned to the client, without a document body, for efficiency. <u>Only headers that need updating the original are retured, which of course will include *a new expiration date*</u>.
@@ -81,7 +83,7 @@ The `If-Modified-Since` header works in conjunction with the `Last-Modified` ser
 ## `If-None-Match`: Entity Tag Revalidation
 There are some situations when the last-modified date revalidation isn't adequate.
 
-To get around these problems, HTTP allows you to <u>compare document "version identifiers"</u> called *entity tags* (ETags). 
+To get around these problems, HTTP allows you to <u>compare document "version identifiers"</u> called *entity tags* (ETags).
 - When the publisher makes a document change, he can change the document's entity tag to represent this new version.
 - Caches can then use the `If-None-Match` conditional header to `GET` a new copy of the document if the entity tags have changed.
 
@@ -117,7 +119,7 @@ In **decreasing order of priority**, the origin server can:
 
 **Clients can also use the `Cache-Control` header from their own end**, to <u>control strictness on the `GET`ing of cached resources</u>. This can be used to *tighten strictness (more strict)* or *relax strictness (less strict)*.
 
-> The former makes cache conform to the rules of the server for caching, <u>this one makes the cache conform to the rules of the client for `GET`ing documents</u>.
+> The former makes a cache server conform to the rules of the origin server for caching, <u>this one makes a cache server conform to the rules of the client for `GET`ing documents</u>.
 
 `Cache-Control:`
 - `max-stale` : The cache is free to serve stale content. (Relaxed)
@@ -126,6 +128,7 @@ In **decreasing order of priority**, the origin server can:
 - `max-age=<S>` : The cache only returns a document with `age <= max-age`. This can be overidden by `max-stale`.
 - `no-cache` : Client won't accept an un-revalidated cache resource.
 - `no-store`: The cache must fetch from the origin server and <u>delete every trace of the resource from the cache</u>.
+- `only-if-cached` : The client wants a copy only if it is in the cache.
 
 # Real-World Caching Tools
 Technologies for caching.

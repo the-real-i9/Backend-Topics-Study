@@ -16,6 +16,7 @@
 13. Conditional Requests
 14. Range Requests
 15. Secure HTTP || Security Considerations
+16. Content Publishing and Distribution
 
 Sources: HTTP Definitive Guide | HTTP Semantics @HTTP specs.
 
