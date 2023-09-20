@@ -1,3 +1,0 @@
-# Redis
-
-# Cloudflare - CDN

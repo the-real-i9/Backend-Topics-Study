@@ -5,7 +5,11 @@ The process of keeping local copies of frequently accessed resource by *web cach
 - *demand on origin servers*, and 
 - *distance delays*.
 
-If the requested resource is in the cache, it is served from it, else, like a proxy server, the cache requests the resource from the origin server, serves it to the client, and keeps a local copy for future requests to the same resource for any user.
+If the requested resource is in the cache storage, the caching proxy server serves the client from the cache without contacting the origin server, else, the cache requests the resource from the origin server, serves it to the client, and keeps a local copy for future requests to the same resource for any user.
+
+> For the rest of this read, just assume, when we refer to "cache", we're talking about your caching proxy server that uses a cache storage like Redis or Memcached.
+
+> You need to know all these well, since chances are you'll be creating a caching proxy server for your API.
 
 # Hits and Misses
 When a resource is requested from a cache and it is found in the cache, this is called a <u>cache hit</u>, otherwise, it is called a <u>cache miss</u>, in which case it will be fetched from the origin server.
@@ -35,8 +39,8 @@ There are other ones apart from the `If-Modified-Since` header, but **it is the 
 
 # Cache Topologies
 - **Private caches:** e.g. Dedicated proxy caches, Browser built-in disk cache.
-- **Public proxy caches (proxy caches):** e.g. Redis, Memcached. They are *caching proxy servers*. 
-  - They fetch a new resource on cache miss (as a result of a client requesting a new resource), they cache the resource to serve every request to it again from any client.
+- **Public proxy caches (proxy caches):** *Caching Proxy Servers* that use Redis or Memcached for storage. 
+  - They fetch a resource on cache miss (as a result of a client requesting a new resource), they cache the resource, and serve it on every request to it again from any client.
 
 ## Proxy Cache Hierarchies
 
@@ -113,7 +117,7 @@ In **decreasing order of priority**, the origin server can:
 - Attach **no expiration information**, letting the cache determine its own heuristic expiration date.
   - This means, the origin server does not control cachability. It is left to the caching proxy server in use to do handle this. <u>*You don't have to bother too much about this, since you would be using a managed cache server like Redis or Mecached*</u>.
 
-*A caching proxy server must conform to these <u>origin server cache control rules</u>, for caching* Therefore, you can use them to control cachability in technologies like Redis or Memchached.
+*__Your__ caching proxy server must conform to these <u>origin server cache control rules</u>, for caching in Redis*.
 
 ---
 
@@ -140,7 +144,7 @@ These are private caches.
 
 ## Server Side
 These are public caches.
-- Redis or Memcached. (You'll host them yourself)
+- A caching proxy server that uses Redis or Memcached (You'll host it yourself). This is more like creating your own CDN.
 - Cloud provider's managed cache.
 - Content Delivery Networks (CDN) - A caching proxy server for serving mostly static files. They are mostly offered by cloud providers.
 

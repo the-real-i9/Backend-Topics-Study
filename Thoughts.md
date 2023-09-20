@@ -34,4 +34,3 @@ You can create mini-projects to demostrate concepts as you go, ones you can use 
 - Databases
 - API dev
 - Containerization
-- 
