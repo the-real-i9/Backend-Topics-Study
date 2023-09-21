@@ -181,3 +181,22 @@ They are **typically used in environments with a very high volume of transaction
 
 ![TP Monitor](./imgs/TP-monitor-middle-tier.png)
 
+## Web Services and Service-Oriented Architectures
+### Web Services
+A software system designed to support interoperable machine-to-maching interaction over a network.
+
+Examples are: 
+- Microsoft Bing Maps and Google Maps
+- Amazon Simple Storage Service (Amazon S3)
+
+Application servers interact with these services using the REST API interface. Hence, they are RESTful web services.
+
+### Service-Oriented Architectures (SOA)
+A business-centric software architecture for building applications that implement **business processes as sets of services published at a granularity relevant to the service consumer**.
+
+Examples are:
+- Amazon Web Services
+- Google Cloud Services
+- Microsoft Azure
+
+They combine different Web Services
