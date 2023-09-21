@@ -253,15 +253,3 @@ When an exception occurs (interrupt, system call, time-slicing), the kernel save
 
 If interrupt handling needs to wait for some I/O interrupt to occur, control can be passed to another process, instead of the CPU staying idle.
 
-# Interprocess Communication
-IPC is **the mechanism that allows processes to exchange data**.
-
-There are two fundamental models of IPC: 
-- **shared memory**: <u>a region of memory that is shared</u> by the communicating processes is established.
-- and **message passing**: communicating processes <u>exchange messsages</u> between them.
-
-![IPC Models](./imgs/IPC-models.png)
-
-# IPC in shared memory systems
-
-# IPC in message passing systems
