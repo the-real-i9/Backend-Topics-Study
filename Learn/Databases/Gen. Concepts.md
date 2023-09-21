@@ -47,3 +47,26 @@ This level contains the actual programming language code structure that speaks t
 
 There's also a physical level that may be managed by the OS under the direction of the DBMS.
 
+### Schemas, Mappings and Instances
+The overall description of the database is called the **database schema**.
+
+There are three different types of schema, each corresponding to the levels of abstraction.
+- At the external level, we have *<u>multiple</u>* **external schemas** that correspond to the different view of the data.
+- At the conceptual level, we have the **conceptual schema**, which describes all the entities, attributes, and relationships together with intergrity constraints.
+
+- At the lowest level, we have the **internal schema**, which is a complete description of the internal model, containing the definitions of stored records, the methods of representation, the data fields, and the indexes and storage structures used. Usually implemented in a high-level language. **As before, you don't need to bother about this.**
+
+*We can have **multiple external schemas**, when there is only one conceptual or internal schema per database.*
+
+![The representation of the thre level](./imgs/representation-of-the-three-level.png)
+
+---
+
+The DBMS is responsible for **mapping** the three levels together. It creates an external-conceptual mapping, and a conceptual-internal mapping.
+
+---
+**The data in the database at any particular point in time is called a <u>database instance</u>**. 
+
+Many database instances can correspond to the same database schema. 
+
+The <u>schema</u> is sometimes called the **intension** of the database; and <u>instance</u> is called an **extension** (or **state**) of the database.
