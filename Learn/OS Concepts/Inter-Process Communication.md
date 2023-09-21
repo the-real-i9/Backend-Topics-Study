@@ -35,9 +35,22 @@ In this technique, the operating system provides the means for cooperating proce
 
 **Message passing provides a mechanism to allow processes to communicate and to synchronize their actions without sharing the same address space**. It is particularly useful in a distributed environment, where the communicating proceses may reside on different computers connected by a network.
 
-If two processes must *send messages to and receive messages from* each other, <u>a **communication link** must exist</u> between them.
+If two processes `P` and `Q` must *send messages to and receive messages from* each other, <u>a **communication link** must exist</u> between them.
 
 > Methods for implementing the communication link:
 - Direct or Indirect communication
 - Synchronous or asynchronous communication
 - Automatic or explicit buffering
+
+## Naming : Direct or Indirect
+Each process that wants to communicate must explicitly **name the recipient or sender of the communication**.
+
+**Direct:** 
+- Symmetrical Addressing
+  - `send(P, message)` - Send a `message` to process `P`.
+  - `receive(Q, message)` - Receive a `message` from process `Q`.
+- Asymmetrical Addressing
+  - `send(P, message)` - Send a `message` to process `P`.
+  - `receive(id, message)` - Receive a `message` from any process. The variable `id` is set to the name of the process with which the communication has taken place.
+
+This direct communication is **less desirable**.
