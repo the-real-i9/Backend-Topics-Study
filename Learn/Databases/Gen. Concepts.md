@@ -70,3 +70,11 @@ The DBMS is responsible for **mapping** the three levels together. It creates an
 Many database instances can correspond to the same database schema. 
 
 The <u>schema</u> is sometimes called the **intension** of the database; and <u>instance</u> is called an **extension** (or **state**) of the database.
+
+### Data Independence
+A major objective for the three-level architecture is to provide **data independence**, which means that <u>upper levels are unaffected by changes to lower levels</u>.
+
+**Logical data independence:** External schemas are unaffected by changes in the conceptual schema.
+- Addtion or removal of new entities, attributes, or relationships, should be possible without having to change existing external schemas or having to rewrite application programs.
+
+**Physical data independence:** The conceptual schema is unaffected by changes in the internal schema.
