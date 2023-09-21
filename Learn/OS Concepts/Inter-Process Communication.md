@@ -38,9 +38,12 @@ In this technique, the operating system provides the means for cooperating proce
 If two processes `P` and `Q` must *send messages to and receive messages from* each other, <u>a **communication link** must exist</u> between them.
 
 > Methods for implementing the communication link:
+
+These are more like decisions on how we should implement the communication link.
 - Direct or Indirect communication
 - Synchronous or asynchronous communication
 - Automatic or explicit buffering
+
 
 ## Naming : Direct or Indirect
 ### Direct Communication
@@ -54,6 +57,8 @@ Direct communication can take two approaches,
   - `send(P, message)`
   - `receive(id, message)` - where `id` is set to that of the sender process it receives from.
 
+There's also a temporary queue as a communication link, but it's dedicated only to the two processes.
+
 This direct communication is **less desirable**.
 
 ### Indirect Communication
@@ -63,6 +68,8 @@ Each mailbox has a unique identification. Two processes can communicate via a nu
 
 - `send(A, message)` - Send `message` to mailbox `A`
 - `receive(A, message)` - Receive `message` from mailbox `A`
+
+As opposed to Direct communication. This is more desirable.
 
 
 ## Syncronization: Synchronous or Asynchronous
