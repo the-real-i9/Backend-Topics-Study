@@ -78,3 +78,33 @@ A major objective for the three-level architecture is to provide **data independ
 - Addtion or removal of new entities, attributes, or relationships, should be possible without having to change existing external schemas or having to rewrite application programs.
 
 **Physical data independence:** The conceptual schema is unaffected by changes in the internal schema.
+
+## Data Models and Conceptual Modeling
+A DDL used to write a schema, is too low level to <u>**describe the data requirements of an organization in a way that is readily understandable by a variety of users**.</u> What we requre is **a higher-level description of the schema**: that is, a **data model**.
+
+An integrated <u>collection of concepts for describing and manipulating data, relationships between data, and constraints on the data</u> in an organization.
+
+- A model is **a representation of real-world objects and events, and their associations**. 
+- **It should provide the basic concepts and notations that will <u>allow database designers and end-users to communicate unambiguously and accurately their understanding of the organizational data</u>**.
+
+A data model can be thought of as comprising three components:
+- a **structural part**, consisting of <u>a set of rules according to which databases can be constructed;</u>
+- a **manipulative part**, defining the types of operation that are allowed on the data.
+- a **set of integrity constraints**, which ensures that the data is accurate.
+
+The <u>purpose of a data model</u> is **to represent data and to make the data understandable**. *If it does this, then it can be easily used to design a database.*
+
+Of the different data models we have, there are the only two you need to worry about:
+- Entity-Relationship (ER) Model
+- Relational Model
+
+### Conceptual Modeling
+The conceptual schema is the heart of the database. It should be a complete and accurate representation of the data requirements of the enterprise.
+
+Our data modeling is targeted to the conceptual schema.
+
+Conceptual modeling or conceptual database design is the process of constructing a model of the information used in an enterprise, that is independent of implementation details, such as the target DBMS, application programs, programming languages or any other physical considerations.
+
+In simple terms, it is **the process of constructing <u>the model that would be used to write the conceptual schema, at the conceptual level</u>**.
+
+> The conceptual model is independent of all implementation details, whereas <u>the logical model assumes knowledge of the underlying data model of the target DBMS</u>.
