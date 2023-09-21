@@ -43,14 +43,37 @@ If two processes `P` and `Q` must *send messages to and receive messages from* e
 - Automatic or explicit buffering
 
 ## Naming : Direct or Indirect
+### Direct Communication
 Each process that wants to communicate must explicitly **name the recipient or sender of the communication**.
 
-**Direct:** 
-- Symmetrical Addressing
-  - `send(P, message)` - Send a `message` to process `P`.
-  - `receive(Q, message)` - Receive a `message` from process `Q`.
-- Asymmetrical Addressing
-  - `send(P, message)` - Send a `message` to process `P`.
-  - `receive(id, message)` - Receive a `message` from any process. The variable `id` is set to the name of the process with which the communication has taken place.
+Direct communication can take two approaches,
+- Symmetrical addressing: in which the sender and the receiver refer to each other by name.
+  - `send(P, message)`
+  - `receive(Q, message)`
+- Asymmetrical addressing: in which only the sender refer to the receiver by name. While the receiver wants to receive from any process.
+  - `send(P, message)`
+  - `receive(id, message)` - where `id` is set to that of the sender process it receives from.
 
 This direct communication is **less desirable**.
+
+### Indirect Communication
+**The messages are sent to and received from mailboxes, or ports**. <u>A sender process places the message in this mailbox, while a receiver process removes the message from the mailbox</u>.  
+
+Each mailbox has a unique identification. Two processes can communicate via a number of different mailboxes, only if they share that mailbox.
+
+- `send(A, message)` - Send `message` to mailbox `A`
+- `receive(A, message)` - Receive `message` from mailbox `A`
+
+
+## Syncronization: Synchronous or Asynchronous
+Depending on the implementation of the `send()` and `receive()` primitives, message passing can be either **blocking** or **non-blocking**.
+- Blocking send: The sending process is blocked until the messag is received by the receiving process or by the mailbox.
+- Non-blocking send: The sending proces sends the message and resumes operation.
+- Blocking receive: The receiver blocks until a message is available.
+- Non-blocking receive: The receiver retrieves either a valid message or a null.
+
+## Buffering
+The temporary message queue used by the communicating processes can be implemented in three ways:
+- Zero capacity: Queue has a maximum length of zero; the link cannot have messages waiting in it. The sender must block until the recipient receives the message. This is also known as *a message system with no buffering*.
+- Bounded capacity: The queue can only take $n$ items at most. The sender can keep sending messages if the queue isn't full, else, it waits and blocks, until there's available space in the queue.
+- Unbounded capacity: The queue can take an infinite number of items. The sender keeps sending without waiting/blocking. The receiver keeps receiving unless the queue is empty in which case it waits and blocks, until message is available in the queue.
