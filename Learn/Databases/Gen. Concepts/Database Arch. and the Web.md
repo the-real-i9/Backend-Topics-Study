@@ -1,3 +1,4 @@
+# Multi-User DBMS Architectures
 ## Traditional Two-Tier Client-Server Architecture
 Data-intensive business applications consist of four major components:
 - the **database**,
@@ -25,7 +26,7 @@ This architecture solves the problem of enterprise scalability. Three layers:
 - A DBMS, which stores the data required by the middle tier. This tier may run on a separate server called the ***database server***.
   - This is the third tier, your PostgreSQL Server.
 
-![Three tier Architecture](./imgs/three-tier-architecture.png)
+![Three tier Architecture](../imgs/three-tier-architecture.png)
 
 The three-tier design has many advantages over traditional two-tier or single-tier designs, which include:
 - The need for **less expensive hardware** because the client is "thin".
@@ -41,7 +42,7 @@ The three-tier architecture can be expanded to $n$ tiers, **with additional tier
 
 This is where proxy servers come in. Providing features such as load balancing, content routing, caching etc.
 
-![N-Tier Architecture](./imgs/n-tier-architecture.png)
+![N-Tier Architecture](../imgs/n-tier-architecture.png)
 
 
 ## Middleware
@@ -67,7 +68,7 @@ Some features provided:
 
 They are **typically used in environments with a very high volume of transactions**, where the TP Monitor can be used to offload processes from the DBMS server.
 
-![TP Monitor](./imgs/TP-monitor-middle-tier.png)
+![TP Monitor](../imgs/TP-monitor-middle-tier.png)
 
 # Web Services and Service-Oriented Architectures
 ## Web Services
@@ -89,4 +90,16 @@ Examples are:
 
 The SOA consists of <u>loosely coupled and autonomous *web services* that can be combined to provide flexible composite business processes and applications</u>.
 - The provision of **the web service is independent of the application using the service**. Service providers can develop specialized services and offer these to a range of service users from different organizations.
-- What makes Web services designed for SOA different from other Web services is that they typically follow a number of distinct conventions.
+
+What makes Web services designed for SOA different from other Web services is that they typically follow a number of distinct conventions. \
+<u>Here are a set of common SOA principles for its Web services design:</u>
+- Loose coupling
+- Reusability
+- Contract
+- Abstraction
+- Composability
+- Autonomy
+- Stateless
+- Discoverability
+
+# Distributed DBMSs

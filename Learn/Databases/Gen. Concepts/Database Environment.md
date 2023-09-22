@@ -9,7 +9,7 @@ The ANSI-SPARC architecture (which is the architecture most commercial DBMSs ava
 
   - and an **internal level** : this is the way the operating system perceives the data. The actual programming language code that represents your conceptual level data (your data definition schema using the DDL of your DBMS), translated by the DBMS software. That is the code your DBMS uses to speak to the computer to represent your schema in the computer storage. So your schema written in a DDL is converted to a data structre written in a programming language like, C.
 
-![Three level DB Architecture](./imgs/three-level-db-architecture.png)
+![Three level DB Architecture](../imgs/three-level-db-architecture.png)
 
 ## External Level
 This level describes the **part of the database that is relevant to the user**.
@@ -58,7 +58,7 @@ There are three different types of schema, each corresponding to the levels of a
 
 *We can have **multiple external schemas**, when there is only one conceptual or internal schema per database.*
 
-![The representation of the thre level](./imgs/representation-of-the-three-level.png)
+![The representation of the thre level](../imgs/representation-of-the-three-level.png)
 
 ---
 
