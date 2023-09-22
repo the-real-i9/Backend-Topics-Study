@@ -25,12 +25,9 @@ You can create mini-projects to demostrate concepts as you go, ones you can use 
 
 
 # Next things in revision
-- Virtual Memory: Virtual Address space
 - Threads and Concurrency
 - Process synchronization
+- Virtual Memory: Virtual Address space
 - I/O system
-- Networking/Internet
-- HTTP
-- Databases
-- API dev
-- Containerization
+- Networks and Distributed Systems
+- Networking | Internet
