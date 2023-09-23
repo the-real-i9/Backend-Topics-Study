@@ -63,6 +63,9 @@ For example,
 - If one or two user info is not required, you can set null for it if not provided. (`allowNull: true`)
 - If one or two users is yet to be verified, you would have a `verfToken` attribute with a real value. On the contrary, if a user has been verified, you would set its `verfToken` attribute to null, as this attribute is not applicable to the user.
 
+## Domain Integrity
+These are constraints that form restriction on the set of values allowed for the attributes of relations.
+
 ## Entity Integrity
 The first integrity rule only applies to primary keys.
 
@@ -88,3 +91,43 @@ These are <u>additional rules specified by the users or database administrators 
 **For example:** max, min, type, default, format, unique etc.
 
 # Views
+## Terminology
+> **Base relation**\
+A named relation corresponding to an entity in the conceptual schema, <u>whose tuples are physically stored in the database</u>.
+
+> **View**\
+The dynamic <u>result of one or more relational operations (`SELECT` query) executed on one or more base relations to produce another relation</u>.\
+\
+A view is a *virtual relation* that does not necessarily exist in the database but can be <u>produced upon request by a particular user, at the time of request</u>.
+
+A view is a relation that appears to the user to exist, <u>can be manipulated as if it were a base relation, but does not necessarily exist in storage in the sense that the base relations do</u>.
+
+Any operations on the view are automaically translated into operations on the relations from which it is derived. Views are dynamic, changes made to its base relation are immediately reflected in the view and vice-versa.
+
+## Purpose of Views
+- It provides a powerful and flexible security mechanism by <u>hiding parts of the database from certain users</u>.
+- It <u>permits users to access data in a way that is **customized to their needs**</u>, so that the **same data can be seen by different users in different ways**, at the same time.
+- It can simplify complex operations on the base relations.
+
+## Updating views
+There are **restrictions on the types of modification that can be made through views**.
+- Updates are allowed through a view defined using a simple <u>query involving a single base relation</u> and <u>containing either the primary key or candidate key of the base relation</u>.
+- Updates are not allowed through <del>views involving **multiple base relations**</del>.
+- Updates are not allowed through <del>views involving **aggregation or grouping operations**</del>.
+
+## Disadvangates of View
+- **Update restrition:** In some cases, a view cannot be updated.
+- **Structure restriction:** The structure of a view is determined at the same time of its creation. If columns are subsequently added to the base table, then these columns will ot appear in the view, unless the view is dropped and recreated.
+- **Performance:** <u>A view defined by a complex, multi-table query may take a long time to process</u>, as **the view resolution must join the tables together *every time the view is accessed***. View resolution requires additional computer resources.
+
+## View Materialization
+**The problem:**
+Views defined by complex queries may take long time to perform view resolution, particularly if the view is accessed frequently.
+
+View materialization, is to store the view as a temporary table in the database when the view is first queried. Thereafter, queries based on the materialized view can be much faster then recomputing the view each time. The speed difference may be critical in applicaitions where the query rate is high and the views are complex, so it is not pracitcal to recompute the view for every query.
+
+Materialized view are useful in new applications such as data warehousing, replication servers, data visualization, and mobile systems.
+
+The difficulty with materialized views is, maintaining the currency of the view while the base table(s) are being updated. 
+- The process of updating a meterialized view in response to changes to the underlying data is called **view maintenance**.
+- The basic aim of view maintenance is to apply only those changes necessary to the view to keep it current.
