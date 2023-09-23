@@ -101,5 +101,3 @@ What makes Web services designed for SOA different from other Web services is th
 - Autonomy
 - Stateless
 - Discoverability
-
-# Distributed DBMSs
