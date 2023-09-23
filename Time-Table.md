@@ -4,21 +4,21 @@
   - **API dev:** REST, GraphQL, gRPC, Express, Apollo, NextJS, Versioning, Rate Limiting, Acrhitectural Diagrams, Design Documents.
 - **Databases:** Data modelling, Database design, SQL, NoSQL, ORMs, Concepts: ACID, Transaction, Normalization, Database Indexes, Sharding, Data Replication.
 - **Caching:** Concepts, Client-side, Server-side, CDN, Redis.
-- **Search Engines:** Elastic Search, Redis Search.
+- **Search Engines:** Elastic Search.
 - **Message Brokers/Queues | Messaging Systems:** Kafka, Rabbit MQ.
 - **Containerization:** Docker, Kubernetes
 - AWS
-- Languages: NodeJS, Python, Go, Rust.
+- Languages: NodeJS, Go, Rust.
 ---
 > Practices and Patterns
 - **Web Security:** HTTPS, Encryption, CORS, CSP, SSL/TLS, API Security Best Practices, SHA, OWASP.
-- **Software Design & Architecture:** Clean code, Design patterns, Design and Development Principles, Architectural Patterns.
+- **^Software Design & Architecture:** Clean code, Design patterns, Design and Development Principles, Architectural Patterns.
 - Data Structures & Algorithms.
-- Testing + CI/CD.
+- ^Testing + CI/CD.
 - Building for Scale.
 ---
 > Ancestor Concepts
-- **Networking:** TCP/IP Transport and Network layers, UDP, Internet, DNS, Sockets.
+- **Networking:** TCP/IP Transport and Network layers, Internet, DNS, Sockets.
 - **OS Concepts:** Interprocess Communication, Threads and Concurrency, Process Synchronization, Memory Management, I/O Management, Virtual Memory, Terminal Usage, Linux fundamentals.
 
 # Time table
