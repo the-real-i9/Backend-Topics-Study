@@ -3,8 +3,8 @@
 **Query CLAUSE arrangement:**\
 `SELECT` >> `DISTINCT` >> `FROM` >> `... JOIN` >> `GROUP BY` >> `HAVING` >> `WHERE` >> `ORDER BY` >> `LIMIT`
 
-**Query CLAUSE execution order:**\
-`FROM` >>> `... JOIN` >>> `WHERE` >>> `GROUP BY` >>> `HAVING` >>> `SELECT` >>> `DISTINCT` >>> `ORDER BY` >>> `FETCH/LIMIT`
+**Query CLAUSE evaluation order:**\
+`... JOIN` >> `FROM` >> `WHERE` >> `GROUP BY` >> `HAVING` >> `SELECT` >> `DISTINCT` >> `ORDER BY` >> `FETCH/LIMIT`
 
 ---
 
@@ -253,8 +253,20 @@ ORDER BY age, class
 ```
 You're correct!
 
----
-
 The `GROUP BY` clause divides the rows returned from `SELECT` statement into groups. For each group, you can apply an aggregate function e.g. `SUM()` to calculate the sum of items or `COUNT()` to get the number of items in the groups.
 
 The statement clause divides the rows by the values of the columns specified in the `GROUP BY` clause and calculates a value (aggregate) for each group.
+
+> Note: Aliases used in `SELECT` cannot be used in this clause, due to evaluation order. It doesn't even make sense.
+
+# HAVING Clause
+> **My take:**\
+The `HAVING` of `GROUP BY` is like, \
+the `WHERE` of `FROM` and \
+the `ON` of `... JOIN`
+
+The `HAVING` clause specifies a check condition for a group or an aggregate. The `HAVING` clause is often used with the `GROUP BY` clause **to filter groups or aggregates based on a specified condition**.
+
+Handle it just like `WHERE`. Plus, you **can use aggregate functions** in it, <del>as opposed to `WHERE`</del>.
+
+> Note: As with `GROUP BY`, don't use <del>`SELECT` aliases</del> in it.
