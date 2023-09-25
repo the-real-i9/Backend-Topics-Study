@@ -87,29 +87,107 @@ value IS NOT NULL
 
 ---
 
-## Joins
+# Joins
 Join is used to **combine columns frome one or more tables <u>based on the values of _the common colums between related tables_**</u>.
 - The common columns are typically the primary key columns of the first table and foreign key of the second table.
 
 ```sql
 SELECT 
   table1_col, 
-  table1_col 
+  table2_col 
 FROM 
   table1 
 (INNER JOIN | LEFT JOIN | RIGHT JOIN | FULL OUTER JOIN)
   table2 
   ON table1_colX = table2_colX
+
 ```
+**An intuitive way to think about this is:**
+- first_table `INNER JOIN` second_table, constitutes the whole table taken by the `FROM` clause.
+- The `ON` condition, acts like the `WHERE` clause, which <u>filters the joined table to the final table of the `FROM` clause</u>.
+- The joined + filtered table of the `FROM` is the final table used by the rest of the clauses.
 
 > `INNER JOIN`
 
+- The inner join examines each row in the first table. 
+- It compares the value in the selected column of the first table with the value in the selected column of the second table (`ON condition`).
+- If these values are equal, the inner join creates a new row that contains columns from both tables and adds this new row to the result set.
+
 After table is merged, it returns only the rows for columns that match the `ON condition`
+
 
 > `LEFT JOIN`
 
-After table is merged, it returns all rows for both tables, but fills unmatching columns of the right table with `NULL`s.
+In the left join context, the **first table** is called the <u>left table</u>  and the **second table** is called the <u>right table</u>.
+- The left join starts selecting data from the left (first) table.
+- It compares values in the selected column of the left (first) table with the values in the selected column of the right (second) table.
+- If these values are equal, the left join creates a new row that contains columns of both tables and adds this new row to the result set.
+- If the values do not equal, same thing happens. However, <u>it fills the columns of the right table with null</u>.
+
+After table is merged, it returns all rows for both tables, but <u>fills unmatching columns of the right table</u> with `null`.
+
+
+> `RIGHT JOIN`
+
+To avoid redundancy, works like the `LEFT JOIN`, but **fills unmatching columns of the <u>left table instead with null</u>**.
+
+In other words, it is the <u>reverse of `LEFT JOIN`</u>
+
 
 > `FULL OUTER JOIN`
 
 It combines the result of `INNER`, `LEFT` and `RIGHT` `JOIN`s
+
+> **Self-join**
+
+This is <u>when you use any of the `... JOIN` clauses with the **same table** operand</u>, **differentiated by alias names**.
+
+In other words, you join a table to itself, as if they're two, differentated by alias names.
+
+```sql
+my_table AS this_table INNER JOIN my_table AS that_table
+
+-- `my_table` is joined to itself, using different alias names.
+```
+
+## Table aliases
+Table aliases lets you differentiate the table a column belongs to. 
+- Most especially, <u>in cases where **two "join"ed tables have a selected column with common name**</u>.
+- They are what makes **self-join** possible.
+
+```sql
+-- For anywhere a table name is required
+FROM table_name [AS] table_alias
+
+INNER JOIN table_name [AS] table_alias
+
+-- `AS` is optional (for all aliases though) but ok for readablility purposes.
+```
+
+> The `USING` clause
+
+In such <u>"join"ed-common-column-name cases</u> above, you can use the `USING (coulmn)` clause, to select and compare this column for both tables, so you don't have to use aliases.\
+Also you don't have to use the `ON condition` clause, since `USING` does "`=`" comparison by default
+
+```sql
+table1 INNER JOIN table2 USING (common_column_name)
+```
+
+## Recap
+- A join clause takes a left and a right operand which are tables, same or different.
+- In the case of same table, use alias names to differentiate them.
+- When you compare columns with common column names in both tables, either make use of an alias, or make use of the `USING (common_column)` clause, after the right operand (table).
+  - This way, you don't have to differentiate with aliases, netheir do you have to use the `ON condition` clause, since  the `USING` clause does this comparison by default.
+
+## Joining more than two tables
+- All doings like, column aliases and the `USING` clause still can apply.
+- The syntax:
+  ```sql
+  FROM table1 
+  INNER JOIN table2 
+    ON condition 
+  INNER JOIN table3 
+    ON condition
+  ```
+- As we know, a `...JOIN` takes a left and a right table as operand. Here, the left operand of the second `...JOIN` is the resulting table from the first `...JOIN`.
+- `table3`'s `...JOIN` uses the resulting table from `table1` and `table2`'s `...JOIN` as its left operand.
