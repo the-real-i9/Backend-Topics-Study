@@ -1,7 +1,10 @@
 > Note: Documented here are new things I come across
 
+**Query CLAUSE arrangement:**\
+`SELECT` >> `DISTINCT` >> `FROM` >> `... JOIN` >> `GROUP BY` >> `HAVING` >> `WHERE` >> `ORDER BY` >> `LIMIT`
+
 **Query CLAUSE execution order:**\
-`FROM` >>> `JOIN`s >>> `WHERE` >>> `SELECT` >>> `ORDER BY`
+`FROM` >>> `... JOIN` >>> `WHERE` >>> `GROUP BY` >>> `HAVING` >>> `SELECT` >>> `DISTINCT` >>> `ORDER BY` >>> `FETCH/LIMIT`
 
 ---
 
@@ -223,3 +226,35 @@ In the end, the joined table of the `FROM` clause, is the combination of the com
 
 > **However,** you should <u>**avoid using the `NATURAL JOIN` whenever possible**</u> because sometimes it may cause an unexpected result.
 
+# GROUP BY
+> **What I remember:**
+- The `GROUP BY` clause, takes the combination of all the columns `(column 1, column2, ...)` specified in the `SELECT` clause.
+
+- It then merges rows with same column-combined `(column1, column2, ...)` value.
+- Since it combines all the columns you specify in `SELECT`, you must also specify those columns in the `GROUP BY`.
+  - An exception to this are **aggregate functions** specified in `SELECT`, even if they have aliases, seeing that **they compute column aggregation for each merged rows**.
+- **Caution!!!**: If you include a column for which the rows don't have same column, together with a column for which the rows have same column.
+  - The column combination would cause adjacent rows to be different. Hence, no grouping is done. Unless we have one column combination that matches the column combination that matches that of another one or more.
+
+For exmaple:
+```sql
+-- The number of students with same age and the sum of their ages.
+SELECT age, COUNT(age), SUM(age)
+FROM students
+GROUP BY age
+ORDER BY age --sorts the group
+
+-- Like the previous, but including same class
+-- `class` is in the form of (A | B | C | ...)
+SELECT age, class, COUNT(class), SUM(age)
+FROM students
+GROUP BY age, class
+ORDER BY age, class
+```
+You're correct!
+
+---
+
+The `GROUP BY` clause divides the rows returned from `SELECT` statement into groups. For each group, you can apply an aggregate function e.g. `SUM()` to calculate the sum of items or `COUNT()` to get the number of items in the groups.
+
+The statement clause divides the rows by the values of the columns specified in the `GROUP BY` clause and calculates a value (aggregate) for each group.
