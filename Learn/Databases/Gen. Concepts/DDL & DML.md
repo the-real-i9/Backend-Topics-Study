@@ -270,3 +270,67 @@ The `HAVING` clause specifies a check condition for a group or an aggregate. The
 Handle it just like `WHERE`. Plus, you **can use aggregate functions** in it, <del>as opposed to `WHERE`</del>.
 
 > Note: As with `GROUP BY`, don't use <del>`SELECT` aliases</del> in it.
+
+# Set Operations
+```sql
+SELECT table1_select_list FROM table_1 
+[UNION | INTERSECT | EXCEPT]
+SELECT table2_select_list FROM table_2
+```
+> **Rule:** The name, data type; the number and order of the columns in the select list of both queries must be the same.
+
+## UNION
+The `UNION` operator <u>**combines result sets of two or more `SELECT` statements into a single result set**</u>.
+
+<u>`UNION`</u> **removes all duplicate rows** from the combined data set.\
+To **retain duplicate rows**, use the <u>`UNION ALL`</u> instead.
+
+The `UNION` operator may place the rows from the result set of the first query before, after, or between the rows from the result set of the second query.
+<u>To sort rows in the final result set</u>, you **use the `ORDER BY` clause in the second query**.
+
+**In practice**, you often use the `UNION` operator **to combine data from similar tables**, which are not perfectly normalized, in the data warehouse or business intelligence systems.
+
+## INTERSECT
+Like UNION and EXCEPT, but the `INTERSECT` operator <u>returns any rows that are available in both result sets</u>.
+
+## EXCEPT
+Like, UNION and INTERSECT, but the `EXCEPT` operator <u>**returns distinct rows** from the first (left) query that are not in the output of the second (right) query</u>.
+
+Like, the **subtration** math operation.
+
+# Sub-query
+A sub-query is a `SELECT` query that **computes to a single colum with one (single value) or more (multiple values) rows**.
+
+It is mostly used with the `WHERE` clause.
+
+You can reference the table of the outer query from the subquery.
+
+### Usage with the `EXISTS` operator
+```sql
+EXISTS subquery
+```
+A subquery can be the input of the `EXISTS` operator.
+- If the subquery returns any row, the `EXISTS` operator returns true.
+- If the subquery returns no row, the result of `EXISTS` operator is false.
+- The `EXISTS` operator only cares about the number of rows returned from the subquery, not the content of the rows, therefore, the common coding conventon of `EXISTS` is
+  ```sql
+  EXISTS (SELECT 1 FROM my_table WHERE condition)
+
+  -- negation
+  NOT EXISTS (SELECT 1 FROM my_table WHERE condition)
+  ```
+
+### Usage with the `ANY` operator
+```sql
+expression comparison_operator ANY(subquery)
+```
+The `ANY` operator returns true if any value of the subquery meets the condition, else, it returns false.
+
+### Usage with the `ALL` operator
+```sql
+expression comparison_operator ALL(subquery)
+```
+The `ALL` operator returns true if all values in the subquery meets the condition, else, it returns false.
+
+
+# Common table expressions (CTE)
