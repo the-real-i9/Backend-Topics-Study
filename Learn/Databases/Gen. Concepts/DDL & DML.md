@@ -107,7 +107,7 @@ FROM
 - The `ON` condition, acts like the `WHERE` clause, which <u>filters the joined table to the final table of the `FROM` clause</u>.
 - The joined + filtered table of the `FROM` is the final table used by the rest of the clauses.
 
-> `INNER JOIN`
+## `INNER JOIN`
 
 - The inner join examines each row in the first table. 
 - It compares the value in the selected column of the first table with the value in the selected column of the second table (`ON condition`).
@@ -116,7 +116,7 @@ FROM
 After table is merged, it returns only the rows for columns that match the `ON condition`
 
 
-> `LEFT JOIN`
+## `LEFT JOIN`
 
 In the left join context, the **first table** is called the <u>left table</u>  and the **second table** is called the <u>right table</u>.
 - The left join starts selecting data from the left (first) table.
@@ -127,18 +127,18 @@ In the left join context, the **first table** is called the <u>left table</u>  a
 After table is merged, it returns all rows for both tables, but <u>fills unmatching columns of the right table</u> with `null`.
 
 
-> `RIGHT JOIN`
+## `RIGHT JOIN`
 
 To avoid redundancy, works like the `LEFT JOIN`, but **fills unmatching columns of the <u>left table instead with null</u>**.
 
 In other words, it is the <u>reverse of `LEFT JOIN`</u>
 
 
-> `FULL OUTER JOIN`
+## `FULL OUTER JOIN`
 
 It combines the result of `INNER`, `LEFT` and `RIGHT` `JOIN`s
 
-> **Self-join**
+## Self-join
 
 This is <u>when you use any of the `... JOIN` clauses with the **same table** operand</u>, **differentiated by alias names**.
 
@@ -173,7 +173,7 @@ Also you don't have to use the `ON condition` clause, since `USING` does "`=`" c
 table1 INNER JOIN table2 USING (common_column_name)
 ```
 
-## Recap
+## Quick Recap
 - A join clause takes a left and a right operand which are tables, same or different.
 - In the case of same table, use alias names to differentiate them.
 - When you compare columns with common column names in both tables, either make use of an alias, or make use of the `USING (common_column)` clause, after the right operand (table).
@@ -191,3 +191,35 @@ table1 INNER JOIN table2 USING (common_column_name)
   ```
 - As we know, a `...JOIN` takes a left and a right table as operand. Here, the left operand of the second `...JOIN` is the resulting table from the first `...JOIN`.
 - `table3`'s `...JOIN` uses the resulting table from `table1` and `table2`'s `...JOIN` as its left operand.
+
+## `CROSS JOIN`
+A `CROSS JOIN` clause allows you to produce a Cartesian Product of rows in two or more tables.
+
+<u>As opposed to other joins</u>, **it does not have a an `ON condition` predicate** .
+
+## `NATURAL JOIN`
+A natural join is a join that <u>**creates an implicit join based on the same column names**</u> in the joined tables.
+
+```sql
+SELECT select_list 
+FROM table1
+NATURAL [INNER, LEFT, RIGHT] JOIN table2
+
+-- `INNER` is the default, if the type of join is omitted.
+
+-- For example:
+SELECT * FROM table1
+NATURAL JOIN table2
+
+-- is equivalent to
+
+SELECT * FROM table1 INNER JOIN table2 USING (common_column_name)
+```
+
+In simpler terms, the `NATURAL JOIN` is just like the other joins. **The special thing about it** is that, <u>it automatically applies the `USING` clause, using all common columns of all joined tables</u>.
+> And remember that, the `USING (common_column)` compares the columns for equality.
+
+In the end, the joined table of the `FROM` clause, is the combination of the common columns of the tables, followed by other columns from both tables. `SELECT` can then pick desired columns.
+
+> **However,** you should <u>**avoid using the `NATURAL JOIN` whenever possible**</u> because sometimes it may cause an unexpected result.
+
