@@ -355,3 +355,29 @@ Both activity <u>involves the creation of nested temporary tables</u>.\
 FROM table1 INNER JOIN join_table_cte USING(common_column_name)
 WHERE column1 > ANY(subquery_table_cte)
 ```
+
+# Recursive Query
+A recursive query is **a query that refers to a <u>recursive CTE</u>**. They are useful in many situations such as querying hierarchical data like organizational structure, bill of materials, etc.
+
+**Syntax:**
+```sql
+WITH RECURSIVE cte_name AS (
+
+  CTE_query_definition -- non-recursive term
+
+  UNION [ALL]
+
+  CTE_query_definition -- recursive term
+
+) SELECT * FROM cte_name;
+```
+
+> Ok so... **Here's how this works**.
+- **First,** in execution of the non-recursive term on `tableX`, the resulting set represents the starting table of `cte_name`, **`cte_table_0`**.
+
+- Next, in the execution of the recursive term, we `...JOIN` `tableX` with the current `cte_name` table, `cte_table_0`. The resulting set represents the next table of `cte_name`, **`cte_table_1`**.
+
+- Next, the recursive term is again executed, and again we `...JOIN` `tableX` with the current `cte_name` table, `cte_table_[i]`. The resulting set represents the next table of `cte_name`, **`cte_table_[i+1]`**.
+  - This step is <u>**repeated until**, the current `...JOIN` *execution results in an empty table*</u>.
+
+- **Finally,** all resulting `cte_table`s are merged with the `UNION [ALL]` set operation, into a single table.
