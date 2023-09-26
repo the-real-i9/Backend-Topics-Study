@@ -381,3 +381,60 @@ WITH RECURSIVE cte_name AS (
   - This step is <u>**repeated until**, the current `...JOIN` *execution results in an empty table*</u>.
 
 - **Finally,** all resulting `cte_table`s are merged with the `UNION [ALL]` set operation, into a single table.
+
+# Modifying Data
+## INSERT
+```sql
+INSERT INTO table_name (column_list)
+VALUES
+  (value_list_1), -- row-1
+  (value_list_2), -- row-2
+  ...
+  (value_list_n); -- row-n
+```
+
+## UPDATE
+```sql
+UPDATE table_name
+SET column1 = value1,
+    column2 = value2,
+    ...
+WHERE condition
+```
+
+## UPDATE join
+Sometimes you need to **update data in a table <u>based on values in another table</u>**.
+```sql
+UPDATE table1
+SET table1.column1 = new_value
+FROM table2
+WHERE table1.column2 = table2.column2
+```
+
+## DELETE
+Delete row(s) from a table.
+```sql
+DELETE FROM table_name
+WHERE condition;
+```
+
+## DELETE join
+Delete row(s) from a table based on the data in another table. 
+
+> With the `USING` clause.
+```sql
+DELETE FROM table1
+USING table2 -- this references the other table
+WHERE condition; -- a condition invlolving `table2`
+```
+
+> With subquery
+```sql
+DELETE FROM table1
+WHERE condition_involving_subquery
+
+-- Example
+-- here, we delete from `contacts` table based on the `blacklist` table.
+DELETE FROM contacts
+WHERE phone IN (SELECT phone FROM blacklist)
+```
