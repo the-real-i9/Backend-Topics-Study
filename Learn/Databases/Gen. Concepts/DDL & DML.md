@@ -298,7 +298,7 @@ Like, UNION and INTERSECT, but the `EXCEPT` operator <u>**returns distinct rows*
 
 Like, the **subtration** math operation.
 
-# Sub-query
+# Subquery
 A sub-query is a `SELECT` query that **computes to a single colum with one (single value) or more (multiple values) rows**.
 
 It is mostly used with the `WHERE` clause.
@@ -334,3 +334,24 @@ The `ALL` operator returns true if all values in the subquery meets the conditio
 
 
 # Common table expressions (CTE)
+A common table expression is **a <u>temporary</u> result set which you can reference within another SQL statement**.
+
+**Temporary** in the sense that, <u>they only exist during the execution of the query</u>
+
+**Syntax:**
+```sql
+WITH cte_name (column_list) AS (
+  CTE_query_definition -- the `SELECT` query that forms your table.
+)
+statement -- the (CRUD) statement you want to execute on the CTE table.
+
+-- `column_list` is optional, if not specified, it inherits that of the `SELECT` in the `CTE_query_definition`.
+```
+
+CTEs are typically used to **simplify "complex joins" and "subqueries"**.\
+Both activity <u>involves the creation of nested temporary tables</u>.\
+**CTEs provides a way to separate those tables and refer to them by name**.
+```sql
+FROM table1 INNER JOIN join_table_cte USING(common_column_name)
+WHERE column1 > ANY(subquery_table_cte)
+```
