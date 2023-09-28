@@ -2,6 +2,22 @@
 
 ---
 ---
+# MongoDB
+Things to Cover
+## Beginer
+- CRUD Operations
+- Aggregation Operations
+- Data Models
+- Operators
+- `mongosh` Methods
+- Transactions
+- Indexes
+
+## Advanced
+- Sharding
+- Replication
+- Time Series
+- Change Streams
 
 # Learning Order
 - PostgreSQL DDL & DML Website
