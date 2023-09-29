@@ -607,3 +607,7 @@ Just like JSON, you can use it anywhere you need an attribute value.
  ### ARRAY
 Check the documentation to learn more. It's simple.
 
+---
+
+> Advanced
+# Indexes

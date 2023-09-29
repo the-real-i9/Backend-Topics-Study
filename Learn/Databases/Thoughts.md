@@ -22,9 +22,10 @@ Things to Cover
 # Learning Order
 - Pg Indexes and Views
 - Mongo Indexes and Views
+  - Roadmap on Indexes
 - Textbook ER Modeling | Normalization | Methodology | TM | DDBMs and Replication
+  - Roadmap on Concepts
 - Mongo data models
-- Roadmap Highlighted Concepts
 
 ## Next Things
 - Entity-Relationship Modeling

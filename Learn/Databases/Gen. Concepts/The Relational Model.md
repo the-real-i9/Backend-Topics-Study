@@ -118,13 +118,13 @@ There are **restrictions on the types of modification that can be made through v
 ## Disadvangates of View
 - **Update restrition:** In some cases, a view cannot be updated.
 - **Structure restriction:** The structure of a view is determined at the same time of its creation. If columns are subsequently added to the base table, then these columns will ot appear in the view, unless the view is dropped and recreated.
-- **Performance:** <u>A view defined by a complex, multi-table query may take a long time to process</u>, as **the view resolution must join the tables together *every time the view is accessed***. View resolution requires additional computer resources.
+- **Performance:** <u>A view defined by a complex, multi-table query may take a long time to process</u>, as **the view resolution must join the tables together *each time the view is accessed***. View resolution requires additional computer resources.
 
 ## View Materialization
 **The problem:**
 Views defined by complex queries may take long time to perform view resolution, particularly if the view is accessed frequently.
 
-View materialization, is to store the view as a temporary table in the database when the view is first queried. Thereafter, queries based on the materialized view can be much faster then recomputing the view each time. The speed difference may be critical in applicaitions where the query rate is high and the views are complex, so it is not pracitcal to recompute the view for every query.
+View materialization, is to store the view as a temporary table in the database when the view is first queried. Thereafter, queries based on the materialized view can be much faster than recomputing the view each time. The speed difference may be critical in applicaitions where the query rate is high and the views are complex, so it is not pracitcal to recompute the view for every query.
 
 Materialized view are useful in new applications such as data warehousing, replication servers, data visualization, and mobile systems.
 
