@@ -1,13 +1,13 @@
 // const express = require("express");
-const { QueryTypes } = require("sequelize")
+import { QueryTypes } from "sequelize";
 
-const dbClient = require("./lib/ddm_db-conn");
+import { query } from "./lib/ddm_db-conn";
 
 // const app = express();
 
 (async () => {
   try {
-    const result = await dbClient.query('SELECT * FROM actor', { type: QueryTypes.SELECT })
+    const result = await query('SELECT * FROM actor', { type: QueryTypes.SELECT })
     console.log(result)
   } catch (e) {
     console.log(e)

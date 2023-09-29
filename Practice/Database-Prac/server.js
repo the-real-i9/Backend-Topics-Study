@@ -1,14 +1,14 @@
-const express = require("express");
+import express, { json, text } from "express";
 
-const dbClient = require("./lib/db-conn");
-const { User, Post, Branch } = require("./models/db-models");
+import { sync } from "./lib/db-conn";
+import { User, Post, Branch } from "./models/db-models";
 
 const app = express();
 
 app.use(require("cors")());
 
-app.use(express.json());
-app.use(express.text());
+app.use(json());
+app.use(text());
 
 app.get("/", async (req, res) => {
   try {
@@ -24,7 +24,7 @@ app.get("/", async (req, res) => {
 
 (async () => {
   try {
-    await dbClient.sync(/* { force: true } */);
+    await sync(/* { force: true } */);
     // await Promise.all([Post.sync(), User.sync()])
     console.log("DB synced.");
     // await User.create({ name: "Kehinde Ogunrinola" })
