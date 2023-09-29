@@ -20,11 +20,10 @@ Things to Cover
 - Change Streams
 
 # Learning Order
-- PostgreSQL DDL & DML Website
-  - Sequelize ORM
-- MongoDB DDL & DML
-  - Mongoose ORM
-- Textbook ER Modeling | Normalization | Methodology
+- Pg Indexes and Views
+- Mongo Indexes and Views
+- Textbook ER Modeling | Normalization | Methodology | TM | DDBMs and Replication
+- Mongo data models
 - Roadmap Highlighted Concepts
 
 ## Next Things
