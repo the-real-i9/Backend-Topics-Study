@@ -611,3 +611,123 @@ Check the documentation to learn more. It's simple.
 
 > Advanced
 # Indexes
+A database index is a data structure that improves the speed of data retrieval on a table at the cost of additional additional writes and storage space to maintain that structure.
+
+They help us to quickly locate data without having to perform a full table scan each time a table is accessed.
+
+## Non-clustered index
+- The data is physically present in arbitrary order, but the logical ordering is specified by the index. 
+- The data rows may be spread thoughout the table regardless of the value of the indexed column or expression. 
+- The non-clustered index tree contains the index keys in sorted order, with the leaf level of the index containing the pointer to the record.
+- Indexed columns are typically non-primary key columns used in `WHERE`, `JOIN` and `ORDER BY` clauses
+- There can be more than one non-clustered index on a database table.
+
+## PGSQL Index Types
+> B-TREE indexes
+- Query planner will consider this type whenever index columns are involved in a comparison that uses one of the following operators (`>, <=, =, >=, BETWEEN, IN, IS NULL, IS NOT NULL`)
+- It'll be considered with `LIKE` operators, <u>**only if**</u>, the patter starts with alphabetic characters e.g. `'foo%', 'bar%', '^foo'`,
+- It is the most used type in RDMSs.
+- <u>These are not my problem anyways</u>. It's the DBMSs problem. It's the default.
+- **Create B-TREEs on unique columns, or create a composite index that makes it unique**.
+
+> Hash indexes
+- Hash indexes **can handle only <u>simple equality comparison</u>** ( `=` ).
+
+> GIN (Generalized INverted) indexes:
+- GIN indexes are most useful **when you have <u>multiple values stored in a single column</u>**, e.g. hstore, array, jsonb, and range types.
+
+> BRIN (Block Range INdexes):
+- BRIN is much smaller and **less costly to maintain** <u>in comparison with a B-tree index</u>.
+- BRIN is **often used on a <u>column that has a linear sort order</u>**, for example, the created date column of the sales order table.
+
+> GiST (Generalized Search Tree) indexes
+- GiST indexes are **useful in indexing <u>geometic data types and full-text searches</u>**.
+
+> SP-GiST (Space-partitioned GiST) indexes
+- SP-GiST indexes are most useful **for data that <u>has a natural clustering element</u> to it and is also <u>not an equally balanced tree</u>**, e.g. GIS, multimedia, phone routing, and IP routing.
+
+---
+
+### Creating indexes
+> See [Sequelize.md](./Sequelize.md)
+
+### Dropping indexes
+```sql
+DROP INDEX [CONCURRENTLY]
+[IF EXISTS] index_name, index_2, ...
+[CASCADE /* deeply drop dependend objects */ | RESTRICT /* don't drop dependent opjects */]
+
+-- basic usage
+DROP INDEX index_name
+```
+
+### Create `UNIQUE` indexes
+`UNIQUE` index enforces the uniqueness of values in one or multiple columns.
+- Multiple unique indexes makes a composite unique index.
+- A single or composite unique index in a table, cannot be duplicated in multiple rows.
+- When you define a primary key or a unique constraint for a table, a corresponding `UNIQUE` index is automatically created for it.
+
+PostgreSQL treats `NULL`s as distinct values, therefore, you can have multiple `NULL` values in a column with a `UNIQUE` index.
+
+> **Note:** <u>**Only B-tree indexes can be declared as unique indexes**</u>.
+
+> See [Sequelize.md](./Sequelize.md)
+
+### PostgreSQL index on expression (Funtional-based index)
+You can also create an index based on an expession that involves table columns. These are known as functional-based indexes.
+
+```sql
+CERATE INDEX index_name
+ON table_name (expression)
+
+CERATE INDEX index_name
+ON table_name (LOWER(column_name))
+```
+PostgreSQL will consider using this index when the expression that defines this index appears in the `WHERE` clause or in the `ORDER BY` clause of the SQL statement.
+```sql
+SELECT column_1
+FROM table_name
+WHERE LOWER(column_name) === "value" -- here
+```
+
+**Note!!** Functional based indexes are expensive to maintain. You should only used then when retrieval speed is more critical than insertion and update speed.
+
+### Partial Index
+Partial index, allows you to **specify the rows of a table that should be indexed**. This helps speed up the query while reducing the size of the index.
+
+The partial index is <u>useful in a case you have commonly used **`WHERE` conditions that use constant values**</u>.
+
+> See [Sequelize.md](./Sequelize.md)
+
+### `REINDEX`
+An index might sometimes need a **rebuild**.
+```sql
+REINDEX INDEX index_name -- a specific index
+REINDEX TABLE table_name -- all indexes in a table
+REINDEX SCHEMA schema_name -- all indexes in a schema
+REINDEX DATABASE database_name -- all indexes in a database
+```
+
+### Composite index or Multicolumn index
+This is an index created on multiple columns/fields in a table at a time.
+```sql
+CREATE INDEX index_name
+ON table_name (col1, col2, col3, ...)
+```
+> **Support:** Only `B-Tree`, `GiST`, `GIN` and `BRIN` support composite indexes.
+
+When defining a composite index, **you should place the columns which are often used in the `WHERE` clause at the beginning of the column list and the columns that are less frequently used in the condition after**.
+```sql
+-- The chances of usage decreases from left to right
+-- Specify the order here in order of priority in the condition below
+ON table_name (col1, col2, col3, ...)
+
+WHERE col1 = v1 AND col2 = v2 AND col3 = v3; -- OK
+WHERE col1 = v1 AND col2 = v2; -- OK
+WHERE col1 = v1; -- OK
+-- Any different order in condition is bad, and would not be considered for index usage
+```
+
+<u>**A key takeaway:**</u> When you define a composite index, you should always consider the business context to **find which columns are often used for lookup and place the columns at the beginning of the column list while defining the index**.
+
+> See [Sequelize.md](./Sequelize.md)

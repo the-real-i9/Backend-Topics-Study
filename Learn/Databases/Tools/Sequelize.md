@@ -1,26 +1,42 @@
 # Preface
 Ok. I've known so much about sequlize already. So, I'm just gonna document new things.
 
-# Attribute/Column options
+Basically, contained here are the things I'll implement with sequelize only, and not <del>pure SQL</del>.
 
-## Adding foreign keys to table
+# Indexing Option Parameters
 ```js
-const Post = sequelize.model('Post', {
-  ...
-  user_id: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    references: {
-      // This is a reference to the User model
-      model: User,
+{
+  indexes: [
+    {
+      name: "test_index", // Index name
 
-      // This is the column name of the reference model
-      key: 'user_id',
+      using: "BTREE", // BTREE | HASH | GIN | GIST
+
+      operator: , // specifiy index operator
+
+      unique: true, // should be unique?
+
+      /* Postgres will build without taking any write locks. */
+      concurrently: false,
+
+      /* either a column_name string or an object literal for additional parameters */
+      // Note: multiple columns implies a composite index
+      fields: ['column_1_index', ..., { 
+        name: 'column_2_index', // column name
+
+        length: 5, // create a prefix index of length chars
+        /* indexed column sort order. You can also specify )(NULLS FIRST | NULLS LAST) to oreder the position of nulls, default is NULLS LAST*/
+
+        /* ['DESC'|'ASC']['NULLS LAST'|'NULLS FIRST'] */
+        order: 'DESC',
+        
+        collate: 'en_US', // locale of alphabet ordering
+      }],
+
+      where: { // creates a partial index
+        field: value, 
+      }
     }
-  },
-  comment_ids: [{
-    
-  }]
-  ...
-})
+  ]
+}
 ```
