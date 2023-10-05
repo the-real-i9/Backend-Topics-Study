@@ -88,7 +88,7 @@ For example,
 ## General Constraints
 These are <u>additional rules specified by the users or database administrators of a database that define or constrain some aspect of the enterprise</u>.
 
-**For example:** max, min, type, default, format, unique etc.
+This is done with the `CHECK` constraint.
 
 # Views
 ## Terminology

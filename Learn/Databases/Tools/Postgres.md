@@ -625,6 +625,8 @@ WHERE col1 = v1; -- OK
 
 **<u>A key takeaway:</u>** When you define a composite index, you should always consider the business context to **find which columns are often used for lookup and place the columns at the beginning of the column list while defining the index**.
 
+> <u>Multicolumn indexes should be used sparingly</u>.
+
 # Data types
 ## UUID
 It is often found in the distributed systems because it guarantees a better uniqueness than the `SERIAL` data type which generates only unique values within a single database.
@@ -731,27 +733,28 @@ json_typeof(column ->> 'val')
 /* There many other functions too */
 ```
 
-### HSTORE
+## HSTORE
 Say, you need a column with with a data that contains key:value pairs, like, `{key: value, key: value, ...}`. **As you can see this ain't a JSON data.**
 
-To use this, you first install the extension
 ```sql
+-- To use this, you first install the extension
 CREATE EXTENSION hstore
-```
-or install the `pg-hstore` library for Sequelize.
 
-Now when you create your table, specify the `hstore` as data-type or use `DataTypes.HSTORE` in case of sequelize.
+-- create column
+CREATE TABLE table_name (
+  hstore_column_name hstore
+)
 
-Here's how the value looks like
-```sql
-'"key1" => "value1", "key2" => "value2"'
-```
-and here's how you access it.
-```sql
-SELECT column -> 'key1', column -> 'key2' from table_name
+-- supply values
+INSERT INTO table_name (hstore_column_name)
+VALUES ('"key1" => "value1", "key2" => "value2"')
+
+-- access hstore column, and query specific key
+SELECT hstore_column1 -> 'key1', hstore_column1 -> 'key2' 
+FROM table_name
 ```
 
-Just like JSON, you can use it anywhere you need an attribute value.
+<u>Just like JSON, you can use it anywhere you need a column value.</u>
 
 ***Check the documentation if you need more.*** You can do a lot more, like 
 - *updating, adding, removing* a key:value pair.
@@ -759,8 +762,161 @@ Just like JSON, you can use it anywhere you need an attribute value.
 - getting the keys or values of all rows in an hstore column.
 
 
+# Create a table
+```sql
+CREATE TABLE [IF NOT EXISTS] table_name (
+  column_name datatype(length) column_constraint,
+  ...
+  table_constraints
+)
 
-## Create a new table from the result set of a query
+CREATE TABLE post (
+  post_id SERIAL PRIMARY KEY,
+  user_id INTEGER NOT NULL,
+  username VARCHAR(50) UNIQUE NOT NULL,
+  created_on TIMESTAMP NOT NULL,
+  FOREIGN KEY (user_id) REFERENCES user(user_id)
+)
+```
+
+# PostgreSQL Constraints
+## Primary Key
+A primary key is a column or a group of columns used to identify a row uniquely in a table.
+
+Technically, a primary key constraint is the <u>combination of a `NOT NULL` constraint and a `UNIQUE` constraint</u>.
+
+**A table can only have one primary key.** There's nothing like primary "keys" of a table.
+
+A unique B-TREE index is created on the column or a group of columns used to define the primary key.
+
+```sql
+--- one column primary key
+CREATE TABLE table_name (
+  pk_column datatype PRIMARY KEY,
+)
+
+-- composite primary key
+CREATE TABLE table_name (
+  pk_column_1 datatype,
+  pk_column_2 datatype,
+  ...
+  PRIMARY KEY (pk_column_1, pk_column_2)
+  -- If you don't explicitly specify the name for primary key constraint, PostgreSQL will assign a default name of the form (`table_name_pkey`) to the primary key constraint.
+
+  -- to assign a name to the constraint, do otherwise
+  CONSTRAINT constraint_name PRIMARY KEY (pk_column_1, pk_column_2)
+)
+```
+
+Adding and removing primary key on existing tables
+```sql
+-- add a new column with primary key constraint
+ALTER TABLE table_name ADD COLUMN colum_name datatype PRIMARY KEY
+
+-- add primary key constraint to existing table
+ALTER TABLE table_name ADD PRIMARY KEY (column_1, ...)
+
+-- delete constraint on table
+ALTER TABLE table_name DROP CONSTRAINT table_name_pkey;
+```
+
+## Foreign Key
+A foreign key is a column or a group of columns in a table that reference the primary key of another table.
+- The table that contains the foreign key is called the child table. And the table referenced by the foreign key is called the parent table.
+- A table can have multiple foreign keys depending on its relationships with other tables.
+- The foreign key constraint helps to maintain the referential integrity of data between the child and parent tables.
+- A foreign key constraint indicates that values in a column or a group of columns in the child table equal the values in a column or a group of columns of the parent table.
+
+```sql
+CONSTRAINT fk_name -- for explicit naming
+  FOREIGN KEY (fk_columns)
+  REFERENCES parent_table(parent_key_columns)
+  [ON DELETE {SET NULL | SET DEFAULT | RESTRICT | NO ACTION | CASCADE}]
+  [ON UPDATE {SET NULL | SET DEFAULT | RESTRICT | NO ACTION | CASCADE}]
+```
+- `CASCADE` : When a parent row is deleted the corresponding child row is deleted. This is what you mostly want.
+- `SET NULL` : When a parent row is deleted, the foreign key that links them in the child table is set to null
+- `SET DEFAULT` : It works like SET NULL, except there's a default value to replace it.
+- `NO ACTION` (default)
+
+Modify existing tables
+```sql
+ALTER TABLE table_name 
+ADD 
+-- just as it is in table creation
+CONSTRAINT constraint_name 
+FOREIGN KEY(fk_columns) REFERENCES parent_table(parent_columns) 
+-- optional deleting and updating
+[ON DELETE CASCADE]
+```
+
+## Check constraint
+This constraint allows you to specify if **values in a column must meet a specific requirement**.
+
+The `CHECK` constraint **uses a conditional expression to validate the values** before they are inserted or updated to the column.
+
+```sql
+CREATE TABLE table_name (
+  -- arbitrary value
+  column_1 datatype CHECK (column_1 > some_value)
+  -- column value
+  column_2 datatype CHECK (column_2 = column_1)
+
+  -- the above uses implicit naming of the form `table_name_column_1_check`
+
+  -- to use explicit naming
+  column_3 datatype CONSTRAINT constraint_name CHECK(condition)
+)
+```
+If supplied value for the column in `INSERT` or `UPDATE` does not match the condition, you will receive an error message.
+
+Modifying existing tables
+```sql
+ALTER TABLE table_name
+ADD
+-- as it is in table creation
+CONSTRAINT constraint_name CHECK (condition)
+```
+
+## Unique constraint
+When you add a `UNIQUE` constraint to a column or a group of columns, PostgreSQL will automatically create a unique index on the column or the group of columns.
+
+```sql
+CREATE TABLE table_name (
+  column_1 datatype UNIQUE,
+)
+
+-- composite unique constraint
+CREATE TABLE table_name (
+  column_1 datatype,
+  column_2 datatype,
+  column_3 datatype,
+  UNIQUE (column_2, column_3)
+  -- There must only be (column_2, column_3) in the table. That is, if another row has an existing value for column_2, it must have a different value for column_3.
+)
+```
+
+## Not Null Constraint
+```sql
+CREATE TABLE table_name (
+  column_name datatype NOT NULL
+)
+```
+
+Modifying existing table
+```sql
+CREATE TABLE table_name (
+  column_name datatype
+)
+
+ALTER TABLE table_name 
+ALTER COLUMN column_name 
+SET NOT NULL
+```
+
+> Note: If a nullable (optional) column already contains `null`, before modifying it to `NOT NULL`, make sure to update it with a value.
+
+# Create a new table from the result set of a query
 ```sql
 CREATE TABLE new_table AS [(optional_colum_names...)]
 (SELECT * FROM existing_table [WHERE ... ORDER BY ...])
@@ -768,9 +924,9 @@ CREATE TABLE new_table AS [(optional_colum_names...)]
 -- It can be any type of query, as long as it generates a result set.
 ```
 
----
 
-## Sequences
+
+# Sequences
 Say you need a column that gets sequentially unique values from for each row.
 ```sql
 CREATE SEQUENCE [ IF NOT EXISTS ] sequence_name
@@ -792,12 +948,19 @@ CREATE SEQUENCE [ IF NOT EXISTS ] sequence_name
 ```
 This is the technique used by `AUTO_INCREMENT` or `SERIAL`.
 
----
 
-## Identity Column
-An alternative to `AUTO_INCREMENT` or `SERIAL` that allows you to specify how the uniqueness is generated, specifically with the **sequencing options above**.
+# Identity Column
+The `GENERATED AS IDENTITY` constraint is **the SQL standard-conformming variant** of the good old `SERIAL` column.
+
+Like `SERIAL` it uses, the `SEQUENCE` object above internally.
+
 ```sql
 CREATE TABLE ...
 column_name data_type GENERATED { ALWAYS | BY DEFAULT } AS IDENTITY [ (sequence_option) ]
 ```
-Check the documentation if you'll need it.
+- The `data_type` can be `SMALLINT`, `INT`, `BIGINT`
+- If `GENEATED ALWAYS` is used, you cannot insert or update values in this column.
+- If `GENERATED BY DEFAULT` is used, if you supply a value for the column, the value is used, if no value is supplied, the system generates a default value.
+- You can optionally specify sequencing options, to control program how the values should be generated.
+
+# Views
