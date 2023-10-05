@@ -489,9 +489,278 @@ The `{ROW | ROWS} {FIRST | NEXT}` are just like grammatical semantics. They can 
 This is the standard version of PostgreSQL LIMIT.
 
 ---
----
-# NEW TABLE stuffs
-## Copy table, query result into a new table
+
+> Advanced
+# Indexes
+A database index is a data structure that improves the speed of data retrieval on a table at the cost of additional additional writes and storage space to maintain that structure.
+
+They help us to quickly locate data without having to perform a full table scan each time a table is accessed.
+
+## Non-clustered index
+- The data is physically present in arbitrary order, but the logical ordering is specified by the index. 
+- The data rows may be spread thoughout the table regardless of the value of the indexed column or expression. 
+- The non-clustered index tree contains the index keys in sorted order, with the leaf level of the index containing the pointer to the record.
+- Indexed columns are typically non-primary key columns used in `WHERE`, `JOIN` and `ORDER BY` clauses
+- There can be more than one non-clustered index on a database table.
+
+## PGSQL Index Methods
+> B-TREE indexes
+- Query planner will consider this type whenever index columns are involved in a comparison that uses one of the following operators (`>, <=, =, >=, BETWEEN, IN, IS NULL, IS NOT NULL`)
+- It'll be considered with `LIKE` operators, <u>**only if**</u>, the patter starts with alphabetic characters e.g. `'foo%', 'bar%', '^foo'`,
+- It is the most used type in RDMSs.
+- <u>These are not my problem anyways</u>. It's the DBMSs problem. It's the default.
+- **Create B-TREEs on unique columns, or create a composite index that makes it unique**.
+
+> Hash indexes
+- Hash indexes **can handle only <u>simple equality comparison</u>** ( `=` ).
+
+> GIN (Generalized INverted) indexes:
+- GIN indexes are most useful **when you have <u>multiple values stored in a single column</u>**, e.g. hstore, array, jsonb, and range types.
+
+> BRIN (Block Range INdexes):
+- BRIN is much smaller and **less costly to maintain** <u>in comparison with a B-tree index</u>.
+- BRIN is **often used on a <u>column that has a linear sort order</u>**, for example, the created date column of the sales order table.
+
+> GiST (Generalized Search Tree) indexes
+- GiST indexes are **useful in indexing <u>geometic data types and full-text searches</u>**.
+
+> SP-GiST (Space-partitioned GiST) indexes
+- SP-GiST indexes are most useful **for data that <u>has a natural clustering element</u> to it and is also <u>not an equally balanced tree</u>**, e.g. GIS, multimedia, phone routing, and IP routing.
+
+
+## Creating indexes
+```sql
+CREATE INDEX index_name [USING method]
+ON table_name
+(
+  column_name [ASC | DESC] [NULLS {FIRST | LAST}],
+  ...
+)
+```
+
+## Dropping indexes
+```sql
+DROP INDEX [CONCURRENTLY]
+[IF EXISTS] index_name, index_2, ...
+[CASCADE /* deeply drop dependend objects */ | RESTRICT /* don't drop dependent opjects */]
+
+-- basic usage
+DROP INDEX index_name
+```
+
+## Create `UNIQUE` indexes
+`UNIQUE` index enforces the uniqueness of values in one or multiple columns.
+- Multiple unique indexes makes a composite unique index.
+- A single or composite unique index in a table, cannot be duplicated in multiple rows.
+- When you define a primary key or a unique constraint for a table, a corresponding `UNIQUE` index is automatically created for it.
+
+PostgreSQL treats `NULL`s as distinct values, therefore, you can have multiple `NULL` values in a column with a `UNIQUE` index.
+
+> **Note:** <u>**Only B-tree indexes can be declared as unique indexes**</u>.
+
+```sql
+CREATE UNIQUE INDEX index_name
+ON table_name(column_name [...])
+-- more columns can be specified to create composite unique index.
+```
+
+## PostgreSQL index on expression (Funtional-based index)
+You can also create an index based on an expession that involves table columns. These are known as functional-based indexes.
+
+```sql
+CERATE INDEX index_name
+ON table_name (expression)
+
+CERATE INDEX index_name
+ON table_name (LOWER(column_name))
+```
+PostgreSQL will consider using this index when the expression that defines this index appears in the `WHERE` clause or in the `ORDER BY` clause of the SQL statement.
+```sql
+SELECT column_1
+FROM table_name
+WHERE LOWER(column_name) === "value" -- here
+```
+
+**Note!!** Functional based indexes are expensive to maintain. You should only used then when retrieval speed is more critical than insertion and update speed.
+
+## Partial Index
+Partial index, allows you to **specify the rows of a table that should be indexed**. This helps speed up the query while reducing the size of the index.
+
+The partial index is <u>useful in a case you have commonly used **`WHERE` conditions that use constant values**</u>.
+
+```sql
+SELECT * FROM table_name
+WHERE column_name = constant_value
+```
+
+## `REINDEX`
+An index might sometimes need a **rebuild**.
+```sql
+REINDEX INDEX index_name -- a specific index
+REINDEX TABLE table_name -- all indexes in a table
+REINDEX SCHEMA schema_name -- all indexes in a schema
+REINDEX DATABASE database_name -- all indexes in a database
+```
+
+## Composite index or Multicolumn index
+This is an index created on multiple columns/fields in a table at a time.
+```sql
+CREATE INDEX index_name
+ON table_name (col1, col2, col3, ...)
+```
+
+_**Support:** Only `B-Tree`, `GiST`, `GIN` and `BRIN` support composite indexes._
+
+When defining a composite index, **you should place the columns which are often used in the `WHERE` clause at the beginning of the column list and the columns that are less frequently used in the condition after**.
+```sql
+-- The chances of usage decreases from left to right
+-- Specify the order here in order of priority in the condition below
+ON table_name (col1, col2, col3, ...)
+
+WHERE col1 = v1 AND col2 = v2 AND col3 = v3; -- OK
+WHERE col1 = v1 AND col2 = v2; -- OK
+WHERE col1 = v1; -- OK
+-- Any different order in condition is bad, and would not be considered for index usage
+```
+
+**<u>A key takeaway:</u>** When you define a composite index, you should always consider the business context to **find which columns are often used for lookup and place the columns at the beginning of the column list while defining the index**.
+
+# Data types
+## UUID
+It is often found in the distributed systems because it guarantees a better uniqueness than the `SERIAL` data type which generates only unique values within a single database.
+
+PostgreSQL allows you store and compare UUID values but it does not include functions for generating them. Instead, it relies on third-party modules that provides specific algorithmic functions to generate UUIDs.
+
+```sql
+-- To install third party module
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp"
+
+-- usage as a default table value
+CREATE TABLE table_name (
+  column_name uuid DEFAULT uuid_generate_v4(),
+  PRIMARY KEY (column_name)
+)
+```
+
+## Array
+```sql
+-- creating array column
+CREATE TABLE table_name (
+  -- column_name DATATYPE []
+  array_column1 INTEGER [],
+  array_column2 TEXT [],
+)
+
+--- inserting to array column
+INSERT INTO table_name (arr_col)
+VALUES (ARRAY [4, 5, 6])
+VALUES (ARRAY ['a', 'b', 'c'])
+-- or use curly braces
+VALUES ('{4, 5, 6}')
+VALUES ('{"a", "b", "c"}')
+
+/* querying array column */
+SELECT array_col from table_name;
+
+-- PostgreSQL uses 1-based indexing for array elements.
+SELECT array_col [index] from table_name;
+
+--- you can also use it in a WHERE clause
+SELECT column from table_name;
+-- equality
+WHERE array_col [index] = some_value
+-- searching
+WHERE some_value = ANY (array_col)
+
+/* Updating the array column */
+UPDATE table_name
+-- updating an index of the array
+SET array_col [index] = new_value
+-- updating the whole array
+SET array_col = '{"d", "e", "f"}'
+WHERE column_value = some_value
+```
+
+## JSON
+When you a column is JSON-data type,
+You can query it in two ways,
+```sql
+-- as json (->)
+SELECT column_name -> 'objVal' AS alias FROM table_name
+-- if you query as json, you can chain the access to go further down the hierarchy
+
+-- as text (->>)
+SELECT column_name ->> 'textVal' AS alias FROM table_name
+-- if you query as text, or the last prop in the access chain is text, you cant go further, even though the text may look-like json.
+
+-- chain the access
+SELECT column_name -> 'obhVal' -> 'innerDictVal' ->> 'textVal' AS alias FROM table_name
+
+-- you can have multiple columns
+SELECT column_name -> 'objVal' AS alias_1, column_name ->> 'textVal' AS alias_2 FROM table_name
+```
+
+You can use it in a `WHERE` clause
+```sql
+WHERE colunm_name -> 'objVal' ->> 'textVal' = 'someText'
+```
+
+Basically, you can use it anywhere you can have an attribute.
+
+> Apply aggregate functions
+
+We can apply aggregate functions to JSON data. But note that you have to apply it to number strings in text format casted to integer e.g. 
+```sql
+MAX (CAST (->> 'num_column' AS INTEGER))
+```
+
+> JSON functions
+
+There are **JSON functions**, you can call on your json data. The arguments can be the whole json data (`jsonColumn`) or an inner value accessed with `column -> objVal` or `column ->> textVal`
+```sql
+-- expand the outer-most object referenced into key-value pairs
+json_each(jsonColumn),
+json_each_text(jsonColumn -> 'objVal') -- if 'objVal' is of form {"key": "textValue"}
+
+-- get the keys of the object referenced
+json_object_keys(column -> 'objVal')
+
+-- get the type of value
+json_typeof(column ->> 'val')
+
+/* There many other functions too */
+```
+
+### HSTORE
+Say, you need a column with with a data that contains key:value pairs, like, `{key: value, key: value, ...}`. **As you can see this ain't a JSON data.**
+
+To use this, you first install the extension
+```sql
+CREATE EXTENSION hstore
+```
+or install the `pg-hstore` library for Sequelize.
+
+Now when you create your table, specify the `hstore` as data-type or use `DataTypes.HSTORE` in case of sequelize.
+
+Here's how the value looks like
+```sql
+'"key1" => "value1", "key2" => "value2"'
+```
+and here's how you access it.
+```sql
+SELECT column -> 'key1', column -> 'key2' from table_name
+```
+
+Just like JSON, you can use it anywhere you need an attribute value.
+
+***Check the documentation if you need more.*** You can do a lot more, like 
+- *updating, adding, removing* a key:value pair.
+- *checking for the **existence of a key, multiple keys, or a key:value pair*** as a **condition**.
+- getting the keys or values of all rows in an hstore column.
+
+
+
+## Create a new table from the result set of a query
 ```sql
 CREATE TABLE new_table AS [(optional_colum_names...)]
 (SELECT * FROM existing_table [WHERE ... ORDER BY ...])
@@ -532,202 +801,3 @@ CREATE TABLE ...
 column_name data_type GENERATED { ALWAYS | BY DEFAULT } AS IDENTITY [ (sequence_option) ]
 ```
 Check the documentation if you'll need it.
-
----
-
-## Data types
-### JSON
-When you a column is JSON-data type,
-You can query it in two ways,
-```sql
--- as json (->)
-SELECT column_name -> 'objVal' AS alias FROM table_name
--- if you query as json, you can chain the access to go further down the hierarchy
-
--- as text (->>)
-SELECT column_name ->> 'textVal' AS alias FROM table_name
--- if you query as text, or the last prop in the access chain is text, you cant go further, even though the text may look-like json.
-
--- chain the access
-SELECT column_name -> 'obhVal' -> 'innerDictVal' ->> 'textVal' AS alias FROM table_name
-
--- you can have multiple columns
-SELECT column_name -> 'objVal' AS alias_1, column_name ->> 'textVal' AS alias_2 FROM table_name
-```
-
-You can use it in a `WHERE` clause
-```sql
-WHERE colunm_name -> 'objVal' ->> 'textVal' = 'someText'
-```
-
-Basically, you can use it anywhere you can have an attribute.
-
-There are **JSON functions**, you can call on your json data. The arguments can be the whole json data (`jsonColumn`) or an inner value accessed with `column -> objVal` or `column ->> textVal`
-```sql
--- expand the outer-most object referenced into key-value pairs
-json_each(jsonColumn), json_each_text(jsonColumn -> 'objVal')
-
--- get the keys of the object referenced
-json_object_keys(column -> 'objVal')
-
--- get the type of value
-json_typeof(column ->> 'val')
-
-/* There many other functions too */
-```
-
-### HSTORE
-Say, you need a column with with a data that contains key:value pairs, like, `{key: value, key: value, ...}`. **As you can see this ain't a JSON data.**
-
-To use this, you first install the extension
-```sql
-CREATE EXTENSION hstore
-```
-or install the `pg-hstore` library for Sequelize.
-
-Now when you create your table, specify the `hstore` as data-type or use `DataTypes.HSTORE` in case of sequelize.
-
-Here's how the value looks like
-```sql
-'"key1" => "value1", "key2" => "value2"'
-```
-and here's how you access it.
-```sql
-SELECT column -> 'key1', column -> 'key2' from table_name
-```
-
-Just like JSON, you can use it anywhere you need an attribute value.
-
-***Check the documentation if you need more.*** You can do a lot more, like 
-- *updating, adding, removing* a key:value pair.
-- *checking for the **existence of a key, multiple keys, or a key:value pair*** as a **condition**.
-- getting the keys or values of all rows in an hstore column.
-
-
- ### ARRAY
-Check the documentation to learn more. It's simple.
-
----
-
-> Advanced
-# Indexes
-A database index is a data structure that improves the speed of data retrieval on a table at the cost of additional additional writes and storage space to maintain that structure.
-
-They help us to quickly locate data without having to perform a full table scan each time a table is accessed.
-
-## Non-clustered index
-- The data is physically present in arbitrary order, but the logical ordering is specified by the index. 
-- The data rows may be spread thoughout the table regardless of the value of the indexed column or expression. 
-- The non-clustered index tree contains the index keys in sorted order, with the leaf level of the index containing the pointer to the record.
-- Indexed columns are typically non-primary key columns used in `WHERE`, `JOIN` and `ORDER BY` clauses
-- There can be more than one non-clustered index on a database table.
-
-## PGSQL Index Types
-> B-TREE indexes
-- Query planner will consider this type whenever index columns are involved in a comparison that uses one of the following operators (`>, <=, =, >=, BETWEEN, IN, IS NULL, IS NOT NULL`)
-- It'll be considered with `LIKE` operators, <u>**only if**</u>, the patter starts with alphabetic characters e.g. `'foo%', 'bar%', '^foo'`,
-- It is the most used type in RDMSs.
-- <u>These are not my problem anyways</u>. It's the DBMSs problem. It's the default.
-- **Create B-TREEs on unique columns, or create a composite index that makes it unique**.
-
-> Hash indexes
-- Hash indexes **can handle only <u>simple equality comparison</u>** ( `=` ).
-
-> GIN (Generalized INverted) indexes:
-- GIN indexes are most useful **when you have <u>multiple values stored in a single column</u>**, e.g. hstore, array, jsonb, and range types.
-
-> BRIN (Block Range INdexes):
-- BRIN is much smaller and **less costly to maintain** <u>in comparison with a B-tree index</u>.
-- BRIN is **often used on a <u>column that has a linear sort order</u>**, for example, the created date column of the sales order table.
-
-> GiST (Generalized Search Tree) indexes
-- GiST indexes are **useful in indexing <u>geometic data types and full-text searches</u>**.
-
-> SP-GiST (Space-partitioned GiST) indexes
-- SP-GiST indexes are most useful **for data that <u>has a natural clustering element</u> to it and is also <u>not an equally balanced tree</u>**, e.g. GIS, multimedia, phone routing, and IP routing.
-
----
-
-### Creating indexes
-> See [Sequelize.md](./Sequelize.md)
-
-### Dropping indexes
-```sql
-DROP INDEX [CONCURRENTLY]
-[IF EXISTS] index_name, index_2, ...
-[CASCADE /* deeply drop dependend objects */ | RESTRICT /* don't drop dependent opjects */]
-
--- basic usage
-DROP INDEX index_name
-```
-
-### Create `UNIQUE` indexes
-`UNIQUE` index enforces the uniqueness of values in one or multiple columns.
-- Multiple unique indexes makes a composite unique index.
-- A single or composite unique index in a table, cannot be duplicated in multiple rows.
-- When you define a primary key or a unique constraint for a table, a corresponding `UNIQUE` index is automatically created for it.
-
-PostgreSQL treats `NULL`s as distinct values, therefore, you can have multiple `NULL` values in a column with a `UNIQUE` index.
-
-> **Note:** <u>**Only B-tree indexes can be declared as unique indexes**</u>.
-
-> See [Sequelize.md](./Sequelize.md)
-
-### PostgreSQL index on expression (Funtional-based index)
-You can also create an index based on an expession that involves table columns. These are known as functional-based indexes.
-
-```sql
-CERATE INDEX index_name
-ON table_name (expression)
-
-CERATE INDEX index_name
-ON table_name (LOWER(column_name))
-```
-PostgreSQL will consider using this index when the expression that defines this index appears in the `WHERE` clause or in the `ORDER BY` clause of the SQL statement.
-```sql
-SELECT column_1
-FROM table_name
-WHERE LOWER(column_name) === "value" -- here
-```
-
-**Note!!** Functional based indexes are expensive to maintain. You should only used then when retrieval speed is more critical than insertion and update speed.
-
-### Partial Index
-Partial index, allows you to **specify the rows of a table that should be indexed**. This helps speed up the query while reducing the size of the index.
-
-The partial index is <u>useful in a case you have commonly used **`WHERE` conditions that use constant values**</u>.
-
-> See [Sequelize.md](./Sequelize.md)
-
-### `REINDEX`
-An index might sometimes need a **rebuild**.
-```sql
-REINDEX INDEX index_name -- a specific index
-REINDEX TABLE table_name -- all indexes in a table
-REINDEX SCHEMA schema_name -- all indexes in a schema
-REINDEX DATABASE database_name -- all indexes in a database
-```
-
-### Composite index or Multicolumn index
-This is an index created on multiple columns/fields in a table at a time.
-```sql
-CREATE INDEX index_name
-ON table_name (col1, col2, col3, ...)
-```
-> **Support:** Only `B-Tree`, `GiST`, `GIN` and `BRIN` support composite indexes.
-
-When defining a composite index, **you should place the columns which are often used in the `WHERE` clause at the beginning of the column list and the columns that are less frequently used in the condition after**.
-```sql
--- The chances of usage decreases from left to right
--- Specify the order here in order of priority in the condition below
-ON table_name (col1, col2, col3, ...)
-
-WHERE col1 = v1 AND col2 = v2 AND col3 = v3; -- OK
-WHERE col1 = v1 AND col2 = v2; -- OK
-WHERE col1 = v1; -- OK
--- Any different order in condition is bad, and would not be considered for index usage
-```
-
-<u>**A key takeaway:**</u> When you define a composite index, you should always consider the business context to **find which columns are often used for lookup and place the columns at the beginning of the column list while defining the index**.
-
-> See [Sequelize.md](./Sequelize.md)
