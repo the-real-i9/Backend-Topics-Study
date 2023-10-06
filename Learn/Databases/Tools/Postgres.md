@@ -964,3 +964,4 @@ column_name data_type GENERATED { ALWAYS | BY DEFAULT } AS IDENTITY [ (sequence_
 - You can optionally specify sequencing options, to control program how the values should be generated.
 
 # Views
+A view is useful for wrapping a **commonly used complex query**.
