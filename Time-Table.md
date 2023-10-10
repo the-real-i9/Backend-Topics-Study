@@ -2,7 +2,7 @@
 > Implementations
 - **HTTP:** Cookies & Authentication, Messages, Transaction, Web sockets, Server-sent events, Web servers, Proxies, NodeJs.
   - **API dev:** REST, GraphQL, gRPC, Express, Apollo, NextJS, Versioning, Rate Limiting, Acrhitectural Diagrams, Design Documents.
-- **Databases:** Data modelling, Database design, SQL, NoSQL, ORMs, Concepts: ACID, Transaction, Normalization, Database Indexes, Sharding, Data Replication.
+- **Databases:** Data modeling, Database design, SQL, NoSQL, ORMs, Concepts: ACID, Transaction, Normalization, Database Indexes, Sharding, Data Replication.
 - **Caching:** Concepts, Client-side, Server-side, CDN, Redis.
 - **Search Engines:** Elastic Search.
 - **Message Brokers/Queues | Messaging Systems:** Kafka, Rabbit MQ.

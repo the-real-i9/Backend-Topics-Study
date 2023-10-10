@@ -85,6 +85,9 @@ The temporary message queue used by the communicating processes can be implement
 - Bounded capacity: The queue can only take $n$ items at most. The sender can keep sending messages if the queue isn't full, else, it waits and blocks, until there's available space in the queue.
 - Unbounded capacity: The queue can take an infinite number of items. The sender keeps sending without waiting/blocking. The receiver keeps receiving unless the queue is empty in which case it waits and blocks, until message is available in the queue.
 
+## Pipes
+A pipe acts as a conduit allowing two processes to communicate.
+
 ---
 ---
 
