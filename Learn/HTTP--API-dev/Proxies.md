@@ -6,7 +6,7 @@ Origin clients and servers communicate with their respective proxies.
 HTTP proxy servers act as both web clients and web servers. If you're creating one, you'll need to carefully follow the rules for both HTTP clients and HTTP servers.
 
 A proxy can be shared among many clients
-- **Public/Shared proxies:** Some proxy applications such as, caching proxy servers, become more useful as more users sends request to the same proxy server, because they can take advantage of common requests between users. 
+- **Public/Shared proxies:** Some proxy applications such as, <u>**caching proxy servers** for example</u>, become more useful as more users sends request to the same proxy server, because they can take advantage of common requests between users.
   - These are the common type of proxies, and they should be your focus. You'll use it a lot.
 
 Or dedicated to a single client
@@ -50,7 +50,7 @@ A Proxy server can have a decicated process on the one machine, forwarding reque
 <u>Proxies often placed at ISP access points, processing aggregate requests from customers.</u>
 
 **Reverse proxy:**\
-Proxies at the edge of network, in front of web servers, doing different things.
+Proxies at the edge of network, in front of web servers, serving different needs.
   - Firewall, Content routing, Load balancing, Caching etc.
   - They typically assume the address of the web server. This allows us to hide the identities of origin servers.
 
@@ -61,13 +61,13 @@ Proxies placed at the meeting point of different/separate networks (LANs or WANs
 
 > Disclaimer:
 
-Proxies are not really tied to an identity due to their function or location. The names given to them are just based on their function and location.
+Proxies are not physical entities designed to be recongnized according to their function. They're merely proxy servers each containing the program that performs the specific function for which it is named, at the location where it will be used.
 
-A now "content router" at one location, have a different feature added to it at that same location.
+A "content router" is just a proxy server that contains a program that does content routing.
 
-The two things that matter and to actually consider are:
-- Who/Where wants to use the proxy?: Client, ISP, LAN, Server.
-- What would the proxy do?: Proxies can perform several functions at several locations. A function is not tied to a location. They can do whatever for whoever, anywhere.
+<u>The two things that matter and to actually consider are:</u>
+- **Who and Where wants to use the proxy?**: Client, ISP, LAN, Server.
+- **What would the proxy do?**: Proxies can perform several functions at several locations. A function is not tied to a location. They can do whatever for whoever, anywhere between the client and origin server(s).
 
 It's crazy! Proxies can even forward request to proxies, that perform a different fuction.
 

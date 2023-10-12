@@ -24,10 +24,9 @@ You can create mini-projects to demostrate concepts as you go, ones you can use 
 - Be known for this writing style.
 
 # Next things (Current)
-- Roadmap/Articles on Databases
 - General revision (Scanning through jottings and refinements)
-- More HTTP-API--dev stuff
-- Web Security: WebSockets, SSE, GraphQL, Testing
+- More HTTP-API--dev stuff: WebSockets, SSE, GraphQL, Testing
+- Web Security
 - Languages: C, Nodejs, Go, Rust
 
 # Concept revision (Next things)

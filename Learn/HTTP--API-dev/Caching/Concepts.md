@@ -18,7 +18,7 @@ Because the origin server content can change, <u>caches have to check every now 
 
 To make more revalidations efficient, HTTP defines <u>special requests that can quickly check if content is still fresh, without fetching the entire object from the server</u>. `If-Modified-Since`, `If-None-Match`
 
-A cache can revalidate a copy any time it wants, but to avoid degrading performance, **most caches revalidate a copy only** <u>when it is requested by a client</u> and <u>when the copy is old enough to warrant a check</u>.
+A cache can revalidate a copy any time it wants, but to avoid degrading performance, **most caches revalidate a copy only** <u>when it is requested by a client</u> *and* <u>when the copy is old enough to warrant a check</u>.
 
 **When a cache needs to revalidate a cached copy**, 
 - it sends a small revalidation request to the origin server.
@@ -57,12 +57,12 @@ HTTP lets an origin server attach an "expiration date" to each document, using s
 <u>Until a cache document expires, the cache can serve the copy as often as it wants, without ever contacting the server</u> - *unless, of course, a client request includes headers that prevent serving a cached or unvalidated resource*.
 - But, once the cached document expires, the cache must check with the server to ask if the doucment has changed and, if so, get a fresh copy (with a new expiration date)
 
-Servers specify expiration using the `Expires` or the <u>`Cache-Control: [max-age]`</u> headers which accompany a response body. They both do the same thing, but the latter it preferred, because it uses relative time to calculate the expiration, rather than absolute time that depends on the correctness of computer's clock.
+Servers specify expiration using the `Expires` or the <u>`Cache-Control: [max-age]`</u> headers which accompany a response body. They both do the same thing, but the latter is preferred, because it uses relative time to calculate the expiration, rather than absolute time that depends on the correctness of computer's clock.
 
 ## Server Revalidation
 After the cached document has expired, <u>the cache needs to ask the origin server *"whether" the document has changed*</u>. *It just means, "it's time to check whether...", it doesn't actually mean the document has changed*.
 
-The outcome of revalidation determines what actions comes next:
+The outcome of revalidation determines what actions happens next:
 - **If the document has changed**, <u>the cache gets a new copy of the document</u>, replaces the old cache, and sends the document to the client.
 - **If the document has not changed**, <u>*the cache only gets new headers, including a new expiration date*</u>, and updates the headers in the cache.
 
@@ -73,14 +73,14 @@ HTTP allows a cache to send a "conditinal `GET`" to the origin server, asking th
 
 Conditional `GET`s are initiated by adding special conditional headers to `GET` request messages. Among the five HTTP defines, the two that are most useful for cache revalidation are `If-Modified-Since` and `If-None-Match`.
 
-> This technique is in no way specific to caches, itis just a way of conditionally `GET`ing a resource. It serves a useful purpose for caches to revalidate content. You can use it on the client side too directly with the origin server if you like.
+> This technique is in no way specific to caches, it's just a way of conditionally `GET`ing a resource. It serves a useful purpose for caches to revalidate content. You can use it on the client side too directly with the origin server if you like.
 
 ## `If-Modified-Since`: Date Revalidation
 - If the document was modified since the specified date, the `If-Modified-Since` condition is true, and the GET succeeds normally. The new document is retured to the cache, along with new headers, including a new expiration date.
-- If the document was not modified since the specified date, the condition is false, and a small `304 Not Modified` response message is returned to the client, without a document body, for efficiency. <u>Only headers that need updating the original are retured, which of course will include *a new expiration date*</u>.
+- If the document was not modified since the specified date, the condition is false, and a small `304 Not Modified` response message is returned to the client, without a document body, for efficiency. <u>Only headers that need updating the original are returned, which of course will include *a new expiration date*</u>.
 
 The `If-Modified-Since` header works in conjunction with the `Last-Modified` server response header. 
-- When a cache wants to revalidate a cached document, it includes an `If-Modified-Since` header with the date the cached copy was last modified. 
+- When a cache wants to revalidate a cached document, it includes an `If-Modified-Since` header <u>with the date the cached copy was last modified</u>.
 - If the content has changed, then the `Last-Modified` date of the origin server's copy will be different, the origin server will send back the new document. 
 - Otherwise, the server's and cache's `Last-Modified` matches, and it will return a `304 Not Modified` response.
 
@@ -111,11 +111,11 @@ In **decreasing order of priority**, the origin server can:
     - Other `Cache-Control` values do not **enforce revalidation strictness** on their own, in the sense that, if the origin server is down when they're trying to perform revalidation, they can serve a stale (expired) cache object. But, with this value included, <u>if the origin server is down, they'll rather throw a `504 Gateway Timeout` error back to the client</u>.
   - `max-age=<T>` (for private/dedicated caches), `s-maxage=<T> ...` (for public/shared caches)
     - It indicates the <u>number of seconds since it came from the server (relative date)</u> for which a document can be considered fresh. Setting `max-age=0` or `s-maxage=0` would cause the cache to always perform server revalidation on every access, as *it would always conclude it has expired*.
-  - ...header to the response.
+- ...header to the response.
 - Attach an `Expires <Date>` header to the response.
   - Just like `max-age` but with an absolute date.
 - Attach **no expiration information**, letting the cache determine its own heuristic expiration date.
-  - This means, the origin server does not control cachability. It is left to the caching proxy server in use to do handle this. <u>*You don't have to bother too much about this, since you would be using a managed cache server like Redis or Mecached*</u>.
+  - This means, the origin server does not control cachability. It is left to the caching proxy server in use to do handle this.
 
 *__Your__ caching proxy server must conform to these <u>origin server cache control rules</u>, for caching in Redis*.
 
@@ -123,11 +123,11 @@ In **decreasing order of priority**, the origin server can:
 
 **Clients can also use the `Cache-Control` header from their own end**, to <u>control strictness on the `GET`ing of cached resources</u>. This can be used to *tighten strictness (more strict)* or *relax strictness (less strict)*.
 
-> The former makes a cache server conform to the rules of the origin server for caching, <u>this one makes a cache server conform to the rules of the client for `GET`ing documents</u>.
+> The former makes a cache server conform to the rules of the origin server for caching resources, <u>this one makes a cache server conform to the rules of the client for `GET`ing resources from it</u>.
 
 `Cache-Control:`
 - `max-stale` : The cache is free to serve stale content. (Relaxed)
-- `max-stale=<S>` : The cache is free to serve stale content, unti maximum time `<S>`. (Relaxed)
+- `max-stale=<S>` : The cache is free to serve stale content, until maximum time `<S>`. (Relaxed)
 - `min-fresh=<S>` : The document must still be fresh for at least `<S>` seconds in the future. *"Keep giving me fresh content until time exceeds `<S>` seconds"*. (More strict).
 - `max-age=<S>` : The cache only returns a document with `age <= max-age`. This can be overidden by `max-stale`.
 - `no-cache` : Client won't accept an un-revalidated cache resource.
