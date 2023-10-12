@@ -27,12 +27,7 @@ Things to Cover
 - Roadmap
 
 ## Next Things
-- Entity-Relationship Modeling
-- Enhanced Entity-Relationship Modeling
-- Normalization
-- Advanced Normalization
 - Methodology
-  - Conceptual Database Design
-  - Logical Database Design for the Relational Model
-- Transaction Management
+  - Logical Database design
+  - Physical Database design
 - Distributed DBMSs and Replication

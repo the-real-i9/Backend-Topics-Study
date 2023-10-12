@@ -23,11 +23,18 @@ You can create mini-projects to demostrate concepts as you go, ones you can use 
 - Explain very cleary and practically, in the way you've understood the topic, with the scenarios and expamples you've painted. **You get the idea.**
 - Be known for this writing style.
 
+# Next things (Current)
+- Roadmap/Articles on Databases
+- General revision (Scanning through jottings and refinements)
+- More HTTP-API--dev stuff
+- Web Security: WebSockets, SSE, GraphQL, Testing
+- Languages: C, Nodejs, Go, Rust
 
-# Next things in revision
+# Concept revision (Next things)
+- Virtual Memory: Virtual Address space
 - Threads and Concurrency
 - Process synchronization
-- Virtual Memory: Virtual Address space
 - I/O system
 - Networks and Distributed Systems
 - Networking | Internet
+- Roadmap/Articles on Concepts
