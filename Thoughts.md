@@ -24,7 +24,6 @@ You can create mini-projects to demostrate concepts as you go, ones you can use 
 - Be known for this writing style.
 
 # Next things (Current)
-- General revision (Scanning through jottings and refinements)
 - More HTTP-API--dev stuff: WebSockets, SSE, GraphQL, Testing
 - Web Security
 - Languages: C, Nodejs, Go, Rust
