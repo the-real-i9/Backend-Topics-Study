@@ -20,9 +20,7 @@ Things to Cover
 - Change Streams
 
 # Learning Order
-- Pg Indexes and Views
-- Mongo Indexes
-- Textbook ER Modeling | Normalization | Methodology | TM | DDBMs and Replication
+- Methodology | DDBMs and Replication
 - Mongo data models
 - Roadmap
 
