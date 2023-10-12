@@ -488,6 +488,33 @@ The `{ROW | ROWS} {FIRST | NEXT}` are just like grammatical semantics. They can 
 
 This is the standard version of PostgreSQL LIMIT.
 
+# Transactions
+A transaction is a single unit of work, consisting of one or more database operations.
+
+***It is a must for any real application.***
+
+# How it works
+```sql
+-- To begin a transaction
+
+BEGIN;
+-- execute statement 1
+-- execute statement 2
+-- execute more statements
+
+-- after executing the statements involved in your transaction, you commit the changes.
+COMMIT;
+
+-- when an error occurs "before you commit", in an error-handling block, you should rollback changes. The DBMS software is not aware of an errors in your programming language.
+ROLLBACK;
+
+-- you can't rollback changes that have been commited
+```
+
+> At DBMS software level, a transaction (one SQL statement) has this internally implemented.\
+>To the DBMS software, that is the definition of a single unit of work.
+
+
 ---
 
 > Advanced
