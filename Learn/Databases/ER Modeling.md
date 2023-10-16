@@ -189,12 +189,16 @@ The participation of entities in a relationship appears as <u>**the minimum valu
 > **Multiplicity range ($p..c$)**\
 The multiplicity range of an entity type partaking in a relationsip, represents <u>the minimum (participation $p$) to maximum (cardinality $c$) number of entity occurencies of that entity type that can take part in that relationship</u>.
 
+![Card and Part](./imgs/cardinality-and-participation.png)
+
 ## One-to-One (`1:1`) Relationships
 In this type of multiplicity, basically (in cardinality terms, `1:1`), <u>**one** entity occurence of an entity type *relates to* **one** entity occurence of another entity type</u>. Participation for any of them may be either mandatory (1) or optional (0).
 
 Observing the **multiplicity range** of both types, <u>cardinality-to-cardinality will always be one-to-one (`1:1`)</u>.
 
 **Examples:** `(0 | 1)..1` to `(0 | 1)..1`
+
+![One-to-one](./imgs/one-to-one-multiplicity.png)
 
 ## One-to-Many (`1:*`) Relationships
 In this type of multiplicity, basically (in cardinality terms, `1:*`), <u>**one** entity occurence of an entity type *relates to* **many** entity occurencies of another entity type</u>. Participation for any of them may be either mandatory (1) or optional (0).
@@ -203,6 +207,8 @@ Observing the **multiplicity range** of both types, <u>cardinality-to-cardinalit
 
 **Examples:** `(0 | 1)..1` to `(0 | 1)..*`
 
+![One-to-Many](./imgs/one-to-many-multiplicity.png)
+
 ## Many-to-Many (`*:*`) Relationships
 In this type of multiplicity, basically (in cardinality terms, `*:*`), <u>**many** entity occurence of an entity type *each relates to* **many** entity occurencies of another entity type</u>. Participation for any of them may be either mandatory (1) or optional (0).
 
@@ -210,6 +216,54 @@ Observing the **multiplicity range** of both types, <u>cardinality-to-cardinalit
 
 **Examples:** `(0 | 1)..*` to `(0 | 1)..*`
 
+![Many-to-many](./imgs/many-to-many-multiplicity.png)
+
 > **Note:** If we know the actual minimum and maximum values for the multiplicity, we can display these instead.
 
 > In DBMSs, practically, cardinality is implemented by a relation referencing an owner relation with a foreign key by its primary key, while participation is determined by the NULL integrity constraint for the foreign key.
+
+# Problems with ER Models
+These problems are referred to as **<u>connection traps</u>**, and normally <u>occur due to a misinterpretation of the meaning of certain relationships</u>.
+
+Two main types are called, **fan traps** and **chasm traps**.
+
+## Fan Traps
+> **Fan trap**\
+Where a model represents a relationship between entity types, but <u>**the pathway between certain entity occurences is ambiguous**</u>.
+
+A fan trap may exist <u>where two or more `1:*` relationships fan out from the same entity</u>.
+
+![Fan trap](./imgs/fan-trap.png)
+
+You can observe this **ambiguity** by drawing its semantic net. We cannot tell if Staff `SG37` operates Branch `B003` or `B007`.
+
+![Fan trap ambiguity](./imgs/fan-trap-ambiguity.png)
+
+**We resolve this fan trap** by restructuring the original ER model to represent the correct association between these entities.
+
+![Fan trap fixed](./imgs/fan-trap-fixed.png)
+
+Fan trap **ambiguity fixed** by restructuring.
+
+![Fan trap ambiguity fixed](./imgs/fan-trap-ambiguity-fixed.png)
+
+## Chasm Traps
+> **Chasm trap**\
+Where a model suggests the existence of a relationship between entity types, but <u>**the pathway does not exist between certain entity occurences**</u>.
+
+A chasm trap may occur <u>where one or more relationships with a minimum multiplicity of zero (i.e. optional participation) forms part of the pathway between related entities</u>.
+
+![Chasm trap](./imgs/chasm-trap.png)
+
+You can observe this **non-existent pathway** by drawing its semantic net. Observe that, even if we could implicitly tell that Branch `B003` offers PropertyForRent `PG36` through the Staff entity's Has `r1` and Oversees `r4` relationships, we encounter a situation where that became impossible because Staff `SA9` doesn't oversee any PropertyForRent yet. Thus, we couldn't tell the PropertyForRent that Branch `B007` offers.
+- The problem is that, we don't have an explicit <u>*`Offers`*</u> relationship that creates an explicit pathway between `Branch` and `PropertyForRent`.
+
+![Chasm trap non-existent pathway](./imgs/chasm-trap-non-existent-pathway.png)
+
+**To solve this problem,** we need to identify the missing relationship.
+
+![Chasm trap fixed](./imgs/chasm-trap-fixed.png)
+
+Chasm trap **non-existent pathway fixed** by introducing the missing relationship. Notice that, regardless of <u>implicit pathways</u> between Branch and PropertyForRent, that's <u>prone to non-existent pathway problems</u>, we now have explicit pathways between them.
+
+![Chasm trap non-existent pathway resolved](./imgs/chasm-trap-non-existent-pathway-fixed.png)
