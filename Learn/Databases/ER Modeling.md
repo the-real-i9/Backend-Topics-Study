@@ -128,4 +128,88 @@ For multi-valued attributes, we label the attribute name with an indication of t
 
 For composite attributes, indent the child attibute list under the parent attribute.
 
-# Strong and Weak Entity
+# Strong and Weak Entity Types
+> **Strong entity type**\
+An entity type that does not depend on the existence of another entity type.
+
+A characteristic of a strong entity type is that <u>each entity occurence is uniquely identifiable using the primary key attribute(s)</u> of that entity type.
+
+> **Weak entity type**\
+An entity type that is dependent on the existence of another entity type.
+
+A characteristic of a weak entity is that each entity occurence <u>cannot be uniquely identified using **only** the attributes associated with that entity type</u>.
+
+We can uniquely identity each entity occurence only through the relationship it has with <u>another entity occurence who is uniquely identifiable with a primary key - **owner entity**</u>.
+
+# Attributes on Relationsips
+These are new attributes that we derive from the relationship between two entity types.
+
+Consider the relationship <u>*`Advertises`*</u>, which associates the `Newspaper` and `PropertyForRent` entity types. Two attributes are derived, `dateAdvert` (date of advertisment) and `cost` (cost of advertisment).
+
+**The presence of one or more attributes assigned to a relationship** <u>***may indicate*** that the relationship conceals an unidentified entity type</u>. Be on look out, as this can help in Normalization.
+- For example, the attributes that we derive from the <u>*`Advertises`*</u> relationship above, indicates the presence of an entity called `Advert`.
+
+# Structural Constraints
+The constraints that may be placed on entity types that participate in a relationship.
+
+The constraints should reflect the restrictions on the relationships, as perceived in the "real world". For example, the requirements that a property for rent must have an owner and each branch must have a staff.
+
+The main type of constraint on relationships is called **multiplicity**.
+
+> **Multiplicity**\
+The number (or range) of possible occurences on an entity type that may relate to a single occurence of an associated entity type through a particular relationship.
+
+Multiplicity constrains the way entities are related. <u>It is a representation of the business rules established by the user or the enterprise</u>.
+
+Esuring that all appropriate constraints are identified and represented is <u>an important part of modeling an enterprise</u>.
+
+**Binary relationships** are generally referred to as being 
+- one-to-one (`1:1`) : One university has one public library
+- one-to-many (`1:*`) : One user has many posts
+- or many-to-many (`*:*`) : Many actors features in many movies
+
+
+## Cardinality and Participation Constraints
+Multiplicity actually consists of two separate constraints known as cardinality and participation.
+
+> **Cardinality**\
+This describes the <u>**maximum number of possible relationship occurences** for an entity participating in a given relationship type</u>.
+
+The **cardinality** of a binary relationship is what we actually refer to when we say, <u>one-to-one (`1:1`), one-to-many (`1:*`), and many-to-many (`*:*`)</u>.
+
+It appears as <u>***the maximum values*** for the multiplicity ranges of either side of the relationship</u>.
+
+> **Participation**\
+This determines <u>whether **all or only some entity occurences** participate in a relationship</u>.
+
+When **all occurencies** participate, we say it's a <u>**mandatory** participation</u>. When **only some occurencies** participate, we say it's an <u>**optional** participation</u>.
+
+The participation of entities in a relationship appears as <u>**the minimum values** for the multiplicity ranges on either side of the relationship</u>.
+
+> **Multiplicity range ($p..c$)**\
+The multiplicity range of an entity type partaking in a relationsip, represents <u>the minimum (participation $p$) to maximum (cardinality $c$) number of entity occurencies of that entity type that can take part in that relationship</u>.
+
+## One-to-One (`1:1`) Relationships
+In this type of multiplicity, basically (in cardinality terms, `1:1`), <u>**one** entity occurence of an entity type *relates to* **one** entity occurence of another entity type</u>. Participation for any of them may be either mandatory (1) or optional (0).
+
+Observing the **multiplicity range** of both types, <u>cardinality-to-cardinality will always be one-to-one (`1:1`)</u>.
+
+**Examples:** `(0 | 1)..1` to `(0 | 1)..1`
+
+## One-to-Many (`1:*`) Relationships
+In this type of multiplicity, basically (in cardinality terms, `1:*`), <u>**one** entity occurence of an entity type *relates to* **many** entity occurencies of another entity type</u>. Participation for any of them may be either mandatory (1) or optional (0).
+
+Observing the **multiplicity range** of both types, <u>cardinality-to-cardinality will always be one-to-many (`1:*`)</u>.
+
+**Examples:** `(0 | 1)..1` to `(0 | 1)..*`
+
+## Many-to-Many (`*:*`) Relationships
+In this type of multiplicity, basically (in cardinality terms, `*:*`), <u>**many** entity occurence of an entity type *each relates to* **many** entity occurencies of another entity type</u>. Participation for any of them may be either mandatory (1) or optional (0).
+
+Observing the **multiplicity range** of both types, <u>cardinality-to-cardinality will always be many-to-many (`*:*`)</u>.
+
+**Examples:** `(0 | 1)..*` to `(0 | 1)..*`
+
+> **Note:** If we know the actual minimum and maximum values for the multiplicity, we can display these instead.
+
+> In DBMSs, practically, cardinality is implemented by a relation referencing an owner relation with a foreign key by its primary key, while participation is determined by the NULL integrity constraint for the foreign key.
