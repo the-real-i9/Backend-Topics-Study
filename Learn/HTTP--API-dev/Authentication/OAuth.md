@@ -1,4 +1,4 @@
-# Introduction
+# Intro
 OAuth is the technique you use when you want third-party apps to integrate with your API, to serve its functionalities to the users of your API.\
 It is used to provide third-party apps authorized read/write access to your users data.\
 All these without your users having to share their passwords with these third-party apps.

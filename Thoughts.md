@@ -24,9 +24,13 @@ You can create mini-projects to demostrate concepts as you go, ones you can use 
 - Be known for this writing style.
 
 # Next things (Current)
-- More HTTP-API--dev stuff: WebSockets, SSE, GraphQL, Testing
+- More HTTP-API--dev stuff (\w Roadmap Articles):
+  - WebSockets, SSE, GraphQL, Testing
+  - Authentication: Cookies (Session), Basic, OAuth, Token, JWT
 - Web Security
+  - HTTPS, Hashing Algorithms (Cryptography), CORS, CSP, SSL/TLS, OWASP Risks, Server Security
 - Languages: C, Nodejs, Go, Rust
+  - Networking modules
 
 # Concept revision (Next things)
 - Virtual Memory: Virtual Address space
