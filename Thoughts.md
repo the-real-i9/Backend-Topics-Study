@@ -24,11 +24,12 @@ You can create mini-projects to demostrate concepts as you go, ones you can use 
 - Be known for this writing style.
 
 # Next things (Current)
+- Database Design methodology jotting
 - More HTTP-API--dev stuff (\w Roadmap Articles):
   - WebSockets, SSE, GraphQL, Testing
-  - Authentication: Cookies (Session), Basic, Other Auth Methods
+  - Cookies, Authentication, Basic, Session, Token, JWT, OAuth
 - Web Security
-  - HTTPS, Hashing Algorithms (Cryptography), CORS, CSP, SSL/TLS, OWASP Risks, Server Security
+  - SSL/TLS, Hashing Algorithms (Cryptography), HTTPS, CORS, CSP, OWASP Risks, Server Security
 - Languages: C, Nodejs, Go, Rust
   - Networking modules
 
