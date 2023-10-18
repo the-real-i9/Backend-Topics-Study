@@ -26,7 +26,7 @@ You can create mini-projects to demostrate concepts as you go, ones you can use 
 # Next things (Current)
 - More HTTP-API--dev stuff (\w Roadmap Articles):
   - WebSockets, SSE, GraphQL, Testing
-  - Authentication: Cookies (Session), Basic, OAuth, Token, JWT
+  - Authentication: Cookies (Session), Basic, Other Auth Methods
 - Web Security
   - HTTPS, Hashing Algorithms (Cryptography), CORS, CSP, SSL/TLS, OWASP Risks, Server Security
 - Languages: C, Nodejs, Go, Rust
