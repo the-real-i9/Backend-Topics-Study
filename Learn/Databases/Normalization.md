@@ -143,6 +143,7 @@ Normalization is often executed as a series of steps. <u>Each step corresponds t
 
 Normalization is the technique of **decomposing a single relation (table) into multiple relations (tables) and *connecting them via relationships***, to *mizimize redundancy and avoid update anomalies (Insertion, Deletion and Modificaition)*.
 
-Normalization can be achieved by 
+> According to me, <u>normalization can be **achieved common-sense-ically** by </u>
+
 - **careful examination of where update anomalies may occur** in a relation, and decomposing the relation accordingly. ***Why?*** Because, the whole point of normalization is to prevent update anomalies.
-- Use the clues designated 🎯, in the above sections. They'll give you insight as to where to decompose tables.
+- Using the clues designated 🎯, in the above sections. They'll give you insight as to where to decompose tables.
