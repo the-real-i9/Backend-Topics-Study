@@ -24,20 +24,22 @@ You can create mini-projects to demostrate concepts as you go, ones you can use 
 - Be known for this writing style.
 
 # Next things (Current)
-- Database Design methodology jotting
 - More HTTP-API--dev stuff (\w Roadmap Articles):
-  - WebSockets, SSE, GraphQL, Testing
+  - WebSockets, SSE, GraphQL
   - Cookies, Authentication, Basic, Session, Token, JWT, OAuth
 - Web Security
-  - SSL/TLS, Hashing Algorithms (Cryptography), HTTPS, CORS, CSP, OWASP Risks, Server Security
+  - Hashing Algorithms (Cryptography), HTTPS, CORS, CSP, OWASP Risks, Server Security
+- Linux
 - Languages: C, Nodejs, Go, Rust
   - Networking modules
+- Testing
 
-# Concept revision (Next things)
+# Concept revision (\w roadmap articles)
 - Virtual Memory: Virtual Address space
 - Threads and Concurrency
 - Process synchronization
 - I/O system
 - Networks and Distributed Systems
 - Networking | Internet
-- Roadmap/Articles on Concepts
+- WebSockets
+- SSL/TLS

@@ -52,5 +52,119 @@ Most of the limitations of these HTTP hacks stems from using HTTP as the underly
   - A request/response protocol by design, HTTP doesn't support <del>bidirectional, always on, realtime communication</del> between client and server over the same connection.
   - If some "two-HTTP-connections *hack*" is used, maintaining them introduces significant overhead on the server, because it takes double the resources to serve a single client.
 
+> HTTP interaction is unidirectional, as the client initiates the request, and the server responds to it. However, <u>HTTP itself doesn't provide a built-in mehcanism for the sever to spontaneously send data to the client **without prior request**</u>.\
+> Take for example, chatting a bot, it doesn't give you a response on its own unless you've messaged it. It's an *action-reaction* situation. The communication isn't successful without a reaction to the action.\
+\
+> A bidirectional communication allows both client and server to send messages to each other at will. The server/client doesn't even have to react to the client/server's action.
 
-# WebSockets
+
+# Enter WebSockets
+WebSocket is a technology that enables <u>bidirectional, full-duplex commnunication</u> between client and server over a <u>persistent, single-socket</u> connection.
+
+A WebSocket connection starts as an HTTP request/response handshake; <u>***beyond this handshake***, WebSocket and HTTP are fundamentally different</u>.
+
+The WebSocket technology includes <u>two core building blocks:</u>
+- **The WebSocket protocol**. <u>Enables communication</u> between clients and servers over the web, and <u>supports transmission of **binary data and text** strings</u>.
+- **The WebSocket API**. Allows you to perform necessary actions, like <u>managing the WebSocket connection</u>, <u>sending and receiving messages</u>, and <u>listening for events triggered by the server</u>.
+
+## Comparing WebSockets and HTTP
+|  | WebSocket | HTTP |
+| --- | ---- | --- |
+| **Architecture** | event-driven | request-driven
+| **Communication** | Full-duplex | Half-duplex
+| **Message exchange pattern** | Bidirectional | Request-response (Unidirectional)
+| **Server push** | Core feature | Not natively supported
+| **Overhead** | Moderate overhead to establish the connection, and minimal overhead per message | Moderate overhead per request/connection |
+| **State** | Stateful | Stateless |
+| **When to use** | When it comes to scalable, low-latency realtime applications. | If your app relies heavily on CRUD operations, and there's no need for the user to react to changes quickly. |
+
+## Use cases and benefits
+You can use if for different purposes such as <u>streaming data between backend services,</u> or <u>connecting a backend with a frontend via long-lasting, full-duplex connections.</u> 
+
+**In a nutshell**, WebSockets are an excellect choice for <u>architecting event-driven systems</u> and <u>building reatime apps and services **where it's essesntial for data to be delivered immediately</u>**.
+
+We can broadly grooup <u>WebSocket **use cases**</u> into **two distinct categories**:
+- **Realtime updates,** <u>where the communication is unidirectional</u>, and <u>the server is streaming low-latency (and often frequent) updates to the client</u>.
+  - Live sports updates, alerts, realtime dashboards, or location tracking, trading apps etc.
+- **Bidirectional communication,** <u>where both client and the server can send and receive messages</u>.
+  - Chat, virtual events, virtual classromss, collaborative apps.
+
+Some <u>main benefits</u>:
+- **Improved perfomance.** No need for a <del>new connection with every request</del>, reduction in the size of message (no HTTP headers). These helps <u>save bandwith</u>, <u>improves latency</u>, and <u>enhances scalability</u>.
+- **Extensiblity.** Allows  for the implementation of <u>subprotocols and extensions for additional functionality</u>.
+- **Fast reaction times.**
+
+Nowadays, WebSockets are a key technology for building scalable realtime web apps.
+
+# WebSocket Protocol
+The base WebSocket protocol consists of **an opening handshake** (upgrading the connection from HTTP to WebSockets), <u>followed by</u> **data transfer**.
+- After the client and the server successfully negotiate <u>the opening handshake</u>, **the WebSocket connection** acts as a persistent full-duplex communication channel **where each side can, independently, send data at will**.
+- Clients and servers <u>transfer data</u> back and forth in conceptual units known as **messages**, which can **consist of one or more frames**.
+- Once the WebSocket connection has served its purpose, it can be <u>terminated via a closing handshake</u>.
+
+> Fragment identifiers are not allowed in WebSocket URIs. The hash character ( `#` ) must be escaped as `%23`.
+
+## Opening handshake
+The process of <u>establishing a WebSocket connection</u>.
+
+It consists of <u>**an HTTP/1.1 request/response exchange** between the client and the server</u>.
+
+- **The client** always initiates the handshake; it send <u>a `GET` request</u> to the server, indicating that it wants <u>**to updgrade the connection** from HTTP to WebSockets</u>.
+  > The <u>headers below</u> are <u>**mandatory**</u> for the client request. There are optional headers as well.
+
+  ```http
+  GET wss://example.com:8181/ HTTP/1.1
+  Host: localhost:8181
+  Connection: Upgrade
+  Sec-WebSocket-Version: 13
+  Sec-WebSocket-Key: r2320uflwjfoiw3==
+  ```
+  > If any header is not understood or has an incorrect value, the server should stop processing the request and respond with `400 Bad Request` error response.
+
+- **The server** must return <u>an `HTTP 101 Switching Protocols` response</u> code <u>for the **WebSocket connection** to be **established**</u>.
+  > The <u>headers below</u> are <u>**mandatory**</u> for the server response. There are optional headers as well.
+
+  ```http
+  HTTP/1.1 101 Switching Protocols
+  Connection: Upgrade
+  Sec-WebSocket-Accept: Efp2j2p492rfjof23r=
+  Upgrade: websocket
+  ```
+  > If a different status code is returned, the handshake will fail, and the connection will not be established.
+
+- Once that happens, the WebSocket connection can be used for ongooing, bidirectional, full-duplex communications between them.
+
+### Opening handshake headers (explained)
+
+#### Mandatory Headers
+- `Host` : The WebSocket connection URI
+- `Connection` : Value must be `Upgrade`. Both client and server.
+- `Upgrade` : Value must be `websocket`. Both client and server.
+- `Sec-WebSocket-Version` : Value must be  `13`. The only allowed value.
+- `Sec-WebSocket-Key` : A base64-encoded one-time random value (nonce) <u>sent by the client</u>.
+- `Sec-WebSocket-Accept` : A base64-encoded SHA-1 hashed value <u>returned by the server</u> **as a direct response to `Sec-WebSocket-Key`**. <u>Indicates that the server is willing to initiate the WebSocket connection.</u>
+
+#### Optional Headers
+- `Sec-WebSocket-Protocol` : 
+  - for **the client request**, it contains a <u>list of values indicating which subprotocols</u> it wants to speak, ordered by preference.
+  - for **the server response**, it contains the first-supported one, of the selected subprotocol values.
+- `Sec-WebSocket-Extensions` : <u>initially sent from the client</u> to the server, and <u>then subsequently sent from the server</u> to the client.
+  - It helps the client and server agree on a set of protocol-level extensions to use for the duration of the connection.
+- `Origin` : Header field sent by all browser clients.
+  - Used to protect against unauthorized cross-origin use of a WebSocket server by scripts using the WebSocket API in a web browser.
+  - The connection will be rejected if the `Origin` indicated is unacceptable to the server.
+
+### `Sec-WebSocket-Key` and `Sec-WebSocket-Accept`
+These headers are <u>essential in **guaranteeing**</u> that both the server and the client are capable of <u>**communicating over WebSockets**</u>.
+
+> `Sec-WebSocket-Key`.
+
+A base64-encoded one-time random value (nonce). Its **purpose** is <u>to help ensure that the server does not accept connections from non-WebSocket clients</u> (e.g., HTTP clients) that are being abused (or misconfigured) to send data to unsuspecting WebSocket servers.
+
+> `Sec-WebSocket-Accept`.
+
+A base64-encoded SHA-1 hashed value <u>generated by concatenating the `Sec-WebSocket-Key`</u> nonce sent by the client, <u>and the static value (UUID) `258EAFA5-E914-47DA-95CA-C5AB0DC85B11`</u>.
+
+
+## Message frames 
+A WebSocket message consists of one or more frames.
