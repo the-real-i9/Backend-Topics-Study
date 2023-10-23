@@ -14,6 +14,7 @@ Tags that reference server resources(href, srcx):
 * Web APIs
 - Fetch API
 - Credential Management API
+- Web Authentication API
 - Web Crypto API: SubtleCrypto
 - Web Locks API {For process synchronization}
 - Media
