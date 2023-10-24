@@ -10,23 +10,7 @@ You can create mini-projects to demostrate concepts as you go, ones you can use 
 
 **NOTE:** Your online content is also part of your portfolio.
 
-# Effective Learning
-**Step 1:** Study a topic (Textbook -> Roadmap Articles/Videos)
-- Derive article topics as you study.
-- Derive/Set explanatory questions
-
-**Step 2:** Practice necessary implementation
-
-**Step 3:** Write on that topic
-- Write like you're teaching with talk, be humane in your explanation.
-- Be less academic.
-- Explain very cleary and practically, in the way you've understood the topic, with the scenarios and expamples you've painted. **You get the idea.**
-- Be known for this writing style.
-
 # Next things (Current)
-- More HTTP-API--dev stuff (\w Roadmap Articles):
-  - SSE, GraphQL
-  - Cookies, Authentication, Session, Token, JWT, OAuth
 - Web Security
   - Hashing Algorithms (Cryptography), SSL/TLS, HTTPS, CORS, CSP, OWASP Risks, Server Security
 - Linux

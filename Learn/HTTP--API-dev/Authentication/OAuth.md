@@ -50,10 +50,12 @@ All these without your users having to share their passwords with these third-pa
 ---
 
 # Implementation
-## Code flow
-![](./oauth-code-flow.png)
+## OAuth 2.0: Authorization Code Flow
+![OAuth 2.0: Authorization Code Flow](./imgs/oauth-code-flow.png)
 
-## Practical
+## Setup
+> Defer the details till when you want to actually implement it.
+
 1. **Setup an Authorization server for your API using Auth0:** This is for your API that will be consumed by third-party apps.
     - Create an Account with Auth0 and get to the configuration interface.
     - Switch to the APIs tab and Click create API.
@@ -63,4 +65,3 @@ All these without your users having to share their passwords with these third-pa
     - *Check the video to for more setup details...*
 
 2. Configure a third-party app to communicate with your API that has implemented OAuth config.
-    - *Check the video to for setup details...*
