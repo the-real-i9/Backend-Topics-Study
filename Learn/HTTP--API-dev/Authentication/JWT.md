@@ -3,6 +3,7 @@ JWT is an open standard that defines a compact and self-contained way <u>for **s
 - The information can be verified and trusted because it is digitally signed. 
 - JWTs can be signed using a secret (HMAC algorithm) or a public/private key pair (using RSA or ECDSA).
 
+> Note: When something is a standard or protocol, it means you can implement it as a service, just by following the specification/rules defined in the standard or protocol.
 
 # When should you use JSON Web Tokens?
 - **Authorization:** Once the user is logged in, each subsequent request will include the JWT, allowing the user to access routes, services, and resources that are permitted with that token.
@@ -31,9 +32,16 @@ The header is Base64Url encoded to form the first part of the JWT.
 ## Payload
 Contains the claims. Claims are statements about an entity (typically, the user) and additional data. There are three types of claims: *registered*, *public*, and *private* claims. *Check the graphical illustration to know more*.
 
+- **Registered claims:** specify <u>information about the token</u> e.g. `iat` (issued at), `exp` (expiration date), `iss` (issuer) etc.
+- **Public claims:** specify <u>any information you want to exchange/carry in the token</u>. From user profile information (e.g. `{ "email": "ex@gmail.com" }`) to user permissions (e.g. `{ "admin": true }`) to any information you want you want to make decisions based on.
+- **Private claims:** specify information used by the token provider (signer) and consumer (verifier) engine. *"Nan'yabizness"*
+
 ```json
 {
-  "claimKey": "claimValue"
+  "id": "434h2kj32",
+  "email": "i9@gmail.com", // public claim: user info
+  "admin": true, // public claim: permission
+  "exp": 3600 // private claim
   ...
 }
 ```
@@ -46,6 +54,10 @@ The signature is used to verify the message wasn't changed along the way,
   - Assuming another payload was base64 encoded by an hacker and swapped with the original one, when the summary of the information (signature part) is decoded using the hash function and the secret key (unknown to the hacker), resulting information wouldn't match the one swapped in.
 
 and in case of tokens signed with a private key (secret key) by the sender, it can also verify that the sender of the JWT is who it says it is. Since only the sender's public key can decipher the message.
+
+```js
+HMACSHA256(b64_header, b64_payload, "secret_123")
+```
 
 ## Putting it altogether
 The output is three base64-URL strings separated by dots that can be easily passed in HTTP environments.
@@ -92,7 +104,7 @@ app.get('/protected_resource', jwt.verify(token, secret, [options]), (req, res) 
 })
 ```
 
-Note that <u>if you send JWT tokes through HTTP headers,</u> **you should try to prevent them from getting too big**. Some servers don't accept more than 8KB in headers. 
+Note that <u>if you send JWT tokens through HTTP headers,</u> **you should try to prevent them from getting too big**. Some servers don't accept more than 8KB in headers. 
 
 > If you are <u>trying to embed too much information in a JWT token</u>, like by including *all the user's permissions*, you may need <u>an alternative solution</u>, like **"Auth0 Fine-Grained Authorization"**.
 

@@ -28,11 +28,12 @@ You can create mini-projects to demostrate concepts as you go, ones you can use 
   - SSE, GraphQL
   - Cookies, Authentication, Session, Token, JWT, OAuth
 - Web Security
-  - SSL/TLS, Hashing Algorithms (Cryptography), HTTPS, CORS, CSP, OWASP Risks, Server Security
+  - Hashing Algorithms (Cryptography), SSL/TLS, HTTPS, CORS, CSP, OWASP Risks, Server Security
 - Linux
 - Languages: C, Nodejs, Go, Rust
   - Networking modules
-- API Design and Architectural principles
+- Software design and Architecture
+  - Design and principles, Architectural patterns
 - Building projects
 - Testing
 
@@ -44,4 +45,3 @@ You can create mini-projects to demostrate concepts as you go, ones you can use 
 - Networks and Distributed Systems
 - Networking | Internet
 - WebSockets
-- SSL/TLS
