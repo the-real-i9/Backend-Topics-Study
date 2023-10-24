@@ -32,6 +32,8 @@ You can create mini-projects to demostrate concepts as you go, ones you can use 
 - Linux
 - Languages: C, Nodejs, Go, Rust
   - Networking modules
+- API Design and Architectural principles
+- Building projects
 - Testing
 
 # Concept revision (\w roadmap articles)

@@ -33,3 +33,12 @@ If the user attempts to visit a different part of the server, the token communic
 
 ![Token auth process](./imgs/token-authentication.png)
 
+# Follow Auth Token Best Practices
+Your auth tokens should be:
+- **Private.** Users can't share token authenticatin devices or pass them around between departments.
+- **Secure.** Communication between the token and your server must be secure via HTTPS connections.
+- **Tested.** Run periodic token tests to ensure that your system is secure and functioning properly.
+
+- **Appropriate.** Pick the right token type for your individual use case. For examples, JWTs aren't ideal for session tokens.
+
+Don't take your authentication decision lightly. Do your homework, ask your peers, and ensure that you're doing the best job you can for your company.
