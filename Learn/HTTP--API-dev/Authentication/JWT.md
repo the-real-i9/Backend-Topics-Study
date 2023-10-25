@@ -51,9 +51,10 @@ The payload is then Base64Url encoded to form the second part of the JWT.
 To create the signature part you have to take the <u>encoded header and payload</u>, sign it with <u>a secret</u>, using <u>the algorithm (hash function) specified in the header</u>.
 
 The signature is used to verify the message wasn't changed along the way,
-  - Assuming another payload was base64 encoded by an hacker and swapped with the original one, when the summary of the information (signature part) is decoded using the hash function and the secret key (unknown to the hacker), resulting information wouldn't match the one swapped in.
+  - Assuming an hacker base64-decodes the payload portion of the JWT and modifies the information, when the summary of the information (signature portion) is decoded using the hash function and the secret key (unknown to the hacker), resulting information wouldn't match the one modified.
+  - Even though the hacker tries to decrypt the signature portion of the JWT, it doesn't know the secret key in order to get the dirty job done.
 
-and in case of tokens signed with a private key (secret key) by the sender, it can also verify that the sender of the JWT is who it says it is. Since only the sender's public key can decipher the message.
+and in case of tokens signed with a sender's private key, it can also verify the identity of the sender, as only the sender's public key can successfully decrypt the message.
 
 ```js
 HMACSHA256(b64_header, b64_payload, "secret_123")

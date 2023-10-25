@@ -67,7 +67,7 @@ Multiple concurrent transactions must execute independently of one another. **Th
 It is the resposibility of **the concurrency control susbsystem** to <u>ensure isolation</u>.
 
 ## Durability
-The effects of a *successfully completed (committed) transaction* are permanently recorded in the database and *must not be lost because of a subsequent failure*.
+The effects of <u>a *successfully completed (committed) transaction* are permanently recorded in the database</u> and <u>*must not be lost because of a subsequent failure*</u>.
 
 An entry is added to the database transaction log for each successful transaction.
 
