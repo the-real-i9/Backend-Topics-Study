@@ -3,18 +3,19 @@ We begin by listing the activities involved in API development. We'll talk about
 
 > I've already known some basics??? Ok! Just cover the ones you haven't known.
 
-Basic:
-- Creating routes with HTTP methods
+## Basic
+- REST | GraphQL | WebSockets | gRPC implementations.
+- Authentication & Authorization
+- Cookies
 - Request/Form/Field validation
 - Database: Connection, Data definition (Schema) and Manipulation (CRUD)
 - Pagination and Filtering
-- Authentication and Authorization
 - Testing
 - Design patterns
 - Other scaling techniques
 - [App Specific Integragions](../../Common-Software-Imps.md). [Click link to see]
 
-Advanced implementations:
+## Advanced
 - Caching
 - Search engines
 - Storing and serving static files.

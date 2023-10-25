@@ -12,10 +12,11 @@ You can create mini-projects to demostrate concepts as you go, ones you can use 
 
 # Next things (Current)
 - Web Security
-  - Hashing Algorithms (Cryptography), SSL/TLS, HTTPS, CORS, CSP, OWASP Risks, Server Security
+  - Hashing Algorithms, CORS, CSP, OWASP Risks, Server Security
 - Linux
 - Languages: C, Nodejs, Go, Rust
-  - Networking modules
+  - Networking modules, Language backend frameworks
+  - Implementation of REST, GraphQL, WebSockets, gRPC, and other [API development implementations](./Learn/HTTP--API-dev/API-dev/Implementations.md#basic).
 - Software design and Architecture
   - Design and principles, Architectural patterns
 - Building projects
@@ -29,3 +30,4 @@ You can create mini-projects to demostrate concepts as you go, ones you can use 
 - Networks and Distributed Systems
 - Networking | Internet
 - WebSockets
+- SSL/TLS
