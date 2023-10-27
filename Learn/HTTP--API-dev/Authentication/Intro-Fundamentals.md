@@ -7,6 +7,11 @@ When a user registers for an account, they must create <u>a unique ID and key (r
 
 Essentially, the user authentication process is what provides users repeat access to their own accounts while attempting to block any unauthenticated users from gaining access.
 
+> **Staight Up definition**\
+> <u>User authentication</u> is the process of allowing or revoking user access to protected resources on the server, based on the validity of the provided credentials. (a.k.a Login)
+>
+> <u>Authorization</u> defines the boundary of what an authenticated user is allowed to access or or what operation he's allowed to perform. For example, an authenticated user must not be able to access another user's resources or perfom an admin-only operation on the server.
+
 # How user authentication works?
 In order to gain, access users must prove to the website that they are who they say they are. <u>The ID and key are enough to confirm the user's identity, which will allow the system to authorize the user</u>.
 
@@ -32,14 +37,13 @@ There are three categories of authentication factors:
 
 All these authentication factors together can be generalized into <u>two super-categories</u>: **password-based** and **passwordless** authentication.
 
-With **password-based** authentication, user has to provide a password known to the user and the server. **Less secure**.
+  - With **password-based** authentication, user has to provide a password known to the user and the server. **Less secure**.
 
-> **Passwordless** authentication methods: 
-- **Biometrics:** <u>finger-print, facial-recognition, or iris</u>. Often considered one of the **most secure** options. Biological characteristics are unique can't be easily duplicated.
-- **Email/SMS:** <u>a code</u> to enter in the system or <u>a link</u> that redirects you back to the app (both verifying your identity) is sent to your email or phone number via SMS. 
-  - **More secure** than password-based, less secure than biometrics. Hackers could gain access to your email or phone number.
+  - > **Passwordless** authentication methods: 
+    - **Biometrics:** <u>finger-print, facial-recognition, or iris</u>. Often considered one of the **most secure** options. Biological characteristics are unique can't be easily duplicated.
+    - **Email/SMS:** <u>a code</u> to enter in the system or <u>a link</u> that redirects you back to the app (both verifying your identity) is sent to your email or phone number via SMS. 
+      - **More secure** than password-based, less secure (but more reliable) than biometrics. Hackers could gain access to your email or phone number.
 
-With several different ways to verify a user's account, it's important, as a developer, to <u>look at the pros and cos of each one and determine which option best fits your organization's needs</u>.
 
 # How to improve user authentication?
 - Encourage stronger passwords to improve security.
