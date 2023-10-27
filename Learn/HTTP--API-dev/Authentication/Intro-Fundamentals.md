@@ -7,10 +7,12 @@ When a user registers for an account, they must create <u>a unique ID and key (r
 
 Essentially, the user authentication process is what provides users repeat access to their own accounts while attempting to block any unauthenticated users from gaining access.
 
-> **Staight Up definition**\
+> **Staight Up definition 😎**\
 > <u>User authentication</u> is the process of allowing or revoking user access to protected resources on the server, based on the validity of the provided credentials. (a.k.a Login)
 >
-> <u>Authorization</u> defines the boundary of what an authenticated user is allowed to access or or what operation he's allowed to perform. For example, an authenticated user must not be able to access another user's resources or perfom an admin-only operation on the server.
+> <u>Authorization</u> is the process of allowing or revoking an authenticated user's access to or action on protected resources on the server, based on user permissions.\
+> --- OR ---\
+> <u>Authorization</u> defines the boundary of what resources an authenticated user is allowed to access and what operations he's allowed to perform on the server. For example, an authenticated user must not be able to access another user's resources or perfom an admin-only operation on the server.
 
 # How user authentication works?
 In order to gain, access users must prove to the website that they are who they say they are. <u>The ID and key are enough to confirm the user's identity, which will allow the system to authorize the user</u>.

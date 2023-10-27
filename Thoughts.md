@@ -11,8 +11,6 @@ You can create mini-projects to demostrate concepts as you go, ones you can use 
 **NOTE:** Your online content is also part of your portfolio.
 
 # Next things (Current)
-- Web Security
-  - Hashing Algorithms, CORS, CSP, OWASP Risks, Server Security
 - Linux
 - Languages: C, Nodejs, Go, Rust
   - Networking modules, Language backend frameworks
