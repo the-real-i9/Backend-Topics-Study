@@ -129,3 +129,8 @@ This is what `console.log(cspReport)` above will log.
   }
 }
 ```
+
+---
+
+> **Where/When to use CSP?**\
+Use CSP <u>when you're not in control of the frontend</u>. For example, when building **a public API** or **a web hosting server**. If you're building a private API, you know what and what not to include in the frontend.
