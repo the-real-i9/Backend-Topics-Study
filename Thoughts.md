@@ -11,14 +11,17 @@ You can create mini-projects to demostrate concepts as you go, ones you can use 
 **NOTE:** Your online content is also part of your portfolio.
 
 # Next things (Current)
-- Linux
-- Languages: C, Nodejs, Go, Rust
+- Linux {Deferred}
+- Languages: C, Go, Rust {Deferred}
   - Networking modules, Language backend frameworks
   - Implementation of REST, GraphQL, WebSockets, gRPC, and other [API development implementations](./Learn/HTTP--API-dev/API-dev/Implementations.md#basic).
 - Software design and Architecture
   - Design and principles, Architectural patterns
-- Building projects
 - Testing
+- Building projects
+  > `while {true}`\
+  > English training\
+  > Per book: One section per day on revision
 
 # Concept revision (\w roadmap articles)
 - Virtual Memory: Virtual Address space
@@ -29,3 +32,4 @@ You can create mini-projects to demostrate concepts as you go, ones you can use 
 - Networking | Internet
 - WebSockets
 - SSL/TLS
+- Go
