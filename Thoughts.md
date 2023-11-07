@@ -12,16 +12,17 @@ You can create mini-projects to demostrate concepts as you go, ones you can use 
 
 # Next things (Current)
 - Linux {Deferred}
-- Languages: C, Go, Rust {Deferred}
-  - Networking modules, Language backend frameworks
+- Languages: C, Go (`*1`), Rust {Deferred}
+  - Networking modules, Language Backend frameworks
   - Implementation of REST, GraphQL, WebSockets, gRPC, and other [API development implementations](./Learn/HTTP--API-dev/API-dev/Implementations.md#basic).
 - Software design and Architecture
-  - Design and principles, Architectural patterns
+  - Design and principles, Architectural patterns, Design patterns, Clean code
 - Testing
 - Building projects
-  > `while {true}`\
-  > English training\
-  > Per book: One section per day on revision
+  > `while {true}`
+  > - English training
+  > - Per book: One section per day on revision
+  > - Create Social media post
 
 # Concept revision (\w roadmap articles)
 - Virtual Memory: Virtual Address space
