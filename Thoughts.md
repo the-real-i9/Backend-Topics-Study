@@ -17,12 +17,13 @@ You can create mini-projects to demostrate concepts as you go, ones you can use 
   - Implementation of REST, GraphQL, WebSockets, gRPC, and other [API development implementations](./Learn/HTTP--API-dev/API-dev/Implementations.md#basic).
 - Software design and Architecture
   - Design and principles, Architectural patterns, Design patterns, Clean code
-- Testing
-- Building projects
-  > `while {true}`
-  > - English training
-  > - Per book: One section per day on revision
-  > - Create Social media post
+- API Design
+  - Building projects
+  - Testing
+    > `while {true}`
+    > - English training
+    > - Per book: One section per day on revision
+    > - Create Social media post
 
 # Concept revision (\w roadmap articles)
 - Virtual Memory: Virtual Address space

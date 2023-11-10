@@ -10,11 +10,12 @@
 - AWS
 - Languages: NodeJS, Go, Rust.
 ---
-> Practices and Patterns
+> Practices and Patterns --- **Build Mastery**
 - **Web Security:** HTTPS, Encryption, CORS, CSP, SSL/TLS, API Security Best Practices, SHA, OWASP, OWASP Cheatsheet.
-- **^Software Design & Architecture:** Clean code, Design patterns, Design and Development Principles, Architectural Patterns.
+- **Software Design & Architecture:** Clean code, Design patterns, Design and Development Principles, Architectural Patterns.
 - Data Structures & Algorithms.
-- ^Testing + CI/CD.
+- API Design
+- Testing + CI/CD.
 - Building for Scale.
 ---
 > Ancestor Concepts
