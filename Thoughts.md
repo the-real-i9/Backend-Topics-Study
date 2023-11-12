@@ -10,7 +10,7 @@ You can create mini-projects to demostrate concepts as you go, ones you can use 
 
 **NOTE:** Your online content is also part of your portfolio.
 
-# Next things (Current)
+# Current Steps
 - Linux {Deferred}
 - Languages: C, Go (`*1`), Rust {Deferred}
   - Networking modules, Language Backend frameworks
@@ -22,8 +22,22 @@ You can create mini-projects to demostrate concepts as you go, ones you can use 
   - Create content based on concepts applied and tools used in the project
   
   > ----- While doing the above -----
-  - English training
+  - English training: Building English Expertise
   - Per book: One section per day on revision
+
+- Create your Portfolio {After 3 or 4 projects}
+- **Dive deep into/Focus on:** Content Creation (Online Presence, Knowledge sharing)
+  - Continue to create projects to learn more. Add the cool ones to portfolio
+  - Keep learning more. Update your knowledge.
+  - Continue to Pursue Excellence and Build competence
+  - Continue the <u>**Career Growth/Climbing**</u> and **Self-Development**.
+
+> **Ways to get job and make money**\
+++ Job search with Porfolio and Online presence\
+++ Get hired to work through Online Presence (Contract or Full-time)\
+++ Content Creation, Online School, Social media, Creating and Selling courses\
+++ Building and Selling APIs etc.
+
 
 # Concept revision (\w roadmap articles)
 - Virtual Memory: Virtual Address space
