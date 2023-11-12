@@ -26,11 +26,12 @@ You can create mini-projects to demostrate concepts as you go, ones you can use 
   - Per book: One section per day on revision
 
 - Create your Portfolio {After 3 or 4 projects}
-- **Dive deep into/Focus on:** Content Creation (Online Presence, Knowledge sharing)
+- **Dive deep into/Focus on:** Content Creation (Online Presence, Knowledge sharing | Open Source Contribution | Community Participation)
   - Continue to create projects to learn more. Add the cool ones to portfolio
-  - Keep learning more. Update your knowledge.
+  - Continue your learning. Update your knowledge.
   - Continue to Pursue Excellence and Build competence
   - Continue the <u>**Career Growth/Climbing**</u> and **Self-Development**.
+  - **In summary:** Commence your [career growth](../../../My%20Ideas/TheBiggerPicture.md), pursuing excellence, building competence, influencing the community, networking, online presence.
 
 > **Ways to get job and make money**\
 ++ Job search with Porfolio and Online presence\
