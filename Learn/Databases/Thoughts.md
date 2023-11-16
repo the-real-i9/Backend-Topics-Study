@@ -1,10 +1,6 @@
-
-
----
----
 # MongoDB
 Things to Cover
-## Beginer
+## Beginner
 - CRUD Operations
 - Aggregation Operations
 - Data Models
@@ -19,13 +15,5 @@ Things to Cover
 - Time Series
 - Change Streams
 
-# Learning Order
-- Methodology | DDBMs and Replication
-- Mongo data models
-- Roadmap
-
 ## Next Things
-- Methodology
-  - Logical Database design
-  - Physical Database design
 - Distributed DBMSs and Replication

@@ -1,33 +1,29 @@
 # Learning
 > Implementations
-- **HTTP:** Cookies & Authentication, Messages, Transaction, Web sockets, Server-sent events, Web servers, Proxies, NodeJs.
-  - **API dev:** REST, GraphQL, gRPC, Express, Apollo, NextJS, Versioning, Rate Limiting, Acrhitectural Diagrams, Design Documents.
+- **HTTP:** Cookies & Authentication, Messages, Transaction, Web sockets, Server-sent events, Web servers, Proxies, HTTPS, CORS, CSP
+  - **API dev:** Backend services(REST/Express, GraphQL/Apollo, gRPC ...), NextJS, Versioning, Rate Limiting, Acrhitectural Diagrams, Design Documents, Backend frameworks/libraries, Language Networking Modules.
+  - Basically, every implementation involved in creating APIs. <u>Learn them while building projects.</u>
 - **Databases:** Data modeling, Database design, SQL, NoSQL, ORMs, Concepts: ACID, Transaction, Normalization, Database Indexes, Sharding, Data Replication.
 - **Caching:** Concepts, Client-side, Server-side, CDN, Redis.
 - **Search Engines:** Elastic Search.
 - **Message Brokers/Queues | Messaging Systems:** Kafka, Rabbit MQ.
 - **Containerization:** Docker, Kubernetes
 - AWS
-- Languages: NodeJS, Go, Rust.
+- Languages: NodeJS, Go, Rust
+
 ---
+
 > Practices, Patterns & Improvment --- **Build Mastery**
-- **Web Security:** HTTPS, Encryption, CORS, CSP, SSL/TLS, API Security Best Practices, SHA, OWASP, OWASP Cheatsheet.
+- **Web Security:** API Security Best Practices, OWASP, OWASP Cheatsheet.
 - **Software Design & Architecture:** Clean code, Design patterns, Design and Development Principles, Architectural Patterns.
 - Data Structures & Algorithms.
 - API Design
 - Testing + CI/CD.
 - Building for Scale.
----
-> Ancestor Concepts
-- **Networking:** TCP/IP Transport and Network layers, Internet, DNS, Sockets.
-- **OS Concepts:** Interprocess Communication, Threads and Concurrency, Process Synchronization, Memory Management, I/O Management, Virtual Memory, Terminal Usage, Linux fundamentals.
+- Terminal Usage, Linux -- Learn bit-by-bit when you need them.
 
-# Time table
-| Day/time | 0 - 4hrs | 4 - 8hrs | 8 - 12hrs |
-| --- | --- | --- | --- |
-| **Mon** | HTTP | HTTP | HTTP |
-| **Tue** | HTTP | Databases | Databases |
-| **Wed** | Databases | Caching | Caching |
-| **Thur** | Security | Security| Security|
-| **Fri** | Software D.A. | Software D.A. | Software D.A. |
-| **Sun** | DSA | Networking | OS concepts
+---
+
+> Ancestor Concepts
+- **Networking:** TCP/IP Transport and Network layers, Internet, DNS, Sockets, Crptography, Hashing, SSL/TLS
+- **OS Concepts:** Interprocess Communication, Threads and Concurrency, Process Synchronization, Memory Management, I/O Management, Virtual Memory

@@ -11,12 +11,6 @@ You can create mini-projects to demostrate concepts as you go, ones you can use 
 **NOTE:** Your online content is also part of your portfolio.
 
 # Current Steps
-- Linux {Deferred}
-- Languages: C, Go (`*1`), Rust {Deferred}
-  - Networking modules, Language Backend frameworks
-  - Implementation of REST, GraphQL, WebSockets, gRPC, and other [API development implementations](./Learn/HTTP--API-dev/API-dev/Implementations.md#basic).
-- Software design and Architecture
-  - Design and principles, Architectural patterns, Design patterns, Clean code
 - Building English Expertise, Oratory Training
   - General Backend Revision alongside
   > Note: Above all skill prioritize this one.\
@@ -26,9 +20,11 @@ You can create mini-projects to demostrate concepts as you go, ones you can use 
   - Create content based on concepts applied and tools used in the project
   
   > ----- While doing the above -----
+  - Software design and Architecture
+    - Design and principles, Architectural patterns, Design patterns, Clean code
+    - As you learn, make adjustments to and refactor your code.
   - Continue English training: Building English Expertise
   - Per book: One section per day on revision
-
 - Create your Portfolio {After 3 or 4 projects}
 - **Dive deep into/Focus on:** Content Creation (Online Presence, Knowledge sharing | Open Source Contribution | Community Participation)
   - Continue to create projects to learn more. Add the cool ones to portfolio. Create content based on concepts applied and tools used in the project
