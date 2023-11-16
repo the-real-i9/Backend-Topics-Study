@@ -108,5 +108,16 @@
   - Enclosed `if`, `else`, `while` statements should be one line long. Probably that line should be a functional call.
   - Functions should not be large enough to hold to hold nested structures. The indent level of a function should not be greater than one or two.  
 
-- Do one thing:
-  - 
+- Do only one thing:
+  - This **one thing** may involve <u>more than one step</u>, where *each step is one level of abstraction below the stated name of the function*.
+  - If a function does only <u>those steps that are one level below the stated name of the function</u>, then the function is doing one thing.
+  ```js
+  function renderPageWithSetupsAndTeardowns(pageData, isSuite) {
+    if (isTestPage(pageData))
+      includeSetupAndTeardown(pageData, isSuite)
+    return pageData.getHtml()
+  }
+  ```
+  - A way to know that **a function is doing more than one thing** is <u>if you can extract another function from it with *a name that is not merely a restatement of its implementation*</u>.
+  - To proof that the above code does one thing using the previous point. Suppose we extract the condition into a function named `includeSetupAndTeardownIfTestPage`. Notice that this function name is merely a restatement of the above condition.
+
