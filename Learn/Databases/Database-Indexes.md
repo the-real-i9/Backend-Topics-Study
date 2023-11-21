@@ -3,9 +3,9 @@ An index is a data structure created on top of an existing table to speed up the
 
 The data stored in a table should be organized in a particular order to speed up various searches. **This is why indexes come into play**.
 
-Definition: An inidex is a separated data structue that speeds up the data retrieval on a table *at the cost of additional writes and storage to maintain the index*.
+Definition: An index is a separated data structue that speeds up the data retrieval on a table *at the cost of additional writes and storage to maintain the index*.
 
-Create indexes on the columnn(s) you want to include in the where clause.
+Create indexes on the columnn(s) you want to include in the `WHERE` clause.
 
 # CREATE INDEX
 > Syntax:
@@ -17,7 +17,7 @@ CREATE [UNIQUE] INDEX index_name ON table_name [USING method]
   -- more columns
 );
 ```
-The `method` specifies the data structure to restructure the column's entire data into for fast retrieval. *Think of changing an array into a binary search tree.* PostgreSQL uses `btree` by default.
+The `method` specifies the data structure to restructure the column's entire data into, for fast retrieval. *Think of changing an array into a binary search tree.* PostgreSQL uses `btree` by default.
 
 
 # Example
@@ -34,6 +34,7 @@ This restructures the linear phone number list into a binary search tree (`btree
 Using the `EXPLAIN ANALYZE` on this shows, **`Index Scan usingidx_address_phone on address`**.
 
 # DROP INDEX
+Deletes the index data structure for the specified table column.
 
 ---
 ---
