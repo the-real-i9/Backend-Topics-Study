@@ -15,7 +15,11 @@ It's important to note that <u>connecton manangement in HTTP applies to the conn
 
 
 ## Short-lived connections
-A new TCP connection is established each time a client needs to send a request, and closed once the response is received by the client. This is a <u>one-request-per-session</u> model. This is the first model used by HTTP in its infancy.
+A new TCP connection is established each time a client needs to send a request, and closed once the response is received by the client.
+
+Only one request/response pair can occur in a connection session.
+
+ This is the first model used by HTTP in its infancy.
 
 This model held an innate **limitation** on performance: 
 - Opening each TCP connection is a resource-and-time-consuming operation in that, several messages must be exchanged between the client and the server before a connection is established.
@@ -29,7 +33,7 @@ In HTTP/1.1, this model is only used when the `Connection` header is sent with a
 ## Persistent connections
 A persistent connection is one which remains open for a period of time, and can be reused for several requests, saving the need for a new TCP handshake, and utilizing TCP's performance enhancing capabilities - warm connections.
 
-This connection will not stay open forever: idle connections are closed after some time. Also, a server may use the `Keep-Alive` header to specify a minimum time the connection should be kept open.
+This connection will not stay open forever: idle connections are closed after some time. Also, a server may use the `Keep-Alive` header to specify the life-time of the connection.
 
 In HTTP/1.1, persistence is the default, and the header is no longer needed.
 

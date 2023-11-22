@@ -59,7 +59,7 @@ Proxies placed at the meeting point of different/separate networks (LANs or WANs
 
 ---
 
-> Disclaimer:
+### Disclaimer
 
 Proxies are not physical entities designed to be recongnized according to their function. They're merely proxy servers each containing the program that performs the specific function for which it is named, at the location where it will be used.
 
@@ -71,6 +71,61 @@ A "content router" is just a proxy server that contains a program that does cont
 
 It's crazy! Proxies can even forward request to proxies, that perform a different fuction.
 
----
+## Proxy Hierarchies
++++
+## Proxy hierarchy content routing
++++
+## How do proxies get traffic
++++
 
-Learn other things when needed.
+# Tricky things about proxy requests
+## Proxy URIs Differ from Server URIs
+Proxy URIs use the absolute-form (`http://www.example.com/index.html`), while Server URIs and Reverse-proxy servers use the origin-form (`/index.html`).
+
+## Intercepting proxies get partial (origin-form) URIs
+Even if the client is not configured to use a proxy, the client’s traffic still may go through a surrogate or intercepting proxy. In both of these cases, the client will think it’s talking to a web server and would send a partial (origin-form) URI.
+- A <u>surrogate (reverse-proxy)</u>, is a proxy server taking the place of the origin server, usually by assuming its hostname or IP address. It can be used for different purposes, especially as a proxy cache, as discussed above.
+- An <u>intercepting proxy</u> is a proxy server in the network flow that hijacks traffic from the client to the server and does a proxy-thing.
+
+## Proxies can handle both proxy and server requests
+Because of the different ways that traffic can be redirected into proxy servers, general-purpose proxy servers should support both absolute-form and origin-form URIs in request messages.
+
+The proxy should use the absolute-form URI if it is an explicit proxy request or use the origin-form URI and the virtual Host header if it is a web server request.
+> The form taken by the URIs, allows the proxy detect whether it it is an explicit proxy request (absolute form) or a web server request (origin form).
+
+
+# Tracing Messages
++++
+## The `Via` header
++++
+## The `TRACE` method
++++
+
+# Proxy Authentication
++++
+
+# Proxy Interoperation
+## Handling unsupported headers and methods
+Proxies must forward unrecognized header fields and must maintain the relative order of header fields with the same name.
+
+If a proxy is unfamiliar with a method, it should try to forward the message to the next hop, if possible.
+
+## `OPTIONS`: Discovering optional feature support (Preflight request)
+This method lets a client (or proxy) discover the supported functionality of a web server or of a particular resource on a web server.
+
+Clients can use <u>`OPTIONS` to determmine a server's capabilities before interacting with the server</u> (preflight request), making it easier to interoperate with proxies and servers on different feature leves.
+
+Using asterisk-form URI, the request applies to the entire server's supported fuctionality.
+```http
+OPTIONS * HTTP/1.1
+```
+Using a resource URI (abolute or origin), the request inquires about the features available to that particular resource
+```http
+OPTIONS http://example.com/index.html HTTP/1.1
+```
+
+On success response, the headers includes various fields that describe features supported on the server or available to the resource. The various hearder fields are the `Access-Control-Allow-*` set of headers and the `Allow` header, which specifies supported methods.
+
+The `Allow` header can be used as a request header to recommend the methods to be supported by the new resource. The server's response selects the ones it supports in its own `Allow` header. If it supports none, it should specify the ones it rather supports.
+
+A proxy can't modify the `Allow` header field even if it doesn't understand all the methods specified.
