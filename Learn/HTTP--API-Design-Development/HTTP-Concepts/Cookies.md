@@ -3,7 +3,7 @@ An HTTP cookie is a small piece of data that a server sends to a user's web brow
 
 Typically, an HTTP cookie is <u>**used to tell if two requests come from the same browser**</u>. It <u>remembers stateful information</u> for the stateless HTTP protocol.
 
-> Cookies are <u>mainly used for **three purposes**</u>:
+## Cookies are <u>mainly used for **three purposes**</u>:
 
 **Session manangement:** Logins, shopping carts, game scores, or anything else that the server should remember.
 - If we set an expiration on a cookie, we can say we've established something like a session, since the browser will never send back an expired cookie. *"Remember this information for this length of time"*.
@@ -38,18 +38,18 @@ You can set more than one cookie at once.
 **`HttpOnly` attribute** ensures that the browser's cookie jar is inaccessible to JavaScript through the `document.cookie` API. Protecting it from XSS attacks.
 
 ## Define where cookies are sent
-> The `Domain` attribute
+### The `Domain` attribute
 
 specifies <u>which host can receive a cookie</u>.
 - If not specified, the same host that sets the cookie is used, *excluding subdomains*.
 - If specified, the subdomains of the specified domain are included.
 - The first is generally common, and the second is common for domains with subdomains.
 
-> `Path` attribute
+### `Path` attribute
 
 indicates that <u>this path must be present in the request URL</u> for this cookie to be attached to it. Sub directories match as well.
 
-> `SameSite` attribute
+### `SameSite` attribute
 
 lets specify <u>whether/when cookies are sent with cross-site requests</u> (i.e. requests from an origin site different from the cookie's origin site). This provides some protection against cross-site request forgery attacks (CSRF).
   - `Strict` : the browser <u>only sends the cookie with requests from the cookie's origin site</u>.
@@ -58,7 +58,7 @@ lets specify <u>whether/when cookies are sent with cross-site requests</u> (i.e.
 
 **Note:** <del>same domain with different schemes</del> are not cosidered same site.
 
-> Cookie prefixes
+## Cookie prefixes
 
 Because of the design of the cookie mechanism, a server can't confirm that a coolie was set from a secure origin or even tell where a cokie was originally set.
 
@@ -68,14 +68,14 @@ We can use cookie prefixes to assert specific facts about the cookie.
 
 If a <u>cookie name</u> has {below} prefix, it's accepted in a `Set-Cookie` header only if
 
-> `__Host-`
+### `__Host-`
 - it's also marked with the `Secure` attribute,
 - it *does not include* a `Domain` attribute,
 - it has the `Path` attribute set to `/`.
 
 This way, these cookies can be seen as **"domain-locked"**.
 
-> `__Secure-`
+### `__Secure-`
 
 - it's marked with the `Secure` attribute. This is weaker than the `__Host-` prefix.
 

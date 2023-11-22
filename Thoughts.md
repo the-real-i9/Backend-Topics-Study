@@ -9,7 +9,7 @@
 - Building English Expertise, Oratory Training
   - General Backend Revision alongside
   > Note: Above all skill prioritize this one.\
-  > Continue to the next step, when you've acquired a training you can put on repeat everyday.
+  > Continue to the next step when you've acquired a training you can put on repeat everyday.
 - API Design & Building
   - Build projects as a practical means of learning API design
   - Create content based on concepts applied and tools used in the project
