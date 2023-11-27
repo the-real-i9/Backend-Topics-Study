@@ -18,7 +18,8 @@
 - **Software Design & Architecture:** Clean code, Design patterns, Design and Development Principles, Architectural Patterns.
 - Data Structures & Algorithms.
 - API Design
-- Testing + CI/CD.
+- Testing, CI/CD.
+- Deploying and Monitoring
 - Building for Scale.
 - Terminal Usage, Linux -- Learn bit-by-bit when you need them.
 

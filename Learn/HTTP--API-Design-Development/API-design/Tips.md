@@ -70,3 +70,9 @@ Some implementations return a URL with an error message, which tells you more ab
 In order to keep all teams in your company abiding by certain priciples, the use of OpenAPI specifications can be useful. 
 
 <u>OpenAPI allows you to design your APIs first and share that with the consumers in an easier manner</u>.
+
+# Approaches to Creating an API?
+- **Use API management platforms** like Amazon API Gateway, Google Cloud Endpoints, and Microsoft Azure API Management
+- **Use serverless computing platforms** like AWS Lambda, Google Cloud Functions, and Azure Functions.
+- **Use web frameworks** like Flask, Django, or Express.js to code your own API. Host them on a cloud platform like Heroku and Firebase.
+- **Use mock API tools** like Mockaroo or Mockbin to simulate real APIs.
