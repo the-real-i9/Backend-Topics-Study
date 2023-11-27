@@ -26,6 +26,7 @@
   - number series (`a1`, `a2`, ...) and noise words (`nameString` instead of `name`) added to make variable names distinct, result in meaningless distinctions.
   - Distinguish names in such a way that the reader knows what the differences offer.
   ```js
+  ❌❌❌
   var variable;
 
   var v1, v2 v3;
@@ -121,3 +122,41 @@
   - A way to know that **a function is doing more than one thing** is <u>if you can extract another function from it with *a name that is not merely a restatement of its implementation*</u>.
   - To proof that the above code does one thing using the previous point. Suppose we extract the condition into a function named `includeSetupAndTeardownIfTestPage`. Notice that this function name is merely a restatement of the above condition.
 
+---
+---
+
+# Other tips
+### Be consistent
+Maintain a consistent pattern of naming conventions, data structures, and interfaces throughout the system.
+
+### Have a consistent Indentation and Code Style
+Use whitespace to visually group related lines of code together. Code style refers to the naming conventions, commenting, and use of whitespace; these should be consistent.
+
+### Keep it small
+Design and implement small, focused components that serve a specific purpose. Methodds, classes, files, functions.
+
+### Pure Functions
+- Cause no side effects, such as modifying the state of the system or interacting with external resources.
+- Given the same input, it will always return the same output
+- It does not depend on any state or variables that are outside of its scope
+
+### Minimize cyclomatic complexity
+Cyclomatic complexity is a measure of the structural complexity of a program, which is determined by the number of linearly independent paths through a program's control flow (i.e. complex `if-else` branches).
+
+Ways to minimize:
+- Break down complex functions into smaller, simpler functions that perform specific tasks.
+- Use control structures, such as if-else statements and loops, in a consistent and predictable way. Safeguard with inverted `if`s.
+- Use functional programming concepts and techniques, such as immutablility and pure functions, to reduce the need for complex control folw.
+- Use design patterns, such as the state pattern, to simplify complex control flow.
+- Regularly review the code and refactor it to simplify the control flow.
+- Use static code analysis tools that can detect and report high cyclomatic complexity in the code.
+
+### Avoid passing nulls or booleans
+Passing nulls or Booleans can lead to unexpected behaviour and difficult-to-debug errors in a program.
+
+Ways to avoid this:
+- Use Optionals or Maybe types instead of nulls to indicate the absence of a value.
+- Use a default value for function arguments instead of allowing them to be null or Boolean
+- Use the Null Object pattern to replace null values with a special object that has a defined behaviour.
+- Use the ternary operator (`?:`) instead of if-else statements when working with booleans.
+- Use the assert function to check the validity of function arguments and throw an exceptions if they are invalid.
