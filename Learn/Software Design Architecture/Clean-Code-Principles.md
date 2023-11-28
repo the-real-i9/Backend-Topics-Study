@@ -105,27 +105,54 @@
   ```
 
 # Functions
-- Functions should be very <u>small</u>.
+### Functions should be very <u>small</u>.
   - Enclosed `if`, `else`, `while` statements should be one line long. Probably that line should be a functional call.
   - Functions should not be large enough to hold to hold nested structures. The indent level of a function should not be greater than one or two.  
 
-- Do only one thing:
-  - This **one thing** may involve <u>more than one step</u>, where *each step is one level of abstraction below the stated name of the function*.
-  - If a function does only <u>those steps that are one level below the stated name of the function</u>, then the function is doing one thing.
-  ```js
-  function renderPageWithSetupsAndTeardowns(pageData, isSuite) {
-    if (isTestPage(pageData))
-      includeSetupAndTeardown(pageData, isSuite)
-    return pageData.getHtml()
-  }
-  ```
+### Do only one thing:
+- This **one thing** may involve <u>more than one step</u>, where *each step is one level of abstraction below the stated name of the function*.
+- If a function does only <u>those steps that are one level below the stated name of the function</u>, then the function is doing one thing.
+```js
+function renderPageWithSetupsAndTeardowns(pageData, isSuite) {
+  if (isTestPage(pageData))
+    includeSetupAndTeardown(pageData, isSuite)
+  return pageData.getHtml()
+}
+```
   - A way to know that **a function is doing more than one thing** is <u>if you can extract another function from it with *a name that is not merely a restatement of its implementation*</u>.
   - To proof that the above code does one thing using the previous point. Suppose we extract the condition into a function named `includeSetupAndTeardownIfTestPage`. Notice that this function name is merely a restatement of the above condition.
+- Functions that do one thing cannot be reasonably divided into sections.
+
+### One Level of Abstraction per function
+We have **high**, **intermediate** and **low** level abstractions/operations. Mixing levels of abstraction within a function is always confusing.
+
+#### Reading Code from Top to Bottom: The Stepdown Rule
+We want the code to read like a top-down narrative. We want every function to be followed by those at the next level of abstraction so that we can read the program, descending one level of abstraction at a time as we read down the list of functons.
+```js
+function includeSetupAndTeardowns() {
+  includeSetups()
+  includeTestpageContent()
+  includeTeardowns()
+}
+
+function includeSetups() {
+  if (isSuite) includeSuiteSetup()
+  includeRegularSetup()
+}
+
+function includeSuiteSetup() {
+  searchParentHierarchy()
+  addIncludeStatement()
+}
+
+// you get the gist of it
+```
+### Switch Statements
 
 ---
 ---
 
-# Other tips
+# Summary of Principles
 ### Be consistent
 Maintain a consistent pattern of naming conventions, data structures, and interfaces throughout the system.
 
@@ -154,9 +181,56 @@ Ways to minimize:
 ### Avoid passing nulls or booleans
 Passing nulls or Booleans can lead to unexpected behaviour and difficult-to-debug errors in a program.
 
-Ways to avoid this:
+**Ways to avoid this:**
 - Use Optionals or Maybe types instead of nulls to indicate the absence of a value.
 - Use a default value for function arguments instead of allowing them to be null or Boolean
 - Use the Null Object pattern to replace null values with a special object that has a defined behaviour.
 - Use the ternary operator (`?:`) instead of if-else statements when working with booleans.
 - Use the assert function to check the validity of function arguments and throw an exceptions if they are invalid.
+
+### Keep Framework Code Distant
+This refers to separating the application's code from the framework's code.
+
+It makes it easier to maintain, test, and upgrade the application's codebase and the framework independently.
+
+### Use correct constructs
+This refers to using appropriate programming constructs, such as loops, conditionals, and functions, <u>in a way that makes the code easy to understand, maintain, and modify</u>.
+
+The code should be organized in a logical and intuitive way, <u>making use of appropriate control flow statements and data structures to accomplish the task at hand</u>. This also means that the code should <u>avoid using unnecessary or overly complex constructs that make the code harder to understand or reason about</u>.
+
+Use the <u>right constructs for the right problem</u>, for example, if you want <u>to iterate over an array, use a for loop instead of recursion</u> and also, you should <u>avoid using global variables and instead use function arguments and return values to pass data between different parts of the code</u>.
+
+### Keep Tests Independent
+When tests are independent, a change in one test will not affect the results of other tests.
+- Use dependency injection to decouple the test code from the application code.
+- Use mocks or stubs to isolate the test from external dependencies such as databases, APIs, or other services.
+- Use test data that is self-contained and does not rely on external data or state.
+- Use a test framework that supports running tests in parallel, so that the tests can be run independently of each other.
+- Use TDD, which involves writing tests before writing the application code. This ensures that the tests are independent and that the code is written with testability in mind
+- Avoid global state and shared mutable state as it may cause unexepected results.
+
+### Code by Actor
+This is a software development technique that encourages developers to <u>**organize code around the actors or entities that interact with it**</u>. Actors can be users, systems, or processes that perform a specific role or function within the application.
+
+### CQRS
+Command-Query Separation is a software design principle that separates the responsibilities of a method or function into two categories: commands and queries.
+
+Commands are methods that change the state of the system, while queries are methods that return information but to do not change the state of the system.
+
+### Avoid Hasty Abstractions
+Creating too many abstractions or creating them too early can lead to unnecessary complexity and make the code harder to understand and maintain.
+- Understand the problem that needs to be solved before creating an abstraction.
+- Start with a simple solution and only create abstraction when it becomes clear that the solution is becoming too compelex.
+- Use code refactoring techniques to simplify the code before creating an abstraction.
+- Avoid creating abstractions for the sake of creating them.
+- Use established design patterns and practices when creating abstractions, but to not force them into the code
+- Use automated testing to ensure that the abstraction does not introduce new bugs or break existing functionality.
+- Create abstractions in a way that it's easy to test, debug, and reason about.
+
+If you abstract early though, you'll think the function or component is perfecct for your use case and so you just bend the code to fit your new use case. This goes on several times until the abstraction is basically your whole application in `if` statements and loops.
+
+We should be mindful of the fact that we don't really know what requirements will be placed upon our code in the future.
+
+> I think I've been in this problem before. I wanted to reuse a `Header` component, but here comes more headers each with subtle differences, this led to the use of several `if` statements in the component, testing if certain arguments are present or not and making adjustments based on them.
+
+Don't be dogmatic about when you start writing abstractions but instead write the abstractions when it feels right and don't be afraid to duplicate code until you get there.
