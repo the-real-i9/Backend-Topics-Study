@@ -8,6 +8,20 @@ The different components of an API are represented as boxes or objects. Each int
 
 For example, the flow of a user <u>creating an account</u>, <u>creating a post</u>, <u>purchasing an item</u> etc. Visualizing this flow between the components of your API is what we're talking.
 
+Diagram should show any, 
+- action command
+- request construction
+- dynamic data changes
+- decision making
+- caching logic
+- storage logic
+- proxy logic
+- validation
+- response construction etc., 
+that may be occuring for a user action/request.
+
+Basically, *every* thing, effect or changes that occur as a user request/action is being processed, at every point in the flow of information. Whatever is occuring.
+
 # End-to-End Diagrams
 End-to-end diagrams provide a high-level view on an API, showing how it interacts with external systems and services.
 
