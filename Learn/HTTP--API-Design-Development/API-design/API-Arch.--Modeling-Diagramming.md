@@ -29,16 +29,24 @@ The API is placed in the center, with the different external systems and service
 
 They are useful for undestanding the overall architecture of an API and the diffent systems and services that it interacts with. This is often seen in System design books.
 
-External system and services depicted can include, caches, storages, databases, CDNs, Message Brokers, Load balancers etc.
+External system and services depicted can include, 
+- proxies doing proxy stuff
+- caches
+- storages
+- databases
+- CDNs
+- Message Brokers
+- Load balancers
+- Web Services etc.
 
 
 # Component Diagrams
 Component diagrams are used to show the different components of an API and how they interact with each other.
 
-They a particularly useful for understanding the overall structure of an API and how its different components are organized.
+They a particularly useful for understanding the overall **structure of an API** and **how its different components are organized**.
 
-The different components of an API are the independent implementations that serve specific purposes. For example the components that:
+The different components of an API are the independent implementations that serve specific purposes. For example the **components** that:
 - Sign-in, Sign-up, Reset password, Validates user inputs, Authenticates user
 - Creates posts, Add an item to cart etc.
 
-Generally, these are handlers that API endpoints lead to, whether explicitly or implicitly.
+Generally, these are handlers that API endpoints map to, whether explicitly or implicitly.
