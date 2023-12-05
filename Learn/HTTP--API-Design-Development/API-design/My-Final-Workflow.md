@@ -14,15 +14,23 @@ Write a brief description of your API.
 ### Step 3: Determine your API Architecture; Backend services/integrations
 - Research on Architectural patterns, Architectural styles and Design patterns. Cient-Server? Event-driven? Microservices? MVC? etc.
 
-- What backend services are you gonna integrate?: Database? Load balancers? Caches? CDNs? Compressors? Data manipulators? etc.
+- What backend services are you gonna integrate?: Database? Load balancers? Caches? CDNs? Compressors? Data manipulators? Converters? etc.
 
-### Step 4: Draw Architectural diagrams
+### Step 4a: User story outline
+- Outline the flow involved in the architecture of each user story/action
+- This is basically the folw of a dynamic diagram involving components and code diagrams
+
+### Step 4b: Draw Architectural diagrams
 - Create architectural diagrams based on the previous step
-- End-to-End diagrams, Component diagrams, Sequence diagrams
-> You can skip this part for the time being.
+  - System context diagrams
+  - Container diagrams
+  - Dynamic diagrams (component + code diagrams) for each user story/action.
+- Diagrams are based on the C4 model
 
 ### Step 5: Create API blueprint and specification
 Open API specification, API blueprint
+
+> **Note!!!** Don't do the whole of steps 4 & 5 in one go, your goal is "learning", rather, contribute a section of it everyday; this way you utilize spaced repetition, thereby solidifying your understanding.
 
 ### Step 6: Verify the design; Mock and Prototype; Review
 This helps you interact with your API visually
@@ -30,14 +38,22 @@ This helps you interact with your API visually
 > You can skip this step, if you'll do step 7
 
 ### Step 7: Create the Frontend simulation
-Create the frontend simulation of your App
+- Create the frontend simulation of your App
 
-### Step 8: Develop API using a language/framework of choice
-- Go through the API development process
-- Take [Step 3](#step-3-determine-your-api-architecture-backend-servicesintegrations) into account.
+- In each action view, a response should be accompanied by its corresponding user story architecture diagram.
 
-### Step 9: Test your API and Fix bugs
 
-### Step 10: Deployment
+### Step 8: API Development 
+- Develop API using a language/framework of choice.
+while taking [Step 3](#step-3-determine-your-api-architecture-backend-servicesintegrations) into account.
+  - NodeJS/Express | Go/Fiber
+- Test-Driven-Development (TDD)
+-  Learn or Revise a concept as you get to its point of application.
+- Periodically, revise Design Principles & Patterns and improve your designs.
+
+  > Don't defer this step for diagramming and specification. Just continue to build it up. Although, you may have to outline user story first.
+
+### Step 9: Deployment
+- CI/CD, Hosting, Cloud services
 
 ### Step 11: Monitoring and Growth
