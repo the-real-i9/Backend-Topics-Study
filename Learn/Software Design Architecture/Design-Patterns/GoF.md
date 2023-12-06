@@ -1,3 +1,0 @@
-# Four Categories
-- Creational
-- Behavioural
