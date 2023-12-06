@@ -6,6 +6,7 @@
 - Before you even start thinking on how to solve a problem, ask ChatGPT how to go about it, first.
 - Use the backend implementation guide listed in your ChatGPT history.
 
+
 > **NOTE:** Your online content is also part of your portfolio.
 
 > **Warning!!! ⚠**\
