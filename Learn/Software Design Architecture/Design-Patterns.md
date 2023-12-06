@@ -20,6 +20,8 @@
 
 ### Proxy pattern
 
+### Dependency injection pattern
+
 ## Creational Patterns
 ### Abstract Factory pattern
 
