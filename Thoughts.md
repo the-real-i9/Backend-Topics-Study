@@ -1,11 +1,13 @@
 # Tips
-## On project building
+### On project building
 - Don't be rigid on "full API architectural diagramming first". If you can contiue to develop the API, then continue. Let development and diagramming aid each other.
 - Following the defined steps you go through in building an API, is your major concern.
-- Don't forget your frontend simulation
 - Before you even start thinking on how to solve a problem, ask ChatGPT how to go about it, first.
 - Use the backend implementation guide listed in your ChatGPT history.
-
+---
+- The goal is to show that you understand concepts, topics, features and how to implement them. Also, that you know how to make components work together by building big CRUD APIs
+- For the time while you develop your API, limit frontend implementation to what's needed to send and receive data, just `console.log`ing the data might be enough in most CRUD cases. Meanwhile, you can improve layout and styling for features that required them to show that they work (WebSockets, Media streaming, Http streaming etc)
+- Your also have your API specification, diagrams, API clients and online content/presence to show that you know stuff.
 
 > **NOTE:** Your online content is also part of your portfolio.
 

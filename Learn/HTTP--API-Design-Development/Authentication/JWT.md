@@ -112,7 +112,7 @@ Note that <u>if you send JWT tokens through HTTP headers,</u> **you should try t
 Do <u>**note** that with *signed tokens*</u>, 
 - all the <u>information contained within the token is exposed to users or other parties</u>, even though they are unable to change it. 
 - This means **you should not put secret inforation within the token**. 
-- **<u>The payload porttion of the token can be Base64 decoded</u>**.
+- **<u>The payload portion of the token can be Base64 decoded</u>**.
 
 ---
 

@@ -41,10 +41,10 @@ All these authentication factors together can be generalized into <u>two super-c
 
   - With **password-based** authentication, user has to provide a password known to the user and the server. **Less secure**.
 
-  - > **Passwordless** authentication methods: 
+  - **Passwordless** authentication methods: 
     - **Biometrics:** <u>finger-print, facial-recognition, or iris</u>. Often considered one of the **most secure** options. Biological characteristics are unique can't be easily duplicated.
     - **Email/SMS:** <u>a code</u> to enter in the system or <u>a link</u> that redirects you back to the app (both verifying your identity) is sent to your email or phone number via SMS. 
-      - **More secure** than password-based, less secure (but more reliable) than biometrics. Hackers could gain access to your email or phone number.
+      - **More secure** than password-based, less secure (but more reliable) than biometrics. Less secure than biometrics, since hackers could gain access to your email or phone number. More reliable than biometrics, since biological features are subject to change whether by accident or growth.
 
 
 # How to improve user authentication?

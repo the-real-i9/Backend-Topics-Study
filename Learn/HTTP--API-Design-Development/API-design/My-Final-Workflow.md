@@ -37,23 +37,28 @@ This helps you interact with your API visually
 
 > You can skip this step, if you'll do step 7
 
-### Step 7: Create the Frontend simulation
-- Create the frontend simulation of your App
+### Step 7: Create the Frontend simulation (alongside step 8)
+- Only implement the features enough for sending and receiving data on the frontend, don't do any styling for the mean time, until you're done with the API.
+- If `console.log()` is enough to prove that things are working, stay at that level for now.
+- In the case of WebSockets or Media related stuff, you may need a little UI to prove things are working.
 
 - In each action view, a response should be accompanied by its corresponding user story architecture diagram.
 
 
-### Step 8: API Development 
+### Step 8: API Development (alongside step 7)
 - Develop API using a language/framework of choice.
-while taking [Step 3](#step-3-determine-your-api-architecture-backend-servicesintegrations) into account.
-  - NodeJS/Express | Go/Fiber
+while taking [Step 3](#step-3-determine-your-api-architecture-backend-servicesintegrations) into account. ((NodeJS/Express | Go/Fiber))
 - Test-Driven-Development (TDD)
 -  Learn or Revise a concept as you get to its point of application.
+
 - Periodically, revise Design Principles & Patterns and improve your designs.
 
-  > Don't defer this step for diagramming and specification. Just continue to build it up. Although, you may have to outline user story first.
+> Don't defer this step for diagramming and specification. Just continue to build it up. Although, you may have to outline user story first.
 
-### Step 9: Deployment
+### Step 9: Test your endpoints in Postman
+Undergo this step if you don't have a frontend for the API
+
+### Step 10: Deployment
 - CI/CD, Hosting, Cloud services
 
 ### Step 11: Monitoring and Growth

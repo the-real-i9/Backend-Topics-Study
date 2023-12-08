@@ -1,9 +1,9 @@
-> Note: Documented here are new things I come across
+# Postgres
 
-**Query CLAUSE arrangement:**\
+### Query CLAUSE arrangement
 `SELECT` >> `DISTINCT` >> `FROM` >> `... JOIN` >> `GROUP BY` >> `HAVING` >> `WHERE` >> `ORDER BY` >> `LIMIT`
 
-**Query CLAUSE evaluation order:**\
+### Query CLAUSE evaluation order
 `... JOIN` >> `FROM` >> `WHERE` >> `GROUP BY` >> `HAVING` >> `SELECT` >> `DISTINCT` >> `ORDER BY` >> `FETCH/LIMIT`
 
 ---
@@ -14,14 +14,14 @@ What is listed after the `SELECT` statement (asides `*`) are actually, comma-sep
 
 The `ORDER BY` clause allows you to sort rows returned by a `SELECT` clause in ascending or descending order <u>based on a *sort expression*</u>.
 - This sort expression is like the one that does follow the `SELECT` clause. A sort expression is optionally followed by `ASC`ending or `DESC`ending.
-- With multiple comma-separated expressions, `n-th + 1` expression is executed on the sorted result of `n-th` expression.
+- With multiple comma-separated expressions, `n-th + 1` (next) expression is executed on the sorted table resulting from the `n-th` (previous) expression.
 - Due to the order of evaluation, if you have a column alias in the `SELECT` clause, you can use it in the `ORDER BY` clause.
 - If the attribute you order by contains `NULL`(s), `NULL` cannot be executed so as to determine where it should go (up or down). Using one of the clauses `NULLS FIRST` or `NULLS LAST`, you can specify whether rows with the `NULL` attribute should all come first or come last in the sort.
 
 ---
 
-The `SELECT DISTINCT column ...` clause removes duplicates of `column` from the result set retured by `SELECT`.
-- With multiple comma-separated columns, `DISTINCT` uses the combination of both columns to evaluate duplicates.
+The `SELECT DISTINCT column ...` clause removes duplicates of `column` from the result set returned by `SELECT`.
+- With multiple comma-separated columns, `DISTINCT` uses the combination of both columns to evaluate duplicates (other identical combinations are removed).
 - `SELECT DISTINCT ON (column) ...` includes/keeps the first row in each of the duplicate group
 - It is a **good practice** to always use the `ORDER BY` clause with the `DISTINCT ON (expression)` to make the result set predictable.
   - Because, now that we'll have duplicates of two, this will keep the duplicates together, hence, a predictaable result.
@@ -36,9 +36,10 @@ The `SELECT DISTINCT column ...` clause removes duplicates of `column` from the 
 - <u>It is evaluated after the `FROM` clause and before the `SELECT` and `ORDER BY` clause</u>. Therefore, if you use column aliases in the `SELECT` clause, you cannot use them in the `WHERE` clause.
 
 To form the <u>**condition** in the `WHERE` clause</u>, you use *comparison and logical operators*:
+
 > `IN`
 
-You use `IN` operator in the `WHERE` clause to chack <u>if a **value** *matches any* value "in" **a list of values**</u>. In other words, <u>if **value** is included in **a list of values**</u>.
+You use `IN` operator in the `WHERE` clause to check <u>if a **value** *matches any* value "in" **a list of values**</u>. In other words, <u>if **value** is included in **a list of values**</u>.
 
 ```sql
 value IN (value1, value2, ...)
@@ -47,7 +48,7 @@ value IN (value1, value2, ...)
 value NOT IN (value1, value2, ...)
 ```
 
-The **list of values** can be a list of literal values such as <u>numbers</u>, <u>strings</u>, or a <u>result of a `SELECT` statement</u> (which is a list of values for a *single column*).
+The **list of values** can be a list of literal values such as <u>numbers</u>, <u>strings</u>, or a <u>result of a `SELECT` statement</u> (which is a list of values in a *single column*).
 
 > `BETWEEN`
 
@@ -70,7 +71,7 @@ value NOT LIKE pattern
 value ILIKE pattern
 value NOT ILIKE pattern
 ```
-- Percent sign <kbd>`%`</kbd> matches any sequece of zero or more characters.
+- Percent sign <kbd>`%`</kbd> matches any sequence of zero or more characters.
 - Underscore <kbd>`_`</kbd> maches any single character.
 
 > `NULL`
@@ -88,8 +89,6 @@ value IS NULL
 value IS NOT NULL
 ```
 
----
-
 # Joins
 Join is used to **combine columns frome one or more tables <u>based on the values of _the common colums between related tables_**</u>.
 - The common columns are typically the primary key columns of the first table and foreign key of the second table.
@@ -103,8 +102,8 @@ FROM
 (INNER JOIN | LEFT JOIN | RIGHT JOIN | FULL OUTER JOIN)
   table2 
   ON table1_colX = table2_colX
-
 ```
+
 **An intuitive way to think about this is:**
 - first_table `INNER JOIN` second_table, constitutes the whole table taken by the `FROM` clause.
 - The `ON` condition, acts like the `WHERE` clause, which <u>filters the joined table to the final table of the `FROM` clause</u>.
@@ -230,11 +229,11 @@ In the end, the joined table of the `FROM` clause, is the combination of the com
 > **What I remember:**
 - The `GROUP BY` clause, takes the combination of all the columns `(column 1, column2, ...)` specified in the `SELECT` clause.
 
-- It then merges rows with same column-combined `(column1, column2, ...)` value.
+- It then merges rows with equal, column-combined `(column1, column2, ...)`, values.
 - Since it combines all the columns you specify in `SELECT`, you must also specify those columns in the `GROUP BY`.
-  - An exception to this are **aggregate functions** specified in `SELECT`, even if they have aliases, seeing that **they compute column aggregation for each merged rows**.
-- **Caution!!!**: If you include a column for which the rows don't have same column, together with a column for which the rows have same column.
-  - The column combination would cause adjacent rows to be different. Hence, no grouping is done. Unless we have one column combination that matches the column combination that matches that of another one or more.
+  - An exception to this, are **aggregate functions** specified in `SELECT`, even if they have aliases, seeing that <u>they merge equal valued rows in a column by computing aggregates</u>.
+- **Caution!!!**: If you include a column for which the rows don't have equal values, together with a column for which the rows have equal values.
+  - The column combination would cause adjacent rows to be different. Hence, no grouping is done. Unless we have one column combination that matches that of another one or more.
 
 For exmaple:
 ```sql
@@ -253,9 +252,9 @@ ORDER BY age, class
 ```
 You're correct!
 
-The `GROUP BY` clause divides the rows returned from `SELECT` statement into groups. For each group, you can apply an aggregate function e.g. `SUM()` to calculate the sum of items or `COUNT()` to get the number of items in the groups.
+The `GROUP BY` clause divides the rows returned from `SELECT` statement into groups. For each group, you can apply an aggregate function e.g. `SUM()` to calculate the sum of, number data type, items or `COUNT()` to get the number of items in the groups.
 
-The statement clause divides the rows by the values of the columns specified in the `GROUP BY` clause and calculates a value (aggregate) for each group.
+The statement groups the equal-value rows of the columns specified in the `GROUP BY` clause and calculates an aggregate value for each group.
 
 > Note: Aliases used in `SELECT` cannot be used in this clause, due to evaluation order. It doesn't even make sense.
 
@@ -291,15 +290,15 @@ The `UNION` operator may place the rows from the result set of the first query b
 **In practice**, you often use the `UNION` operator **to combine data from similar tables**, which are not perfectly normalized, in the data warehouse or business intelligence systems.
 
 ## INTERSECT
-Like UNION and EXCEPT, but the `INTERSECT` operator <u>returns any rows that are available in both result sets</u>.
+`INTERSECT` operator <u>returns any rows that are available in both result sets</u>.
 
 ## EXCEPT
-Like, UNION and INTERSECT, but the `EXCEPT` operator <u>**returns distinct rows** from the first (left) query that are not in the output of the second (right) query</u>.
+`EXCEPT` operator <u>**returns distinct rows** from the first (left) query that are not in the output of the second (right) query</u>.
 
-Like, the **subtration** math operation.
+Like, the **subtration** arithmetic operation.
 
 # Subquery
-A sub-query is a `SELECT` query that **computes to a single colum with one (single value) or more (multiple values) rows**.
+A sub-query is a `SELECT` query that **computes to a single colum with one (single value) or more (multiple values) rows**. Basically, a list of values (a, b, c, ...), each being separate rows of a common column.
 
 It is mostly used with the `WHERE` clause.
 
@@ -310,8 +309,8 @@ You can reference the table of the outer query from the subquery.
 EXISTS subquery
 ```
 A subquery can be the input of the `EXISTS` operator.
-- If the subquery returns any row, the `EXISTS` operator returns true.
-- If the subquery returns no row, the result of `EXISTS` operator is false.
+- If the subquery returns at least one row, the `EXISTS` operator returns true.
+- If the subquery returns zero rows, the result of `EXISTS` operator is false.
 - The `EXISTS` operator only cares about the number of rows returned from the subquery, not the content of the rows, therefore, the common coding conventon of `EXISTS` is
   ```sql
   EXISTS (SELECT 1 FROM my_table WHERE condition)
@@ -323,14 +322,22 @@ A subquery can be the input of the `EXISTS` operator.
 ### Usage with the `ANY` operator
 ```sql
 expression comparison_operator ANY(subquery)
+WHERE a_value > ANY(SELECT amount FROM some_table)
 ```
-The `ANY` operator returns true if any value of the subquery meets the condition, else, it returns false.
+The `ANY` operator returns true if any value of the subquery meets the condition, else, it returns false. More like, `[].some()` in JavaScript.
 
 ### Usage with the `ALL` operator
 ```sql
 expression comparison_operator ALL(subquery)
+WHERE a_value > ALL(SELECT amount FROM some_table)
 ```
 The `ALL` operator returns true if all values in the subquery meets the condition, else, it returns false.
+
+You can use this expression to find which row has the highest value for a particular column.
+```sql
+SELECT * from products
+WHERE price >= ALL(SELECT price FROM products)
+```
 
 
 # Common table expressions (CTE)
@@ -341,7 +348,7 @@ A common table expression is **a <u>temporary</u> result set which you can refer
 **Syntax:**
 ```sql
 WITH cte_name (column_list) AS (
-  CTE_query_definition -- the `SELECT` query that forms your table.
+  CTE_query_definition -- the query that forms your temporary table.
 )
 statement -- the (CRUD) statement you want to execute on the CTE table.
 
@@ -369,18 +376,28 @@ WITH RECURSIVE cte_name AS (
 
   CTE_query_definition -- recursive term
 
-) SELECT * FROM cte_name;
+) statement;
 ```
 
 > Ok so... **Here's how this works**.
-- **First,** in execution of the non-recursive term on `tableX`, the resulting set represents the starting table of `cte_name`, **`cte_table_0`**.
+- **First,** in execution of the **non-recursive term** on `tableX`, <u>the resulting set represents the starting table of `cte_name`,</u> which is, **`cte_table_0`**.
 
-- Next, in the execution of the recursive term, we `...JOIN` `tableX` with the current `cte_name` table, `cte_table_0`. The resulting set represents the next table of `cte_name`, **`cte_table_1`**.
+- Next, in the execution of the **recursive term**, we `...JOIN` `tableX` with the current `cte_name` table, which is, of course, `cte_table_0`.
+  ```sql
+  ... FROM tableX INNER JOIN cte_table_0 ON(tableX.column1 = cte_table_0.column3)
+  -- In practice, we don't use `cte_table_0`, the incrementation is what database will do internally, rather we just use the "cte_name" which refers to the resulting table at every iteration.
+  ```
+The resulting set represents the next table of `cte_name`, **`cte_table_1`**.
 
 - Next, the recursive term is again executed, and again we `...JOIN` `tableX` with the current `cte_name` table, `cte_table_[i]`. The resulting set represents the next table of `cte_name`, **`cte_table_[i+1]`**.
+  ```sql
+  ... FROM tableX INNER JOIN cte_table_[i] ON(tableX.column1 = cte_table_[i].column3)
+  -- In practice, we don't use `cte_table_[i]`, the incrementation is what database will do internally, rather we just use the "cte_name" which refers to the resulting table at every iteration.
+  ```
   - This step is <u>**repeated until**, the current `...JOIN` *execution results in an empty table*</u>.
 
-- **Finally,** all resulting `cte_table`s are merged with the `UNION [ALL]` set operation, into a single table.
+- **Finally (with CTE),** all resulting `cte_table`s are merged with the `UNION [ALL]` set operation, into a single table.
+- **Finally,** you can execute any `statement` on the `UNION` merged `cte_table`s.
 
 # Modifying Data
 ## INSERT
@@ -493,7 +510,7 @@ A transaction is a single unit of work, consisting of one or more database opera
 
 ***It is a must for any real application.***
 
-# How it works
+## How it works
 ```sql
 -- To begin a transaction
 
@@ -511,17 +528,16 @@ ROLLBACK;
 -- you can't rollback changes that have been commited
 ```
 
-> At DBMS software level, a transaction (one SQL statement) has this internally implemented.\
->To the DBMS software, that is the definition of a single unit of work.
-
+> At DBMS software level, a transaction (one SQL statement) has this internally implemented as it could consist of one or more low-level database operations.
 
 ---
 
 > Advanced
-# Indexes
-A database index is a data structure that improves the speed of data retrieval on a table at the cost of additional additional writes and storage space to maintain that structure.
 
-They help us to quickly locate data without having to perform a full table scan each time a table is accessed.
+# Indexes
+A database index is a data structure that improves the speed of data retrieval from a table at the cost of additional writes and storage space to maintain that structure.
+
+They help us to quickly locate data without having to perform a full-table-scan each time a table is accessed.
 
 ## Non-clustered index
 - The data is physically present in arbitrary order, but the logical ordering is specified by the index. 
@@ -532,11 +548,13 @@ They help us to quickly locate data without having to perform a full table scan 
 
 ## PGSQL Index Methods
 > B-TREE indexes
+
+These are indexes that take on the structure of a <u>binary-tree data structure</u>.
 - Query planner will consider this type whenever index columns are involved in a comparison that uses one of the following operators (`>, <=, =, >=, BETWEEN, IN, IS NULL, IS NOT NULL`)
-- It'll be considered with `LIKE` operators, <u>**only if**</u>, the patter starts with alphabetic characters e.g. `'foo%', 'bar%', '^foo'`,
+- It'll be considered with `LIKE` operators, <u>**only if**</u>, the patter starts with alphabetic characters e.g. `'foo%'`, `'bar%'`, `'^foo'`.
 - It is the most used type in RDMSs.
 - <u>These are not my problem anyways</u>. It's the DBMSs problem. It's the default.
-- **Create B-TREEs on unique columns, or create a composite index that makes it unique**.
+- **Note!!! Create B-TREEs on unique columns, or create a composite index that makes it unique**.
 
 > Hash indexes
 - Hash indexes **can handle only <u>simple equality comparison</u>** ( `=` ).
@@ -611,9 +629,9 @@ WHERE LOWER(column_name) === "value" -- here
 **Note!!** Functional based indexes are expensive to maintain. You should only used then when retrieval speed is more critical than insertion and update speed.
 
 ## Partial Index
-Partial index, allows you to **specify the rows of a table that should be indexed**. This helps speed up the query while reducing the size of the index.
+Partial index allows you to **specify the rows of a table that should be indexed**. This helps speed up the query while reducing the size of the index.
 
-The partial index is <u>useful in a case you have commonly used **`WHERE` conditions that use constant values**</u>.
+The partial index is <u>useful in cases where you have commonly used **`WHERE` conditions that use constant values**</u>.
 
 ```sql
 SELECT * FROM table_name
@@ -652,7 +670,7 @@ WHERE col1 = v1; -- OK
 
 **<u>A key takeaway:</u>** When you define a composite index, you should always consider the business context to **find which columns are often used for lookup and place the columns at the beginning of the column list while defining the index**.
 
-> <u>Multicolumn indexes should be used sparingly</u>.
+<u>Multicolumn indexes should be used sparingly</u>
 
 # Data types
 ## UUID
@@ -711,22 +729,24 @@ WHERE column_value = some_value
 ```
 
 ## JSON
-When you a column is JSON-data type,
+When your column is JSON-data type,
 You can query it in two ways,
 ```sql
 -- as json (->)
 SELECT column_name -> 'objVal' AS alias FROM table_name
--- if you query as json, you can chain the access to go further down the hierarchy
+-- if you query as json, you can chain the access to go further down the hierarchy until you reach a text with ->>
 
 -- as text (->>)
 SELECT column_name ->> 'textVal' AS alias FROM table_name
 -- if you query as text, or the last prop in the access chain is text, you cant go further, even though the text may look-like json.
 
 -- chain the access
-SELECT column_name -> 'obhVal' -> 'innerDictVal' ->> 'textVal' AS alias FROM table_name
+SELECT column_name -> 'dictVal' -> 'innerDictVal' ->> 'textVal' AS alias FROM table_name
 
 -- you can have multiple columns
 SELECT column_name -> 'objVal' AS alias_1, column_name ->> 'textVal' AS alias_2 FROM table_name
+
+--- If you query json as a text with ->>, you'll get a stringified json result
 ```
 
 You can use it in a `WHERE` clause
@@ -734,18 +754,18 @@ You can use it in a `WHERE` clause
 WHERE colunm_name -> 'objVal' ->> 'textVal' = 'someText'
 ```
 
-Basically, you can use it anywhere you can have an attribute.
+Basically, you can use it anywhere a column name or attribute is required.
 
 > Apply aggregate functions
 
-We can apply aggregate functions to JSON data. But note that you have to apply it to number strings in text format casted to integer e.g. 
+We can apply aggregate functions to JSON data, only that the data has to be a numeric taxt that can `CAST` to `INTEGER` e.g. 
 ```sql
 MAX (CAST (->> 'num_column' AS INTEGER))
 ```
 
 > JSON functions
 
-There are **JSON functions**, you can call on your json data. The arguments can be the whole json data (`jsonColumn`) or an inner value accessed with `column -> objVal` or `column ->> textVal`
+There are **JSON functions** you can call on your json data. The arguments can be the whole json data (`jsonColumn`) or nested datas accessed with `column -> objVal` or `column ->> textVal`
 ```sql
 -- expand the outer-most object referenced into key-value pairs
 json_each(jsonColumn),
@@ -781,7 +801,7 @@ SELECT hstore_column1 -> 'key1', hstore_column1 -> 'key2'
 FROM table_name
 ```
 
-<u>Just like JSON, you can use it anywhere you need a column value.</u>
+<u>Just like JSON, you can use it anywhere a column value is required.</u>
 
 ***Check the documentation if you need more.*** You can do a lot more, like 
 - *updating, adding, removing* a key:value pair.
@@ -848,7 +868,7 @@ ALTER TABLE table_name DROP CONSTRAINT table_name_pkey;
 ```
 
 ## Foreign Key
-A foreign key is a column or a group of columns in a table that reference the primary key of another table.
+A foreign key is a column or a group of columns in a table that references the primary key of another table.
 - The table that contains the foreign key is called the child table. And the table referenced by the foreign key is called the parent table.
 - A table can have multiple foreign keys depending on its relationships with other tables.
 - The foreign key constraint helps to maintain the referential integrity of data between the child and parent tables.
@@ -872,7 +892,8 @@ ALTER TABLE table_name
 ADD 
 -- just as it is in table creation
 CONSTRAINT constraint_name 
-FOREIGN KEY(fk_columns) REFERENCES parent_table(parent_columns) 
+FOREIGN KEY(fk_columns) 
+REFERENCES parent_table(parent_columns) 
 -- optional deleting and updating
 [ON DELETE CASCADE]
 ```
@@ -930,7 +951,8 @@ CREATE TABLE table_name (
 )
 ```
 
-Modifying existing table
+# Modifying existing table
+There are several ways to modify whatever, check the docs.
 ```sql
 CREATE TABLE table_name (
   column_name datatype
@@ -950,8 +972,6 @@ CREATE TABLE new_table AS [(optional_colum_names...)]
 -- the result of the second line becomes the contents of `new_table`.
 -- It can be any type of query, as long as it generates a result set.
 ```
-
-
 
 # Sequences
 Say you need a column that gets sequentially unique values from for each row.
@@ -977,9 +997,9 @@ This is the technique used by `AUTO_INCREMENT` or `SERIAL`.
 
 
 # Identity Column
-The `GENERATED AS IDENTITY` constraint is **the SQL standard-conformming variant** of the good old `SERIAL` column.
+The `GENERATED AS IDENTITY` constraint is **the SQL standard-conforming variant** of the good old `SERIAL` column.
 
-Like `SERIAL` it uses, the `SEQUENCE` object above internally.
+Like `SERIAL`, it uses the `SEQUENCE` object described above above, internally.
 
 ```sql
 CREATE TABLE ...
@@ -988,7 +1008,13 @@ column_name data_type GENERATED { ALWAYS | BY DEFAULT } AS IDENTITY [ (sequence_
 - The `data_type` can be `SMALLINT`, `INT`, `BIGINT`
 - If `GENEATED ALWAYS` is used, you cannot insert or update values in this column.
 - If `GENERATED BY DEFAULT` is used, if you supply a value for the column, the value is used, if no value is supplied, the system generates a default value.
-- You can optionally specify sequencing options, to control program how the values should be generated.
+- You can optionally specify sequencing options, that controls how the values are be generated.
 
 # Views
 A view is useful for wrapping a **commonly used complex query**.
+
+# Triggers
+
+# Stored Procedures
+
+# Window Functions
