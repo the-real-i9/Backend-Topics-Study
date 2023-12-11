@@ -1,168 +1,85 @@
+# Intro
+#### The <u>goals of design principles</u> are
+- to promote extensibility, flexibility and maintainability
+- to extend the functionality of your application by introducing new implementations without requiring changes in existing code.
+- to make your code become more flexible and adaptable to changes.
+- to promote a design where changes in one part of the system have minimal impact on other parts.
+- to make it easier to replace components in your system without causing a ripple effect throughout the codebase
+- to promote modularity and testability
+
+#### In practice, more than one of this principles would apply in a single design.
+- Consider all these principles all at the same time when designing any sub-part of your system.
+- In fact, trying to enforce one almost ensures you implement the other.
+
+# The principles
+
 ### Encapsulate what varies
-This principle suggests that you should isolate the parts of your code that are likely to change in the future.
+This principle suggests that you should isolate the parts of your code that are likely to change in the future, from what stays the same.
 
-By encapsulating the varying elements, you make it easier to modify or extend the system without affecting the rest of the codebase.
+In a situation whereby, a user needs to achieve several tasks (one or more), and he may choose from several services that all allows these tasks to be achieved in their own way. What stays the same is "the task(s)", what varies is "how to get them (it) done", hence the need to choose one from the many services that works.
+- One way to solve this is to write the task logic for each service the user might choose in each task function; and if another option is available, we extend the condition block in each task function.
+- The better way is to isolate each service, along with the tasks they're are capable of, including their logic. Now then the user selects a service, we just give him the service along with all its tasks.
 
-**Example Use case:**\
-In a system that interacts with different types of databases (MySQL and MongoDB), to store and retrieve data. It no doubt that how to achieve the same task, say create connection or retrieve data, varies in both database types.
+> Note here that, a user needs one service for all the tasks he wants to achieve, even if it is one; as long as how to achieve a task varies, encapsulate/isolate it.
 
-In a situation like this one, it's easy to quickly conclude on `if-else` statements. But it creates a hassle: you'll have to repeat the conditional flow for every database operations, the program has to test every condition it ecounters until it finds the one that returns true. This makes the code harder to maintain and extend.
-
-Solution is to "encapsulate what varies". But what varies? Of course, it's the differences in how to achive the same task.
-- So we can have different databases as separate objects, each implementing these common tasks in its own way.
-- Now when, you want to achieve a task, just pass in the database object you choose to use, and invoke the task.
-```js
-class Database {
-  constructor(database) {
-    this.database = database
-  }
-
-  connect() {
-    // we didn't have to use if statements to test for matches
-    this.database.connect()
-  }
-}
-
-class MySQL {
-  connect() {
-    // MySQL connection algorithm
-  }
-}
-class MongoDB {
-  connect() {
-    // MongoDB connection algorithm
-  }
-}
-
-new Database(new MongoDB()).connect()
-new Database(new MySQL()).connect()
-```
-This implementation follows the <u>dependency injection principle</u> and <u>strategy pattern</u>
-
----
+> It doesn't only have to be in the context of a user, a product and a service. Any problem that models itself in this way.\
+**Basically,** an entity wants to achieve one or more tasks, but there are several solutions, each providing how to get them done in their own way.\
+**A real life model:** You want to create your backend API, but there are several languages or frameworks to get it done, each allowing the features you want to implement in its own way.
 
 ### Program to an interface, not an implementation
-This principle emphasizes the use of interfaces (or abstract classes in some programming langues) to define contracts between components.
+This principle emphasizes the use of interfaces (or abstract classes in some programming langues) to <u>define contracts between components</u>.
 
-> **Interface:** A data structure that only defines expected behaviours for the classes that implements it, and leaves implementation details of each behaviours to those classes to implemen, each in its own way.
+> **Interface:** A data structure that enforces behaviours for the concrete classes that implement it, and leaves the implementation details of each behaviour to those concrete classes that implements each behaviour in their own way.
 
-**Without the principle**
-```js
-class NotificationService {
-  sendByEmail(user, message) {}
-  sendBySMS(user, message) {}
-  sendByPush(user, message) {}
-}
-```
-This can be problematic if you want to add new notification channels or change the implementation of existing ones.
+This is closely related to encapsulation, where each encapsulated component implements a common interface that enforces the behaviours each component must implement, in its own way. Chances are, you'll think of applying this principle when you need to apply the encapsulation priciple.
 
-***With the principle**
-```js
-// interface
-class NotificationChannel {
-  sendNotification(user, message) {
-    throw new Error('sendNotification method must be implemented')
-  }
-}
-
-// implementations
-class EmailNotificationChannel extends NotificationChannel {
-  sendNotification(user, message) {
-    // email notification algorithm
-  }
-}
-
-class SMSNotificationChannel extends NotificationChannel {
-  sendNotification(user, message) {
-    // sms notification algorithm
-  }
-}
-
-class NotificationService {
-  constructor(notificationChannel) {
-    this.notificationChannel = notificationChannel
-  }
-
-  sendNotification(user, message) {
-    this.notificationChannel.sendNotification(user, message)
-  }
-}
-
-new NotificationService(new EmailNotification()).sendNotification(user, message)
-```
-This allows you to easily extend the system by adding new notification channels without modifying the existing code. The code is more modular, and you can subsitute different implementations of the interface without affecting the service.
-
+A concrete class may extend itself with specifics, but it has to implement the behaviours defined by the interface it implements.
 
 ### Favor composition over inheritance
-This principles encourages developers to prefer building systems by composing objects and behaviours through composition rather than relying heavily on inheritance.
+This principles encourages developers to prefer building systems by composing objects and behaviours through composition (separate classes) rather than relying heavily on inheritance.
 
-This approach provides greater flexibility, maintainability, and avoids some of the issues associated with deep and rigid class hierarchies.
+This approach avoids some of the issues associated with deep and rigid class hierarchies.
 
-Suppose you have a system that handles authentication for different types of users, such as regular users and administrators. Initially, you might be tempted to use inheritance to model the different user types:
-```js
-class User {
-  constructor(username, passwore {
-    this.username = username;
-    this.password = password;
-  }
-
-  authenticate() {
-    // Logic to authenticate a regular user
-  }
-}
-
-class AdminUser extends User {
-  constructor(username, password, adminCode) {
-    super (username, password)
-    this.adminCode = adminCode
-  }
-
-  authenticate() {
-    // Logic to authenticate an admin user
-  }
-}
-```
-This code can lead to issues in the long run. If there are changes in the authentication logic or if you want to introduce new roles, the class hierarchy can become complex and hard to maintain.
-
-**Better implementation**
-```js
-class User {
-  constructor(username, password, authenticationStrategy) {
-    this.username = username;
-    this.password = password;
-    this.authenticationStrategy = authenticationStrategy;
-  }
-
-  authenticate() {
-    return this.authenticationStrategy.authenticate(this);
-  }
-}
-
-class RegularUserAuthentication {
-  authenticate(user) {
-    // Logic to authenticate a regular user
-  }
-}
-
-class AdminUserAuthentication {
-  authenticate(user) {
-    // Logic to authenticate an admin user
-  }
-}
-
-// Usage
-const regularUser = new User('regularUser', 'password', new RegularUserAuthentication());
-const adminUser = new User('adminUser', 'adminPassword', new AdminUserAuthentication());
-```
+This is also closely related to the first two principles above. The encapsulated objects are composed. If you find yourself encapslating what varies, you would be using compositon.
 
 ### Strive for loosely coupled designs between objects that interact
+This principle is advocating for a design where the dependencies between objects are minimized.
 
+Achieving loose coupling often involves reducing the direct dependencies between classes and promoting abstraction and decoupling through interfaces or abstractions.
+
+This makes easier for your system to adapt to changes and replace components without causing a ripple effect throughout the codebase.
+
+Again, applying the above principles makes for loose coupling.
 
 ### Classes should be open for extension but closed for modification
+This principle encourages developers to design classes in a way that allows for extention without modifying their source code.
+
+Imagine that you want to extend a payment system to support different payment methods. Instead of modifying the existing class, you can follow this principle by creating an interface or abstract class and allowing for extensions.
+
+Again notice that, applying this principle consequently applies the ones already discussed
 
 ### Depend on abstractions. Do not depend on concrete classes
+This is closely associated with the Dependency Inversion Principle (DIP).
 
-### Hollywood principle
+This principle encourages high-level modules (e.g., concrete classes or components) to depend on abstractions (interfaces or abstract classes) rather than on concrete implementations.
+
+Again, this principle allows you apply the above, and vice-versa. Most especially, _"program against interface, not an implementation"_ and _"encapsulate what varies"_
+
+### Inversion of Control (Hollywood principle) | Dependency inversion | Dependency injection
+This principle refers to the reversal of control flow compared to traditional procedural programming. In the context of IoC, control is inverted as <u>higher-level components delegate control to lower-level ones **through abstraction** (rather creating or implementing the low-level components in themselves)</u>.
+
+One common way to implement IoC is through the use of dependency injection. Dependency injection involves providing a component with its dependencies from the outside, rather than having the component create its dependencies.
+
+**With IoC:**
+- **Decoupling:** Components are **decoupled** from their dependencies. They don't directly create or manaeg their dependencies but receive them from external sources.
+- **Flexibility:** Dependicies are injected from the outside, allowing for easy substitution or modification without altering the core logic of the component.
+- **Testability:** Components become more testable because you can inject mock or test-specific dependencies for unit testing.
+
+Again, all the principles above use dependency injection, which results in inversion of control. The "encapsulate what varies" principle is, in fact, implemented by this principle, and many other ones.
+
+> This is the same principle discussed in the previous one. They're grouped because they're basically the same thing.
+
+### Separation of concerns
 
 ---
 
