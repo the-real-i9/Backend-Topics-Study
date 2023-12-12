@@ -3,11 +3,12 @@ The starting point for the design of a database must be an abstract and general 
 
 # The Three-Level ANSI-SPARC Architecture
 The ANSI-SPARC architecture (which is the architecture most commercial DBMSs available today is based, to some extent), identifies three distinct levels of abstraction at which data items can be described.
-- The levels form a **three-level architecture** comprising 
-  - an **external level** : this is the way your users perceive the data at the application level,
-  - a **conceptual level** : this provides both the **mapping** (schema) and the desired **independence** between the external and internal levels,
 
-  - and an **internal level** : this is the way the operating system perceives the data. The actual programming language code that represents your conceptual level data (your data definition schema using the DDL of your DBMS), translated by the DBMS software. That is the code your DBMS uses to speak to the computer to represent your schema in the computer storage. So your schema written in a DDL is converted to a data structre written in a programming language like, C.
+The levels form a **three-level architecture** comprising 
+- an **external level** : this is the way your users perceive the data at the application level,
+- a **conceptual level** : this provides both the **mapping** (schema) and the desired **independence** between the external and internal levels,
+
+- and an **internal level** : this is the way the operating system perceives the data. The actual programming language code that represents your conceptual level data (your data definition schema using the DDL of your DBMS), translated by the DBMS software. That is the code your DBMS uses to speak to the computer to represent your schema in the computer storage. So your schema written in a DDL is converted to a data structre written in a programming language like, C.
 
 ![Three level DB Architecture](../imgs/three-level-db-architecture.png)
 
@@ -51,25 +52,21 @@ There's also a physical level that may be managed by the OS under the direction 
 The overall description of the database is called the **database schema**.
 
 There are three different types of schema, each corresponding to the levels of abstraction.
-- At the external level, we have *<u>multiple</u>* **external schemas** that correspond to the different view of the data.
+- At the external level, we have *<u>multiple</u>* **external schemas** that correspond to the different views of the data.
 - At the conceptual level, we have the **conceptual schema**, which describes all the entities, attributes, and relationships together with intergrity constraints.
 
-- At the lowest level, we have the **internal schema**, which is a complete description of the internal model, containing the definitions of stored records, the methods of representation, the data fields, and the indexes and storage structures used. Usually implemented in a high-level language. **As before, you don't need to bother about this.**
+- At the lowest level, we have the **internal schema**, which is a complete description of the internal model, containing the definitions of stored records, the methods of representation, the data fields, and the indexes and storage structures used. Usually implemented in a high-level language. **Like I said, you don't need to bother about this.**
 
 *We can have **multiple external schemas**, when there is only one conceptual or internal schema per database.*
 
 ![The representation of the thre level](../imgs/representation-of-the-three-level.png)
 
----
+The DBMS is responsible for **mapping** the three levels together. 
+- It creates an <u>external-conceptual mapping</u>, and a <u>conceptual-internal mapping</u>.
 
-The DBMS is responsible for **mapping** the three levels together. It creates an external-conceptual mapping, and a conceptual-internal mapping.
-
----
 **The data in the database at any particular point in time is called a <u>database instance</u>**. 
-
-Many database instances can correspond to the same database schema. 
-
-The <u>schema</u> is sometimes called the **intension** of the database; and <u>instance</u> is called an **extension** (or **state**) of the database.
+- Many database instances can correspond to the same database schema. 
+- The <u>schema</u> is sometimes called the **intension** of the database; and <u>instance</u> is called an **extension** (or **state**) of the database.
 
 ## Data Independence
 A major objective for the three-level architecture is to provide **data independence**, which means that <u>upper levels are unaffected by changes to lower levels</u>.
@@ -80,8 +77,9 @@ A major objective for the three-level architecture is to provide **data independ
 **Physical data independence:** The conceptual schema is unaffected by changes in the internal schema.
 
 # Data Models and Conceptual Modeling
-A DDL used to write a schema, is too low level to <u>**describe the data requirements of an organization in a way that is readily understandable by a variety of users**.</u> What we requre is **a higher-level description of the schema**: that is, a **data model**.
+A DDL used to write a schema, is too low-level to <u>**describe the data requirements of an organization in a way that is readily understandable by a variety of users**.</u> What we requre is **a higher-level description of the schema**: that is, a **data model**.
 
+## Data Model
 An integrated <u>collection of concepts for describing and manipulating data, relationships between data, and constraints on the data</u> in an organization.
 
 - A model is **a representation of real-world objects and events, and their associations**. 
@@ -101,10 +99,10 @@ Of the different data models we have, there are the only two you need to worry a
 ## Conceptual Modeling
 The conceptual schema is the heart of the database. It should be a complete and accurate representation of the data requirements of the enterprise.
 
-Our data modeling is targeted to the conceptual schema.
+Our data model will eventually be implemented by the conceptual schema.
 
 Conceptual modeling or conceptual database design is the process of constructing a model of the information used in an enterprise, that is independent of implementation details, such as the target DBMS, application programs, programming languages or any other physical considerations.
 
-In simple terms, it is **the process of constructing <u>the model that would be used to write the conceptual schema, at the conceptual level</u>**.
+In simple terms, it is **the process of constructing <u>the model that would be used to construct the conceptual schema, at the conceptual level</u>**.
 
 > The conceptual model is independent of all implementation details, whereas <u>the logical model assumes knowledge of the underlying data model of the target DBMS</u>.

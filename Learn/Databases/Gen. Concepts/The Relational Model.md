@@ -43,12 +43,13 @@ A candidate key $K$ for a relation $R$ has two properties:
 
 There may be several candidate keys for a relation. When a key consists of more than one attribute, we call it a **composite key**.
 
-<u>Identifying a candidate key requires that *we know the "real-world" meaning of the attribute(s) involved*</u> so that we can decide whether duplicates are possible. Only by using this semantic informatin can we be certain that an attribute combinatin is a candidate key.
+<u>Identifying a candidate key requires that *we know the "real-world" meaning of the attribute(s) involved*</u> so that we can decide whether duplicates are possible. Only by using this semantic information can we be certain that an attribute combination is a candidate key. For instance, in the real-world, we know that everybody's email and phone number are unique, and therefore can be can be considered a candidate key.
 
 > **Primary key**\
 The candidate key that <u>is selected</u> to identify tuples uniquely within the relation.
 
-The candidate keys that are not selected to be the primary key are called **alternate keys**.
+> **Alternate key**\
+Unselected candidate keys, after which the primary key has been selected within the relation.
 
 > **Foreign key**\
 An attribute, or set of attributes, within one relation that matches the candidate key of some (possibly the same) relation.
@@ -66,6 +67,8 @@ For example,
 ## Domain Integrity
 These are constraints that form restriction on the set of values allowed for the attributes of relations.
 
+These are data types, min and max length of values.
+
 ## Entity Integrity
 The first integrity rule only applies to primary keys.
 
@@ -74,7 +77,7 @@ The first integrity rule only applies to primary keys.
 > **Base relation???**\
 A base relation, is a relation that corresponds to an entity in the conceptual schema.
 
-If you're selecting an attribute as a primary key, for safety, you should give it a unique general constraint (`unique: true`). This way, any new tuple will the same attribute value will be rejected.
+If you're selecting an attribute as a primary key, for safety, you should give it a unique general constraint (`unique: true`). This way, any new tuple with the same attribute value will be rejected.
 
 ## Referential Integrity
 The second integrity rule applies to foreign keys.
@@ -82,8 +85,8 @@ The second integrity rule applies to foreign keys.
 **The rule states that**, if a foreign key exists in a relation, either <u>the foreign key value must match a candidate key value of some tuple in its home relation</u> or <u>the foreign key value must be wholly null</u>.
 
 For example,
-- It's not possible to create a `Post` without a `user_id` Foreign key. Since, a post can never exist without a user. A referential constraint like this must never allow null (`allowNull: false` (default))
-- 
+- It's not possible to create a `Post` with `user_id` Foreign key of `null`, as a post can never exist without a user. A referential constraint like this must never allow null
+- In contrast, we can have a `Staff` with `branch_id` Foreign key of `null`, as we can have a staff that is yet to be allocated to a branch. A referential constraint like this can allow null.
 
 ## General Constraints
 These are <u>additional rules specified by the users or database administrators of a database that define or constrain some aspect of the enterprise</u>.
@@ -109,7 +112,7 @@ Any operations on the view are automaically translated into operations on the re
 - It <u>permits users to access data in a way that is **customized to their needs**</u>, so that the **same data can be seen by different users in different ways**, at the same time.
 - It can simplify complex operations on the base relations.
 
-## Updating views
+## Updating views ⚠
 There are **restrictions on the types of modification that can be made through views**.
 - Updates are allowed through a view defined using a simple <u>query involving a single base relation</u> and <u>containing either the primary key or candidate key of the base relation</u>.
 - Updates are not allowed through <del>views involving **multiple base relations**</del>.

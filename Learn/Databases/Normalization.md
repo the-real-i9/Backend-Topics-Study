@@ -27,9 +27,12 @@ Relations that have redundant data may have problems called <u>update anomalies<
 > An unormalized table instance
 
 **Observations:** <u>Clues for where we may need to decompose the table</u>. 🎯
-- Observe repeating non-foreign-key attribute values that refer to the same real world object or concept, and subject to change. Any repeating real world object or concept attribute should only be the foreign key attribute(s) that references the home relation.
-- Observe attribute(s) that make up a separate real world object or concept that can and should exist independently in its own relation. e.g. `branchNo` and `bAddress`. Attributes in a relation should be the sole real world properties of that relation, that is not perceived to be a separate real world object or concept.
-- Every real world object or concept should have its own relation to itself.
+- Observe repeating non-foreign-key attribute values that refer to the exact same subject or thing (in the context of discource i.e. same reference), and subject to change. Any repeating attribute subject should only be the foreign key attribute(s) that references the home relation.
+- Observe attribute(s)(column-name(s)) that collectively refer to a real world concept that can and should exist independently in its own relation. e.g. `branchNo` and `bAddress`.
+  - Attributes of a relation should only include the real-world properties of one concept that is not perceived to belong to another real-world concept that can exist independently. Again, with the exception of foreign key(s).
+  - Every real-world concept should have its own relation to itself, along with its properties that isn't shared by another real-world concept.
+
+  > **Note that:** By real-world concept, we mean one that's likely to get an independent treatment in the business's data.
 
 
 ![Unormalized table](./imgs/unormalized-table-instance.png)
@@ -39,15 +42,17 @@ Relations that have redundant data may have problems called <u>update anomalies<
 > Observing the unormalized table.
 
 There are of two main types of insertion anomalies. 🎯
-- to insert the details of new staff located at Branch `B007`, we must always enter the correct details of Branch `B007` so that the branch details are consistent with values for Branch `B007` in other tupes of the `StaffBranch` relation. Those details are unnecessary redundancies.
-- to insert details of a new branch that currently has no members of staff into the `StaffBranch` relation, it is necessary to enter nulls into the attributes for staff, such as `staffNo`. However, as `staffNo` is the primary key for the `StaffBranch` relation, attempting to enter nulls for `staffNo` violates entity integrity, and is not allowed. We therefore cannot enter a tuple for a new branch into the `StaffBranch` relation with a null for the `staffNo`.
+- to insert the details of new staff located at Branch `B007`, we must always enter the correct details of Branch `B007` so that the branch details are consistent with values for Branch `B007` in other tuples of the `StaffBranch` relation. Those details are unnecessary redundancies. <u>This is because the `B007` details in these tuples refer to the same real subject, in the businesses data</u>
+- to insert details of a new branch that currently has no members of staff into the `StaffBranch` relation, it is necessary to enter nulls into the attributes for staff, such as `staffNo`. However, as `staffNo` is the primary key for the `StaffBranch` relation, attempting to enter nulls for `staffNo` violates entity integrity, and is not allowed. We therefore cannot enter a tuple for a new branch into the `StaffBranch` relation with a null for the `staffNo`. <u>This is as a result of the presence of attributes that belong to another real-world concept and can/should exist independently.</u>
 
-**Note that**, the design of the normalized tables avoids these problems.
+**Note that**, the design of the normalized conterpart avoid these problems.
 
 ## Deletion Anomalies
 > Observing the unormalized table.
 
 If we delete a tuple from the `StaffBranch` relation that represents the last member of staff located at a branch, the details about that branch are also lost from the database. 🎯
+
+<u>Again, this because of the presence of attributes that belong to another real-world concept and can/should exist independently.</u>
 
 **Note that**, the design of the normalized tables avoids these problems.
 
@@ -55,6 +60,8 @@ If we delete a tuple from the `StaffBranch` relation that represents the last me
 > Observing the unormalized table.
 
 If we want to change the value of one of the attributes of a particular branch in the `StaffBranch` relation, for example, the address for Branch `B003`, we must update the tuples of all staff located at that branch. If this modification is not carried out on all the appropriate tuples of the `StaffBranch` relation, the database will become inconsistent. 🎯
+
+Again, <u>this is because the `B003` details in these tuples refer to the same subject, in the businesses data.</u>
 
 **Note that**, the design of the normalized tables avoids these problems.
 
@@ -74,7 +81,7 @@ Describes **the realtionship between attributes in a relation**. For example, if
 
 Functional dependency is a property of the meaning or semantics of the attributes in a relation. The semantics indicate how attributes relate to one another, and specify the functional dependencies between attributes.
 
-Consider a relation with attributes `A` and `B`, where attribute `B` is functionally dependent on attribute `A`. If we know the value of `A` and we examine the relation that holds this dependency, <u>we find only one value of `B` in all the tuples that have a given value of `A`, at any moment in time</u>. **Thus, when two tuples have the same value of `A`, they also have the same value of `B`**. <u>However,</u> for a given value of `B`, there may be several different values of `A`.
+Consider a relation with attributes `A` and `B`, where attribute `B` is functionally dependent on attribute `A`. <u>If we know the value of `A` and we examine the relation that holds this dependency, we find only one value of `B` in all the tuples that have a given value of `A`, at any moment in time</u>. **Thus, when two tuples have the same value of `A`, they also have the same value of `B`**. <u>However,</u> for a given value of `B`, there may be several different values of `A`.
 - > Say we execute a `SELECT` query on a relation `WHERE A = someValue`, <u>it'll always return exactly one row</u> with the same value of `B`. There's a one-to-one relationship between the two attributes.
 - > However, if you go the other way round, `WHERE B = someValue`, it may return more than one row with different values of `A`. There's a one-to-many relationship between the two attributes. <u>This isn't what we want</u>.
 
@@ -86,15 +93,15 @@ Refers to the attribute, or group of attributes, on the left-hand side of the ar
 > Observing the unormalized table
 
 A member of staff holds one position; 
-- suppose we query a staff's `position` using `staffNo`, we always get exactly one `position` value for a specific `staffNo`. (`1:1`) ✅
+- suppose we query a staff's `position` using `staffNo`, we always get exactly one `position` value for a specific `staffNo`. (`1:1`) ✅🎯
 
 however, there may be several members of staff with the same position.
 - now suppose we query a staff's `staffNo` using `position`, we may get more than one `staffNo` value for a specific `position`. (`1:*`) ❌
 
-The relationship between `staffNo` and `position` is one-to-one (`1:1`), i.e. for each staff number there is only one position. On the other hand, the relationship between `position` and `staffNo` is one-to-many (`1:1`), i.e. there are several staff numbers associated with a given position.
+The relationship between `staffNo` and `position` is one-to-one (`1:1`), i.e. for each staff number there is only one position. On the other hand, the relationship between `position` and `staffNo` is one-to-many (`1:*`), i.e. there are several staff numbers associated with a given position.
 - **For the purposes of normalization**, <u>we are interested in identifying functional dependencies between **attributes of a relation that have a *one-to-one* relationship** between the attribute(s) that makes up the determinant on the LHS and the attribute(s) on the RHS of a dependency</u>. 🎯
 
-When identifying functional dependencies between attributes in a relation, it is important to distinguish clearly between, <u>the values held by an attribute at a given point in time</u> ❌, and <u>the set of all possibe values than an attribute may hold at different times</u> ✅.
+When identifying functional dependencies between attributes in a relation, it is important to distinguish clearly between, <u>the values held by an attribute at a given point in time</u> ❌, and <u>the set of all possibe values than an attribute may hold at different times</u> ✅🎯.
 - **For the purposes of normalization**, <u>we are interested in identifying **attribute(s) containing a set of all possible values** for the attribute(s)</u>. Recall that, this is the form that foreign keys usually take, as they'll always contain a value that's from the primary key set of their owner relation. Thus, if this attrbute(s) is not a foreign key, we should decompose it into its own relation. 🎯
 
 **An addtional characteristic of functional dependencies that is useful for normalization** is that <u>their determinants should have the minimal number of attributes necessary to maintain the functional dependency</u> with attribute(s) on the RHS. This requirement is called **full functional dependency**.
@@ -109,7 +116,7 @@ A functional dependency `A ® B` is a partial dependency if there is some attrib
 The type of functional dependency that we are interested in identifying is a full functinal dependency.
 
 
-In summary, the functional dependencies that we use in normalization have the following characteristics:
+In summary, <u>the functional dependencies that we use in normalization have the following characteristics</u>: 🎯
 - There is a one-to-one relationship between the attribute(s) on the LHS (determinant) and those on the RHS of the functional depencency.
 - They hold for all time.
 - There must be a full functional dependency between the attribute(s) on the LHS and RHS of the dependency.
@@ -146,4 +153,4 @@ Normalization is the technique of **decomposing a single relation (table) into m
 > According to me, <u>normalization can be **achieved common-sense-ically** by </u>
 
 - **careful examination of where update anomalies may occur** in a relation, and decomposing the relation accordingly. ***Why?*** Because, the whole point of normalization is to prevent update anomalies.
-- Using the clues designated 🎯, in the above sections. They'll give you insight as to where to decompose tables.
+- Using the clues designated 🎯, in the above sections. They'll give you insights as to where table decomposition should take place.

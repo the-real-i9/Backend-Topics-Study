@@ -19,7 +19,7 @@ Primary key attributes uniquely identify each entity occurence.
 
 > Diagramtic representation of entity types
 
-Each entity type is shown as **a rectangle**, labeled wth the name of the entity, which is normally a singular noun writen in `CamelCase`.
+Each entity type is shown as **a rectangle**, labeled wth the name of the entity, which is normally a singular noun writen in `PascalCase`. Following the entity name is the PK attribute, also a singular noun written in `camelCase`.
 
 # Relationship Types
 > **Relationship type:**\
@@ -50,7 +50,7 @@ The term **"complex relationship**" is used to describe <u>relationships with de
 
 > Diagrammatic representation of complex relationships
 
-The UML notation uses **a diamond** to represent relationships with degrees higher than binary. The name of the relationship is rather displayed inside the diamond.
+The UML notation uses **a diamond shape** to represent relationships with degrees higher than binary. The name of the relationship is rather displayed inside the diamond shape.
 
 ## Recursive Relationship
 > **Recursive relationship**\

@@ -1,4 +1,4 @@
-## Behavioural Patterns
+# Behavioural Patterns
 ### Strategy pattern
 
 ### Observer pattern
@@ -20,7 +20,7 @@ Defines the <u>skeleton of an algorithm</u> in the **superclass** but lets **sub
 
 A scenario where you have a common set of steps for making API requests, but the details of authentication, request building, and response handling may vary between different API implementations
 
-## Structural Patterns
+# Structural Patterns
 ### Decorator pattern
 
 ### Adapter pattern
@@ -52,8 +52,7 @@ The Composite Pattern allows for a flexible representation of projects and tasks
 
 ### Proxy pattern
 
-
-## Creational Patterns
+# Creational Patterns
 ### Abstract Factory pattern
 
 ### Factory Method pattern
