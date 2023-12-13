@@ -19,7 +19,7 @@ Primary key attributes uniquely identify each entity occurence.
 
 > Diagramtic representation of entity types
 
-Each entity type is shown as **a rectangle**, labeled wth the name of the entity, which is normally a singular noun writen in `PascalCase`. Following the entity name is the PK attribute, also a singular noun written in `camelCase`.
+Each entity type is shown as **a rectangle**, labeled wth the name of the entity, which is normally a singular noun writen in `PascalCase`.
 
 # Relationship Types
 > **Relationship type:**\
@@ -82,7 +82,7 @@ The **domain** defines <u>the potential values that an attribute may hold</u> an
 > **Simple attribute**\
 An attribute <u>composed of a single component</u> with an independent existence. e.g. `position` and `salary`.
 
-> **Simple attribute**\
+> **Composite attribute**\
 An attribute <u>composed of multiple components</u>, each with an independent existence. e.g. `address` can be subdivided into `street`, `city` and `postcode` attributes.
 
 ## Single-valued and Multi-valued Attributes
@@ -120,7 +120,7 @@ The **values of the attributes together** are <u>***unique***</u> for each entit
 
 An entity type's rectangle is divided into two. The **upper part** of the rectangle <u>displays the name of the entity</u>, and the **lower part** <u>lists the names of the attributes</u>.
 
-The first attribute(s) to be listed is the primary key for the entity type, if known. The name(s) of primary key attribute(s) can be labeled with the tag `{PK}` (if other attributes follow, if not (only primary key is listed), it can be ommited).
+The first attribute(s) to be listed is the primary key for the entity type, if known. The name(s) of primary key attribute(s) can be labeled with the tag `{PK}` (provided other attributes follow, if not (i.e. only the primary key is listed), it can be ommited).
 
 The name of an attribute is written in `camelCase` (first-letter in lowercase).
 
@@ -134,12 +134,16 @@ An entity type that does not depend on the existence of another entity type.
 
 A characteristic of a strong entity type is that <u>each entity occurence is uniquely identifiable using the primary key attribute(s)</u> of that entity type.
 
+For example, a `User` entity has independent existence.
+
 > **Weak entity type**\
 An entity type that is dependent on the existence of another entity type.
 
-A characteristic of a weak entity is that each entity occurence <u>cannot be uniquely identified using **only** the attributes associated with that entity type</u>.
+A characteristic of a weak entity is that each entity occurence <u>cannot be uniquely identified **using only the attributes associated with that entity type**</u>.
 
-We can uniquely identity each entity occurence only through the relationship it has with <u>another entity occurence who is uniquely identifiable with a primary key - **owner entity**</u>.
+We can uniquely identity each entity occurence only through the relationship it has with <u>another entity occurence who is uniquely identifiable with a primary key - **owner entity**</u>. This means, a weak entity type is that one with one or more foreign keys `{FK}`
+
+For example, `Post` is a weak entity type, seeing that it depends on `User` for its existence.
 
 # Attributes on Relationsips
 These are new attributes that we derive from the relationship between two entity types.
@@ -220,7 +224,7 @@ Observing the **multiplicity range** of both types, <u>cardinality-to-cardinalit
 
 > **Note:** If we know the actual minimum and maximum values for the multiplicity, we can display these instead.
 
-> In DBMSs, practically, cardinality is implemented by a relation referencing an owner relation with a foreign key by its primary key, while participation is determined by the NULL integrity constraint for the foreign key.
+> In DBMSs, practically, **cardinality is implemented by** <u>a relation referencing an owner relation with a foreign key by its primary key</u>, while **participation is determined by** the <u>`NULL` integrity constraint for the foreign key</u>.
 
 # Problems with ER Models
 These problems are referred to as **<u>connection traps</u>**, and normally <u>occur due to a misinterpretation of the meaning of certain relationships</u>.
@@ -249,9 +253,9 @@ Fan trap **ambiguity fixed** by restructuring.
 
 ## Chasm Traps
 > **Chasm trap**\
-Where a model suggests the existence of a relationship between entity types, but <u>**the pathway does not exist between certain entity occurences**</u>.
+Where a model <u>suggests the existence of a relationship between entity types</u>, <u>**but the pathway does not exist between certain entity occurences**</u>.
 
-A chasm trap may occur <u>where one or more relationships with a minimum multiplicity of zero (i.e. optional participation) forms part of the pathway between related entities</u>.
+A chasm trap may occur <u>**where one or more relationships with optional participation** (i.e. a minimum multiplicity of zero) **forms part of the pathway between related entities**</u>.
 
 ![Chasm trap](./imgs/chasm-trap.png)
 

@@ -5,7 +5,7 @@ The data stored in a table should be organized in a particular order to speed up
 
 Definition: An index is a separated data structue that speeds up the data retrieval on a table *at the cost of additional writes and storage to maintain the index*.
 
-Create indexes on the columnn(s) you want to include in the `WHERE` clause.
+Indexes should be created on the columnn(s) you want to include in the `WHERE` clause.
 
 # CREATE INDEX
 > Syntax:
