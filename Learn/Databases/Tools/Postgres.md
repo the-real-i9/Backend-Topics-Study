@@ -400,7 +400,7 @@ The resulting set represents the next table of `cte_name`, **`cte_table_1`**.
 - **Finally,** you can execute any `statement` on the `UNION` merged `cte_table`s.
 
 # Modifying Data
-## INSERT
+## `INSERT`
 ```sql
 INSERT INTO table_name (column_list)
 VALUES
@@ -410,7 +410,7 @@ VALUES
   (value_list_n); -- row-n
 ```
 
-## UPDATE
+## `UPDATE`
 ```sql
 UPDATE table_name
 SET column1 = value1,
@@ -419,7 +419,7 @@ SET column1 = value1,
 WHERE condition
 ```
 
-## UPDATE join
+## `UPDATE...JOIN`
 Sometimes you need to **update data in a table <u>based on values in another table</u>**.
 ```sql
 UPDATE table1
@@ -428,14 +428,14 @@ FROM table2
 WHERE table1.column2 = table2.column2
 ```
 
-## DELETE
+## `DELETE`
 Delete row(s) from a table.
 ```sql
 DELETE FROM table_name
 WHERE condition;
 ```
 
-## DELETE join
+## `DELETE...JOIN`
 Delete row(s) from a table based on the data in another table. 
 
 > With the `USING` clause.
@@ -456,8 +456,28 @@ DELETE FROM contacts
 WHERE phone IN (SELECT phone FROM blacklist)
 ```
 
----
----
+## `RETURNING`
+Sometimes it is useful to **obtain data from modified rows while they are being manipulated**. <u>The `INSERT`, `UPDATE`, and `DELETE` commands all have an optional `RETURNING` clause that supports this</u>.
+
+Use of `RETURNING` <u>avoids performing an extra database query to collect the data</u>, and is especially valuable when it would otherwise be difficult to identify the modified rows reliably.
+
+The allowed **contents of a `RETURNING` clause are the same as a `SELECT`** command's output list.
+
+```sql
+--- INSERT example
+INSERT INTO users (firstname, lastname) VALUES ('Joe', 'Cool') RETURNING id;
+
+-- UPDATE example
+UPDATE products SET price = price * 1.10
+  WHERE price <= 99.99
+  RETURNING name, price AS new_price;
+
+-- DELETE example
+DELETE FROM products
+  WHERE obsoletion_date = 'today'
+  RETURNING *;
+```
+Observe that, this saves us for executing an $N+1$ query, since we don't have to execute a new `SELECT` query. In fact, that of `DELETE` is a game changer, as you normally can't retrieve what has been deleted.
 
 # Filtering
 ## Limit & Offset (Pagination: non-standard)
@@ -1013,8 +1033,143 @@ column_name data_type GENERATED { ALWAYS | BY DEFAULT } AS IDENTITY [ (sequence_
 # Views
 A view is useful for wrapping a **commonly used complex query**.
 
+Suppose the combined listing of weather records and city location is of particular interest to your application, but **you do not want to type the query each time you need it**. <u>You can create a view over the query</u>, which gives a name to the query that you can refer to like an ordinary table.
+
+```sql
+CREATE VIEW myview AS
+    -- any statement that returns a result set
+    SELECT name, temp_lo, temp_hi, prcp, date, location
+        FROM weather, cities
+        WHERE city = name;
+
+-- query the view like a normal table
+SELECT * FROM myview;
+```
+Views <u>allow you to encapsulate the details of the structure of your tables</u>, *which might change as your application evolves*, <u>behind consistent interfaces</u>.🎯 This makes for good database security practice, recommended by OWASP.
+
 # Triggers
 
-# Stored Procedures
-
 # Window Functions
+
+# Stored Procedures & Functions
+Stored procedures and functions provide a way for us to extend the functionality of SQL with user-defined functions, in addition to native (aggregate, date, window) functions.
+
+Imagine being able to call a function that creates a user with provided parameters, like in a procedural language, OR, being able to call a function that **returns a value or a result set**, based on provided parameters, in which you can then use in your statements where a value is required or query with `SELECT`, respectively.
+
+A stored procedure is **<u>a reusable function that can be called as part of a query and stored in the database</u>**. PostgreSQL <u>allows users 
+- to extend the database functionality with the help of user-defined functions and stored procedures through various procedural language elements</u>, 
+
+which are often referred to as stored procedures.
+
+To create a stored procedure, you can use the `CREATE PROCEDURE `command followed by the name of the procedure and its parameters. The procedure can accept zero or more parameters, and the data types of the procedure’s arguments can be base, composite, or domain types.
+
+## How prodecures differ from functions
+### Functions
+A `FUNCTION` returns one or more values or sets one or more outputs.
+
+Imagine a JS function that <u>returns a value or an output</u> or a Go function that returns one or more values or sets the value for named results.
+```js
+// A JavaScript analogy
+function add(a, b) {
+  return a + b;
+}
+const result = add(5, 6)
+```
+They are useful to create callables for `SELECT` and `INSERT...RETURNING` statements, <u>that return one or more result set</u>.
+
+**Usage:**
+- A function can return <u>a single value</u> that you can use wherever a single value is required. A good example of this are aggregate functions `MAX()`, `AVG()` etc, which are, in fact, created this way.
+- A function can also return <u>a result set that includes a list of values, like a single-column result set or an array,</u> which you can use in functions that require a list, the likes of `ANY()`, `AVG()`, `ALL()`, `MAX()` etc.
+- Lastly, a tabular result set which you can query in `SELECT` statements like a real table.
+
+#### `CREATE FUNCTION` examples
+
+```sql
+-- Add two integers using an sql function
+CREATE FUNCTION add(integer, integer) RETURNS integer
+    AS 'select $1 + $2;'
+    LANGUAGE SQL
+    IMMUTABLE
+    RETURNS NULL ON NULL INPUT;
+
+-- The same function written in a more SQL-conforming style, using argument names and an unquoted body:
+CREATE FUNCTION add(a integer, b integer) RETURNS integer
+    LANGUAGE SQL
+    IMMUTABLE
+    RETURNS NULL ON NULL INPUT
+    RETURN a + b;
+
+-- Increment an integer, making use of an argument name, in PL/pgSQL:
+CREATE OR REPLACE FUNCTION increment(i integer) RETURNS integer AS $$
+    BEGIN
+            RETURN i + 1;
+    END;
+$$ LANGUAGE plpgsql;
+
+-- Return a record containing multiple output parameters:
+CREATE FUNCTION dup(in int, out f1 int, out f2 text)
+AS $$ SELECT $1, CAST($1 AS text) || ' is text' $$
+    LANGUAGE SQL;
+
+SELECT * FROM dup(42);
+
+-- You can do the same thing more verbosely with an explicitly named composite type:
+CREATE TYPE dup_result AS (f1 int, f2 text);
+
+CREATE FUNCTION dup(int) RETURNS dup_result
+    AS $$ SELECT $1, CAST($1 AS text) || ' is text' $$
+    LANGUAGE SQL;
+
+SELECT * FROM dup(42);
+
+--Another way to return multiple columns is to use a TABLE function:
+CREATE FUNCTION dup(int) RETURNS TABLE(f1 int, f2 text)
+    AS $$ SELECT $1, CAST($1 AS text) || ' is text' $$
+    LANGUAGE SQL;
+
+SELECT * FROM dup(42);
+-- However, a TABLE function is different from the preceding examples, because it actually returns a set of records, not just one record.
+```
+
+---
+
+### Procedures
+A `PROCEDUCRE` is like a `FUNCTION`, but it neither returns value(s) nor sets output(s).
+
+Imagine a JS or Go function merely written <u>to encapsulate a series of statements into one single executable (callable) task</u>, in which we don't require a return value or an output.
+```js
+// A JavaScript analogy
+function addAndlogToConsole(a, b) {
+  const result = a + b
+  console.log(result)
+}
+logToConsole(5, 6)
+```
+
+**Usage:**\
+A procedure, in contrast, is <u>not used with</u> `SELECT`, since it neither returns a value nor sets an output at all. Consequently, to use a procedure, we just execute it with the `CALL` command.
+
+This is useful to create callables for `INSERT`, `UPDATE` and `DELETE` statements, <u>that only manipulates data</u>.
+
+#### `CREATE PROCEDURE` examples
+```sql
+CREATE PROCEDURE insert_data(a integer, b integer)
+LANGUAGE SQL
+AS $$
+INSERT INTO tbl VALUES (a);
+INSERT INTO tbl VALUES (b);
+$$;
+
+--- or ---
+
+CREATE PROCEDURE insert_data(a integer, b integer)
+LANGUAGE SQL
+BEGIN ATOMIC
+  INSERT INTO tbl VALUES (a);
+  INSERT INTO tbl VALUES (b);
+END;
+
+-- and call like this:
+CALL insert_data(1, 2);
+```
+
