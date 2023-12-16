@@ -12,5 +12,11 @@ Look at the features you choose to provide (according to Chat-GPT answers), see 
 
 **But, But** --- let it be opened to better styling, since you may have time later.
 
-## Examples
-### News feed
+## Four things are involved
+Modeling App navigation
+
+Rendering responses as JSON code block(s).
+
+Designing & Attaching `GET` and `DELETE` request interactive buttons.
+
+Designing & Rendering `POST`, `PUT` and `PATCH` request forms or buttons.

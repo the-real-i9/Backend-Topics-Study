@@ -21,30 +21,36 @@
 
 
 # Current Steps
-- Building English Expertise, Oratory Training
-  - General Backend Revision alongside
-  > Note: Above all skill prioritize this one.\
-  > Continue to the next step when you've acquired a training you can put on repeat everyday.
 - API Design & Building
-  - Build projects as a practical means of learning API design
-  - Create written content (project inspired mostly) | Social media contribution/presence
-  - Learning Software design and Architecture
-    - Design and principles, Architectural patterns, Design patterns, Clean code
-    - As you learn, make adjustments to and refactor your code.
-  - Continue English training: Building English Expertise
-  - Per book: One section per day on revision
-  - *Schedule this into a daily/weekly plan, so you can touch each of them and not allow just one take your whole time*.
+  - Building projects while learning API design
+  - Software Design & Architecture: Clean code | Design/Architectural Principles | Design/Architectural Patterns
+  > Do the below from time-to-time per your schedule
+  - English Training: Writing & Speaking | Backend concept revision (as a means)
+  - DSA | LeetCode
+  - Math Training
+  - Go** | NodeJS --- Evolve your knowledge
 
-- Create your Portfolio and CV {After 3 or 4 projects}
+- Create your Portfolio and CV {After 4 projects}
 
-- **Dive deep into/Focus on:** Content Creation (Online Presence, Knowledge sharing | Open Source Contribution | Community Participation)
-  - Continue to create projects to learn more. Add the cool ones to portfolio.
-  - Continue your learning. Update your knowledge. Patterns and practices, Implememtations.
-  - Continue to Pursue Excellence and Build competence, through exhausting API creation challenges
-  - Continue the <u>**Career Growth/Climbing**</u> and **Self-Development**.
-  - **In summary:** Commence your [career growth](../../../My%20Ideas/TheBiggerPicture.md), pursuing excellence, building competence, influencing the community, networking, online presence.
+- Content Creation
+  - Building Social Media Presence | Mini everyday content and contribution | Active online presence
+  - English Training (Major): Writing & Speaking | Backend concept revision (as a means)
+    - Write & Publish Articles | Create Podcasts
+    - Keep adding more projects (targetCount === 10)
+  - Evolve your knowledge | Cover the left-overs | Do Revisions
+    - In existing projects: Improve implementations, refactor code, add new features etc.
+  - Pursue Excellence and build Competence through exhausting API creation challenges
 
-> **Ways to get job and make money**\
+- Apply for jobs and get hired (After some time in the previous step)
+  - Gain 3yrs experience in local, then proceed to remote job.
+  - Developing your *"programming skills"*
+  - Acquiring content creation skills: Academic Illustration, Speaking to Camera, English training, Making podcasts etc.
+
+- Content creation {Major}
+  - Video | Audio Content
+  - Continue and Major on your [career growth](../../../My-Ideas/TheBiggerPicture.md#i9---the-rise), pursuing excellence, building competence, influencing the community, networking, online presence.
+
+> **Ways to get hired and make money**\
 ++ Job search with Porfolio and Online presence\
 ++ Get hired to work through Online Presence (Contract or Full-time)\
 ++ Content Creation, Online School, Social media, Creating and Selling courses\
