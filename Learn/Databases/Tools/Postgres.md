@@ -906,6 +906,8 @@ CONSTRAINT fk_name -- for explicit naming
 - `SET DEFAULT` : It works like SET NULL, except there's a default value to replace it.
 - `NO ACTION` (default)
 
+`ON UPDATE` is rarely used though, since the primary key is rarely updated.
+
 Modify existing tables
 ```sql
 ALTER TABLE table_name 

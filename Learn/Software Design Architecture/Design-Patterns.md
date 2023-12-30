@@ -13,12 +13,16 @@ This pattern can be applied when dealing with paginated responses or iterating o
 It helps in decoupling the iteration logic from the specifics of the API response structure.
 
 ### State pattern
-Allows an object to alter its behavior when its internal state changes
+Allows an object to alter its behavior when its internal state changes.
+
+It can be applied to represent different states of an API client and manage transition between these states.
 
 ### Template Method
-Defines the <u>skeleton of an algorithm</u> in the **superclass** but lets **subclasses** <u>override specific steps of the algorithm</u> without changing its structure.
+Defines the <u>skeleton of an algorithm</u> in the **superclass** but lets **subclasses** <u>implement specific steps of the algorithm in their own way</u> without changing the structure of the algorithm.
 
-A scenario where you have a common set of steps for making API requests, but the details of authentication, request building, and response handling may vary between different API implementations
+A scenario where you have a common set of steps for making API requests, but the details of authentication, request building, and response handling may vary between different API implementations.
+
+Imagine, performing a task involves 5 steps and everyone is required to perform it, think about how everyone will excute these steps in their own different ways.
 
 # Structural Patterns
 ### Decorator pattern
@@ -40,15 +44,17 @@ Lets you compose objects into tree structures to represent part-whole hierarchie
 
 Consider a scenario where you have a backend API that provides access to various resources, and you want to represent the API endpoints as a composite structure. This can be useful for constructing complex API requests by <u>combining multiple endpoints or handling groups of related resources</u>.
 
-This pattern is beneficial when you want to treat individual objects and compositions of objects uniformly.
+This pattern is beneficial when you want to treat individual objects and compositions (groups) of objects uniformly.
 
-In a backend API scenario, it can be used to represent complex API request structures where endpoints are composed hierarchically, allowing clients to work with both individual endpoints and composite structures seamlessly. This can be particularly useful when dealing with APIs that support batch operations, where a single request can include multiple sub-requests or resource groups.
+In a backend API scenario, it can be used to represent complex API request structures where endpoints are composed hierarchically, allowing clients to work with both individual endpoints and composite structures seamlessly. This can be particularly <u>useful when dealing with APIs that support batch operations, where a single request can include multiple sub-requests or resource groups</u>.
 
 ---
 
-Consider a hierarchy of projects and tasks, allowing clients to perform actions on both individual tasks and entire projects.
+Consider a hierarchy of project(s) involving tasks, allowing clients to perform actions on both individual tasks or entire project.
 
-The Composite Pattern allows for a flexible representation of projects and tasks, enabling clients to perform actions on different levels of the hierarchy. This can be particularly useful in project management systems where a project may consist of tasks and subprojects, and you want to interact with both individual tasks and the entire project seamlessly.
+The Composite Pattern allows for a flexible representation of projects and tasks, enabling clients to perform actions on different levels of the hierarchy. This can be particularly useful <u>in project management systems where a project may consist of tasks and subprojects, and you want to interact with both individual tasks and the entire project seamlessly</u>.
+
+For example, a feature that allows you to execute save on individual files, and, alternatively, execute save on a folder which saves all the files in it.
 
 ### Proxy pattern
 
