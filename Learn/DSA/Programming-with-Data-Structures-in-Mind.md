@@ -35,3 +35,5 @@ Regularly practice solving algorithmic problems and participate in coding challe
 
 ### Read code
 Read code written by others, especially in open-source projects. Observe how data structures are used in real-world scenarios. Reading and understanding different codebases can expose you to various approaches and solutions.
+
+**Basically,** it's the same way you train yourself to apply Design patterns and Principles in code.

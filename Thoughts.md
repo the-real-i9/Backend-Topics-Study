@@ -11,9 +11,6 @@
 
 > **NOTE:** Your online content is also part of your portfolio.
 
-> **Warning!!! ⚠**\
-> You're late already!! Start building projects, while learning concepts, implementations and tools alongside.
-
 ## After having your portfolio and CV,
 - with some written content and online prescence, **proceed to job search**. Once, you get a job,
 - this gives you the time and space to acquire your aspired-content-creation skills, and enough funds to get its tools.
@@ -66,4 +63,4 @@
 - Networking | Internet
 - WebSockets
 - SSL/TLS
-- Browsers
+- How Browsers work?

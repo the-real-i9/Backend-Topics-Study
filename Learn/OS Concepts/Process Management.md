@@ -73,7 +73,7 @@ The kernel maintains a <u>*context*</u> for each process.
   - a process table that contains information about the current process, and 
   - a file table that containis information about the files that the process has opened.
 
-- The *stateful component parts that a process uses run* is referred to as its *context*. Stateful in the sense that, they can take different values at different times.
+- The *<u>stateful component part that a process uses to run</u>* is referred to as its ***context***. Stateful in the sense that, they can take different values at different times.
   - Saving a context's state therefore means, saving the current values each component has before context switching. More like, pinning the values down, pausing them from changing.
   - And, resuming the context is like, pressing play on the paused state.
 
@@ -81,7 +81,7 @@ The kernel maintains a <u>*context*</u> for each process.
 
 At certain points during the execution of a process, the *kernel can decide to preempt the current process and restart a previously preempted process*. This decision is known as **process scheduling**, and is handled by code in the kernel, called the **scheduler**.
 - When the kernel selects a new process to run, we say that the kernel has **scheduled** that process.
-- After this, it preempts the current process and transfers control to the new process using a mechanism called a **context switch**, 
+- After this, it preempts the current process and transfers control to the new process using a mechanism called **context switching**, 
 - *Context switching* goes thus,
   - save the context of the current process,
   - restore the saved context of some previously preempted process, and
@@ -221,7 +221,7 @@ As in study one, it contains all the state information the kernel needs to resum
 The PCB serves as <u>the repository for all the data needed to start or restart, a process,</u> along with some accounting data.
 
 ## Threads
-A feature specific processes that allows them to multitask on their own.
+A feature specific to processes that allows them to multitask on their own.
 
 This feature is especially beneficial on multicore systems, where multiple threads can run in parallel.
 - When a process creates a thread the OS distributes it among CPU cores in a round-robin fashion.
