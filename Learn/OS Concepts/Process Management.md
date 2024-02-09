@@ -229,27 +229,111 @@ This feature is especially beneficial on multicore systems, where multiple threa
 The Process Control Board (PCB) is expanded to include information for each thread, on systems that support it.
 
 # Process Scheduling
-The objective of *multiprogramming* is *to have some process running at all times* so as to maximize CPU utilization. The objective of *time sharing* or *multitasking* is to switch a CPU core among processes so frequently that users can interact with each program while it is running.
+The objective of *multiprogramming* is *to have some process running at all times* so as to maximize CPU utilization.
+
+The objective of *time sharing* or *multitasking* is to switch a CPU core among processes so frequently that users can interact with each program while it is running.
+
+To meet these objectives, the process shceduler selects an available process for program execution on a core.
+
+A CPU core can run only one process at a time, therefore, a multicore system can run multiple processes at one time. The number of processes currently in memory is known as the <u>degree of multiprogramming</u>.
 
 ## Scheduling Queues
-As processes enter the system, they are placed into a **ready queue**, where they are ready and waiting to execute on a CPU's core.
+As processes enter the system, they are placed into a **ready queue**, where they are waiting to be scheduled for execution.
 
 Processes that are waiting for a certain event to occur, such as I/O completion, are placed in a **wait queue**.
 
 A common representation of process scheduling is a **queueing diagram**. In it we have, the ready queue and a set of wait queues. The circles represent the resources that serve the queues, and the arrows indicate the flow of processes in the system.
 - A new process is placed in the ready queue.
 - It gets selected for execution
-- It goes into its executes an instruction that causes it to wait for an event to occur, goes into wait state and place on the wait queue.
-- In contrast, it can go into ready state and placed on the ready queue, if its time-slice expires.
+- During its execution, it executes an instruction that causes it to wait for an event to occur, goes into wait state and placed on the wait queue.
+  - In most cases, it can go directly to ready state and placed on the ready queue, if its time-slice expires.
+- When the awaited event has occured, it leaves the wait queue back to the ready queue.
 
+A process continues this cycle until it terminates, at which time it is removed from all queues and has its PCB and resources deallocated.
 
   ![Queueing diagram for process scheduling](./imgs/queueing-diagram-proces-scheduling.png)
 
 
 # Context Switching
-![Context Switching](./imgs/context-switching.png)
-
 When an exception occurs (interrupt, system call, time-slicing), the kernel saves the context (state) of the current process into its PCB, reload the context (state) of the newly scheduled process into its PCB, and passes control to it.
 
 If interrupt handling needs to wait for some I/O interrupt to occur, control can be passed to another process, instead of the CPU staying idle.
 
+![Context Switching](./imgs/context-switching.png)
+
+Context-switch time is pure overhead, because the system does no useful work while switching. Context-switch times are highly dependent on hardware support.
+
+
+# Operations on Processes
+
+## Process Creation
+A process may create several new processes. The creating process is called a parant process, and the new processes are called the children of that process. Each of these new processes may in turn create other processes, forming a tree of processes.
+
+The `pid` provides a unique value for each process in the system, and it can be used as an index to access various attributes of a process within the kernel.
+
+The `systemd` process (`pid` = 1) serves as the root parent process for all user processes, and is <u>the first user process created whtn the system boots.</u> Once the system has booted, the `systemd` process creates processes which provide additional services.
+
+![Process tree](./imgs/a-tree-of-processes.png)
+
+```bash
+# Unix commands
+
+ps # Obtain a listing of processes
+pstree # A tree view
+```
+
+**When a process creates a new process**, <u>two possibilities for execution exist</u>:
+1. The parent continues to execute concurrently with its children. Cases:
+    - You use the **bash/cmd** to start a **Visual Studio Code** program or any other GUI-clickable application.
+2. The parent waits until some or all of its children have terminated. For example:
+    - You use the **bash/cmd** to start a **NodeJS server**, execute the **top** program, or the **tcpdump** program.
+
+There are also <u>two address-space possibilities for the new process</u>:
+
+1. The child process is a duplicate of the parent process (it has the same program and data as the parent). For example:
+    - A browser program creates a new tab
+2. The child process has a new program loaded into it. For example:
+    - Starting a user program, a NodeJS server, top, tcpdump with/in **bash**.
+
+A new process is created by the `fork()` system call.
+- The new process consists of a copy of the address space of the original process. This mechanism allows the parent process to communicate easily with its child process. 
+- Both processes continue execution at the instruction after the `fork()`, with one difference: the return code for the `fork()` is zero for the new (child) process, whereas the (nonzero) `pid` of the child is returned to the parent.
+
+After a `fork()` system call, 
+- one of the two processes typically uses the `exec()` system call to replace the process's memory space with a new program. 
+- The `exec()` system call loads a binary file into memory (destroying the memory image of the program containing the exec system call) and starts its execution. 
+- In this manner, the two processes are able to communicate and then go their separate ways. The parent can then create more children; or, if it has nothing else to do while the child runs, it can issue a `wait()` system call to move itself off the ready queue until the termination of the child.
+- Because the call to `exec()` overlays the process's address space with a new program, `exec()` does not return control unless an error occurs.
+
+
+```c
+#include <sys/types.h>
+#include <stdio.h>
+#include <unistd.h>
+
+int main() {
+  pid_t pid;
+
+  // fork a child process
+  pid = fork();
+
+  if (pid < 0) { // error
+    fprintf(stderr, "Fork failed\n");
+    return 1;
+  } else if (pid == 0) { // child process
+    // execlp("/bin/ls", "ls", NULL); // bash.exe > ls
+    // execlp("code", "", NULL); // bash.exe > code
+    execlp("top", "", NULL);
+
+    // the above is equivalent to typing the first argument in bash.exe and pressing Enter.
+  } else { // parent process
+    // parent waits for the child to complete
+    wait(NULL);
+    printf("Child complete\n");
+  }
+
+  return 0;
+}
+```
+
+Of course, there is nothing to prevent the child from not invoking `exec()` and instead continuing to execute as a copy of the parent process.

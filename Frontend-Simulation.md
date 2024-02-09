@@ -1,22 +1,12 @@
-# Aim
+# Objective
 A Frontend of an application, that's <u>not detailed in design</u>.
 
-## How?
-Don't style content the app merely renders, just display JSON and minimally styled structure
+# Strategy
+- App's navigation, layout, and hierarchical UI structure should be as it should.
+- Simple-design static content should use existing CSS while complex ones should just render JSON data
+- Interactive content such as forms and buttons should be styled as they should
+- Complex interface implementations such as "Create Post" and "Add product" should be basic. Just supply input fields
+- Don't hide any actions under a disclosure, display all available options straight up.
+- Unless you decide to fully design specific parts of the application, where it's really worth it.
 
-Only style, those user interactions that makes API calls to the backend.
-
-Ignore unnecessary content and UX. Only care about what the backend renders and the interactions that make calls to the backend.
-
-Look at the features you choose to provide (according to Chat-GPT answers), see how social media structures them, and quickly decide on one structure.
-
-**But, But** --- let it be opened to better styling, since you may have time later.
-
-## Four things are involved
-Modeling App navigation
-
-Rendering responses as JSON code block(s).
-
-Designing & Attaching `GET` and `DELETE` request interactive buttons.
-
-Designing & Rendering `POST`, `PUT` and `PATCH` request forms or buttons.
+> Note!!! This doesn't apply to core web applications created to achieve tasks, involving 100% interactive content.

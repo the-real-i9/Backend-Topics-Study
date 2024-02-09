@@ -9,10 +9,8 @@ There are two fundamental models of IPC:
 
 # IPC in shared memory systems
 Using this technique, requires communicating processes to establish a region of shared memory. A shared memory segment is created by one of the communicating processes in its address space. Other processes that wishes to communicate must attach it to their address space.
-
-Communicating procecesses must agree to remove the restriction that the operating system places on one process accessing the memory of another process.
-
-The processes communicate by writing and reading data in the shared memory, which is visible to communicating processes.
+- Communicating processes must agree to remove the restriction that the operating system places on one process accessing the memory of another process.
+- They can then exchange information by reading and writing data in the shared areas. The processes are also responsible for ensueing that they are not writing to the same location simultaneously.
 
 An example of this technique, is the producer-consumer problem, where the producer process writes (produces data) to the shared memory, and the cosumer process read (consumes data) from the shared memory.
 
@@ -45,7 +43,7 @@ These are more like decisions on how we should implement the communication link.
 - Automatic or explicit buffering
 
 
-## Naming : Direct or Indirect
+## Naming: Direct or Indirect
 ### Direct Communication
 Each process that wants to communicate must explicitly **name the recipient or sender of the communication**.
 
@@ -87,6 +85,117 @@ The temporary message queue used by the communicating processes can be implement
 
 ## Pipes
 A pipe acts as a conduit allowing two processes to communicate.
+
+**In implementing a pipe, four issues must be considered**:
+1. Does the pipe allow <u>bidirectional</u> communication, or is the communication <u>unidirectional</u>?
+2. If bidirectional communication is allowed, is it <u>half duplex</u> (data can travel only one direction at a time) or <u>full duplex</u> (data can travel in both directions simultaneously)?
+3. Must a relationship (such as *parent-child*) exist between the communicating processes?
+4. Can the pipes communicate over a network, or must the communicating processes reside on the same machine?
+
+
+## Ordinary Pipes
+Ordinary pipes allow two processes to communicate in standard producer-consumer fashion: the producer writes to one end of the pipe (write end) and the consumer reads from the other end (read end). 
+
+Ordinary pipes are unidirectional. If bidirectional communication is required, two pipes must be used, with each pipe sending data in a different direction.
+
+Ordinary pipes are constructed using the function
+```c
+pipe(int fd[])
+```
+This function creates a pipe that is accessed through the `int fd[]` file descriptors: `fd[0]` is the read end of the pipe, and `fd[1]` is the write end. Pipes can be accessed using ordinary `read()` and `write()` system calls, as they are treated as a special type of file.
+
+An ordinary pipe cannot be accessed from outside the process that created it. Typically, a parent process creates a pipe and uses it to communicate with a child process that it creates via `fork()`.
+- Recall that a child process inherits open files from its parent. Since a pipe is a special type of file, the child inherits the pipe from its parent process.
+
+```c
+#include <sys/types.h>
+#include <stdio.h>
+#include <string.h>
+#include <unistd.h>
+
+#define BUFFER_SIZE 25
+#define READ_END 0
+#define WRITE_END 1
+
+int main() {
+  char write_msg[BUFFER_SIZE] = "Hey! How're you?";
+  char read_msg[BUFFER_SIZE];
+
+  int fd[2];
+
+  pid_t pid;
+
+  /* create the pipe */
+  // The argument to pipe() is an empty array of two integers. A file descriptor is stored in each space. The first fd[0] is the file we read from (becomes read end of the pipe), while the second fd[1] is the file we write to (becomes write end of the pipe).
+  if (pipe(fd) == -1) { // handle error creating pipe
+    fprintf(stderr, "Pipe creation failed");
+    return 1;
+  }
+
+  /* fork a child process */
+  // forking a child process inherits the file decriptors created by the parent process above so it has access to it.
+  pid = fork();
+
+  if (pid < 0) { // handle error creating child process
+    fprintf(stderr, "Fork failed");
+    return 1;
+  }
+
+  /* In the parent process: write to the pipe */
+  if (pid > 0) {
+    /* close the unused end of the pipe, so the child process won't read it while its still empty */
+    close(fd[READ_END]);
+
+    /* write to the pipe */
+    write(fd[WRITE_END], write_msg, strlen(write_msg) + 1);
+    printf("written: %s\n", write_msg);
+
+    /* close the write end, we're done writing */
+    close(fd[WRITE_END]);
+  } else {
+    /* to avoid interruption */
+    close(fd[WRITE_END]);
+
+    /* read from the pipe */
+    read(fd[READ_END], read_msg, BUFFER_SIZE);
+    printf("read: %s\n", read_msg);
+
+    /* close the read end, we're done reading */
+    close(fd[READ_END]);
+  }
+
+  return 0;
+}
+```
+
+<u>Ordinary pipes require a parent-child relationship between the communicating processes</u>. This means that *ordinary pipes can be used only for communication between processes on the same machine*.
+
+## Named pipes
+Named pipes provide a much more powerful communication tool. Communication can be bidirectional, and no parent-child relationship is required.
+- Once a named pipe is establised, several processes can use it for communication. 
+- A named pipe, typically, has several writers. 
+- Named pipes continue to exist after communicating processes have finised.
+
+Named pipes are reffered to as FIFOs in UNIX systems. Once created, they appear as typical files in the file system. 
+
+- Use `mkfifo()` system call to create a named pipe. Use file access system calls to manipulate it just like a file. It will continue to exist until it is explicitly deleted from the file system.
+
+- Although FIFOs allow bidirectional communication, only half-duplex transmission is permitted. If full-duplex transmission is requred two FIFOs are typically used.
+  - Additionally, the communicating processes must reside on the same machine. If intermachine communication is required, **sockets** must be used.
+  - Only byte-oriented data may be transmitted across a UNIX FIFO.
+
+Named pipes on Windows systems provide a richer communication mechanism than their UNIX counterparts.
+  - Full-duplex is allowed
+  - Communicating processes can be on the same or different machines.
+  - Allows either byte-oriented or message-oriented data.
+  - `CreateNamedPipe()`, `ConnectNamedPipe()` for creation and connection respectively.
+  - `ReadFile()` and `WriteFile()` for access.
+
+---
+
+**Communication using sockets**, although common and efficient, <u>is considered a low-level form of communication between distributed processes</u>. 
+- One **reason** is that <u>sockets allow only an unstructured stream of bytes to be exchanged between the communicating threads</u>. 
+- It is the responsibility of the client or server application to impose a structure of the data. Hence, the need for application-level protocols, that requires two communicating processes to define and agree on the structure with which they communicate. HTTP, SMTP, WebSocket etc.
 
 ---
 ---

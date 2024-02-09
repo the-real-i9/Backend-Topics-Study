@@ -85,3 +85,62 @@ A queue is another fundamental data structure that follows the FIFO principle. T
 - Order fulfillment in warehouses
 - Event handling in GUI applications
 
+# Hash Maps
+Hash maps are data structures that allow for <u>efficient data retrieval **based on a key**</u>.
+
+## Operations
+Inserton (Update), Deletion, Lookup (Retrieval), Existence check
+
+## Real World Applications
+- **Databases and Caching** for quick data retrieval based on keys
+- **Symbol tables in compilers** where variable and function names are associated with their respective memory locations
+- **Associative arrays** e.g. JavaScript's object
+- **Caching and Memoization** to store the results of expensive function calls based on their input parameters
+- **Counting frequencies** to count the frequency of elements in a collection by using the elements as keys and maintaining counts as values.
+- **Web servers for session management** The session ID can serve as the key, and the associated user data can be stored as the value.
+- Password hashing
+
+- **Configuration Management** to store key-value pairs representing configuration settings.
+- **Data deduplication** employed for identifying and removing duplicate elements from datasets. Each unique element is added to the hash map, and duplicates can be efficiently detected.
+- In **language compilers and interpreters**, hash maps are used to implement symbol tables, storing identifiers and their associated metadata.
+- **Routing tables in networking** IP addresses serve as keys, and the associated values contain routing information.
+- **Geospatial Applications** Coordinates or location identifiers can serve as keys.
+
+<u>JavaScript `Map` and the Go 'map`` data structures</u> can be regarded as implementations of hash maps, providing ways to manage key-value pairs with underlying hash-based mechanisms. They abstract away the complexities of hash table implementations, offering developers a high-level and convinient interface for working with associative data.
+
+They are particularly useful in *problem models that involve efficient management and retrieval of associations between keys and values*.
+
+# Tree
+Trees are hierarchichal data structures that consists of nodes connected by edges.
+## Key concepts
+- **Nodes:** Root node, Parent nodes, Child nodes, Leaf nodes (that have no children).
+- **Depth** The level of a node in a tree, starting from the root.
+- **Height** The length of the longest path from a node to a leaf.
+**Subtree** A tree formed by a node and its descendants.
+
+## Types of Trees
+### Binary tree
+### Binary Search tree
+### Balanced tree
+### AVL tree
+### Heap
+### Trie (Prefix tree)
+### B-Tree
+
+## Operations on Trees
+- Traversal
+- Search
+- Insertion
+- Deletion
+
+## Common use cases
+- Directory structures
+- Hierarchical relationships
+- Expression trees
+- Decision trees
+- Syntax trees
+- Binary search trees in databases
+- Routing tables in networking
+- Game trees
+- HTML DOM
+- XML Document structures
