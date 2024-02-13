@@ -22,19 +22,12 @@ Above all, **select really good and convincing projects**.
 
 
 ## Topic inspired projects
-### WebSock-it!
-An App that implements major Web Socket based applications for users to play with. It would include:
-- Chat, Real-time streaming, Collaborative activity and more...
+- **WebSocket** centered applications
+- **Binary data processing** applications
+- Intermediary **Proxy server** softwares
 
-### Online Media File Converter
-An App that sends file to the backend, and does several binary data operations;
-- Compression, Decompression, Format conversion, Data merging, Data splitting/extraction and more...
-
-### Usher Proxy
-A proxy-centric application that implements major proxy server use cases for different purposes.
-
-### Libraries, Packages & Tools
-
-### Command Line Application
-
-### Cloud computing
+## Others
+- Libraries, Packages & Tools
+- Backend Services
+- Command Line Applications
+- Cloud computing

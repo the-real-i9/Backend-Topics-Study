@@ -13,6 +13,7 @@ We begin by listing the activities involved in API development. We'll talk about
 - Testing
 - Design patterns
 - Other scaling techniques
+- Security
 - [App Specific Integragions](../../Common-Software-Imps.md). [Click link to see]
 
 ## Advanced
