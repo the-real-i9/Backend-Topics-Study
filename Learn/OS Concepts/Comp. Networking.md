@@ -87,5 +87,29 @@ The exception to this general rule is the data link layer, which adds both a *he
 
 ## The layers of TCP/IP
 
-Personally, I've decided not to consider all layers, except the ones that are key to my area of specialization.
+### The Physical Layer
 
+The actual physical connection between two network devices.
+
+The physical layer contains all the functions needed to carry the bit stream over a physical medium to another system. The transmission medium forms a pure “bit pipe” and should not change the bits sent in any way.
+
+Now, <u>transmission “on the wire” might send bits through an extremely complex transform, but the goal is to enable the receiver to reconstruct the bit stream exactly as sent</u>. *Some information in the form of transmission framing can be added to the data link layer data, but this is only used by the physical layer and the transmission medium itself.*
+
+**Physical layer specifications have four parts**: mechanical, electrical or optical, functional, and procedural.
+
+- The **mechanical part** <u>specifies the physical size and shape of the connector itself</u> so that components will plug into each other easily.
+- The **electrical/optical specification** <u>determines what value of voltage or line condition determines whether a pin is active or what exactly represents a 0 or 1 bit</u>.
+- The **functional specification** <u>specifies the function of each pin or lead on the connector</u> (first lead is send, second is receive, and so on).
+- The **procedural specification** <u>details the sequence of actions that must take place to send or receive bits on the interface</u>. (For Ethernet, the send pair is activated, then a “preamble” is sent, and so forth.)
+
+There are **other things that the physical layer must determine:**
+
+- Data rate
+- Bit synchronization
+- **Configuration:** So far we’ve assumed simple **point-to-point** links, but this is not the only <u>way that systems are connected</u>. In a **multipoint** configuration, a link connects more than two devices, and in a multisystem bus/broadcast topology such as a LAN, the number of systems can be very high.
+- **Topology:** <u>The devices can be *arranged* in a number of ways</u>. In a **full mesh** topology, all devices are directly connected and one hop away, but this requires a staggering amount of links for even a modest network. Systems can also be arranged as a **star** topology, with all systems reachable through a central system. There is also the **bus** (all devices are on a common link) and the **ring** (devices are chained together, and the last is linked to the first, forming a ring).
+- **Mode:** So far, we’ve only talked about one of the systems as the sender and the other as the receiver. This is operation in **simplex** mode, <u>where a device can only send or receive</u>, such as with weather sensors reporting to a remote weather station. More realistic devices use **duplex** mode, <u>where all systems can send or receive</u> with equal facility. This is often further distinguished as **half-duplex** (<u>the system can send and receive, but not at the same time</u>) and **full-duplex** (<u>simultaneous sending and receiving</u>)
+
+### The Data Link Layer
+
+Bits are just bits. <u>With only a physical layer, System A has no way to tell System B, “Get ready some bits,” “Here are the bits,” and “Did you get those bits okay?”</u> The data link layer solves this problem by organizing the bit stream into a data unit (PDU) called a frame.
