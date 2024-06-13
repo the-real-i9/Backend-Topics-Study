@@ -1,0 +1,59 @@
+Comer, Douglas E., The Internet Book, 4th ed., Pearson/Prentice Hall, 2007.
+
+Comer, Douglas E., Internetworking with TCP/IP, Volume I: Principles, Protocols, and Architectures, 5th ed., Prentice Hall, 2006.
+
+Comer, Douglas E., and David L. Stevens, Internetworking with TCP/IP, Volume II: Design, Implementation, and Internals, Prentice Hall, 1991.
+
+Comer, Douglas E., and David L. Stevens, Internetworking with TCP/IP, Volume III: Client/Server Programming and Applications, Prentice Hall, 1993.
+
+Costales, Bryan, and Eric Allman, Sendmail, 3rd ed., O’Reilly, 2002.
+
+Donahoo, Michael J., and Kenneth L. Calvert, TCP/IP Sockets in C: A Practical Guide for Programmers, Morgan Kaufmann, 2001.
+
+Doraswamy, Naganand, and Dan Harkins, IPSec, Prentice Hall PTR, 1999.
+
+Doyle, Jeff, OSPF and IS-IS, Addison-Wesley, 2006.
+
+Doyle, Jeff, Routing TCP/IP, Volume I, Cisco Press, Macmillan, 1998.
+
+Doyle, Jeff, and Jennifer DeHaven Carroll, Routing TCP/IP, Volume II, Cisco Press, Macmillan, 2001.
+
+Forouzan, Behrouz A., TCP/IP Protocol Suite, 3rd ed., McGraw-Hill, 2006.
+
+Goralski, Walter, Juniper and Cisco Routing, Wiley, 2002.
+
+Goralski, Walter, ADSL and DSL Technologies, 2nd ed., McGraw-Hill, 2000.
+
+Goralski, Walter, Introduction to ATM Networking, McGraw-Hill, 1995.
+
+Goralski, Walter, SONET/SDH, 3rd ed., McGraw-Hill/Osborne, 2002.
+
+Gredler, Hannes, and Walter Goralski, The Complete IS-IS Routing Protocol, Springer, 2005.
+
+Greene, Barry Raveendran, and Philip, Smith, Cisco ISP Essentials, Cisco Press, 2002.
+
+Hall, Eric A., Internet Core Protocols, O’Reilly, 2000.
+
+Huston, Geoff, ISP Survival Guide, Wiley, 1999.
+
+Kozierok, Charles M., The TCP/IP Guide, No Starch Press, 2005.
+
+Kumar, Vineet, and Markku Korpi, and Senthil Sengodan, IP Telephony with H.323, Wiley, 2001.
+
+Kurose, James F., and Keith W. Ross, Computer Networking: A Top-Down Approach Featuring the Internet, 3rd ed., Pearson Addison-Wesley, 2005.
+
+Loshin, Pete, Big Book of Border Gateway Protocol (BGP) RFCs, Morgan Kaufmann, 2000.
+
+Lui, Cricket, and Paul Albitz, DNS and BIND, 5th ed., O’Reilly, 2006.
+
+Mishra, Charit, Mastering Wireshark, Packt Publishing, Birmingham-Mumbai, 2016.
+
+Naugle, Matthew, Illustrated TCP/IP: A Graphic Guide to the Protocol Suite, Wiley, 1999.
+
+Nemeth, Evi, Garth Snyder, Scott Seebass, Trent R. Hein, et al., UNIX System Administration Handbook, Prentice Hall PTR, 2001.
+
+Perlman, Radia, Interconnections, 2nd ed., Addison-Wesley, 2000.
+
+Pullen, J. Mark, Understanding Internet Protocols through Hands-On Programming, Wiley, 2000.
+
+Rhoton, John, Programmer’s Guide to Internet Mail, Digital Press, 2000.
